@@ -15,6 +15,7 @@ int main()
 
     b3m::Tournament l_mainTournament;
 
+    //entering team names
     std::cout << "Enter Team Names - end with empty line:" << std::endl;
     while (true)
     {
@@ -30,16 +31,37 @@ int main()
 
     l_mainTournament.printAllTeamNames(std::cout);
 
+    //sorting them by rating
+    std::cout << "Enter table spot for each Team:" << std::endl;
+    for (const std::string& l_teamName : l_mainTournament.getTeamNames())
+    {
+        bool l_spotEntered = false;
+
+        do
+        {
+            std::cout << l_teamName << ": ";
+            std::size_t l_spot;
+            std::cin >> l_spot;
+            if (l_spot > l_mainTournament.getNumOfTeams())
+            {
+                std::cerr << "table spot too high!" << std::endl;
+                l_spotEntered = false;
+            }
+            else if (!l_mainTournament.setCurSpot(l_teamName, l_spot))
+            {
+                std::cerr << "table spot already taken!" << std::endl;
+                l_spotEntered = false;
+            }
+            else
+            {
+                l_spotEntered = true;
+            }
+        } while (!l_spotEntered);
+    }
+
+    l_mainTournament.printTeamTable(std::cout);
+
+
+
     std::cout << "cioa!" << std::endl;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

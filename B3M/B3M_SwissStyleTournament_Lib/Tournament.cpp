@@ -48,7 +48,6 @@ std::map<b3m::MatchId, b3m::Match> b3m::Tournament::createCurMatches()
 		l_takenTeams.emplace(l_it, false);
 	}
 	//TODO if history is empty
-
 	for (auto l_teamNameIt = m_teamNames.begin(); l_teamNameIt != m_teamNames.end(); ++l_teamNameIt)
 	{
 		if (l_takenTeams.at(l_teamNameIt) == true)
@@ -56,7 +55,16 @@ std::map<b3m::MatchId, b3m::Match> b3m::Tournament::createCurMatches()
 			continue;
 		}
 
-		const std::string l_opponentName = b3m::sst::findFirstMatchOpponent(l_teamNameIt, m_ratingsOfTeams);
+		std::string l_opponentName;
+
+		if (m_history.empty())
+		{
+			l_opponentName = b3m::sst::findFirstMatchOpponent(l_teamNameIt, m_ratingsOfTeams);
+		}
+		else
+		{
+			//TODO
+		}
 
 		if (l_opponentName == "")
 		{
@@ -78,6 +86,22 @@ bool b3m::Tournament::finishMatch(const MatchId& i_id, const Match& i_match, con
 		if (l_matchRecord.getId() == i_id)
 		{
 			return false;
+		}
+	}
+
+	//add points for winner
+	{
+		const auto l_winner = b3m::sst::decideWinner(i_match, i_result);
+
+		if (l_winner == "")
+		{
+
+		}
+		else
+		{
+			const auto l_winnerIt = std::find(m_teamNames.begin(), m_teamNames.end(), l_winner);
+			++m_TeamPoints[l_winnerIt];
+			//TODO update rating
 		}
 	}
 
@@ -110,10 +134,44 @@ void b3m::Tournament::printTeamTable(std::ostream& i_printSink) const
 }
 #endif //_DEBUG
 
+//free functions
+std::vector<b3m::TeamName> b3m::getPastOpponents(const Tournament::MatchHistory& i_history, const TeamName& i_team)
+{
+	std::vector<b3m::TeamName> r_opponentList;
+
+	for (const auto& l_matchRecord : i_history)
+	{
+		const auto l_checkRes = l_matchRecord.wasContestant(i_team);
+
+		if (l_checkRes.first)
+		{
+			r_opponentList.push_back(l_checkRes.second);
+		}
+	}
+
+	return r_opponentList;
+}
+
 
 
 //MatchRecord
 b3m::MatchRecord::MatchRecord(const MatchId& i_id, const Match& i_match, const Result& i_res, unsigned int i_roundId, Tournament* i_pTournament)
 	: m_id(i_id), m_contestants(i_match), m_result(i_res), m_roundId(i_roundId), m_pTournament(i_pTournament)
 {
+}
+
+std::pair<bool, b3m::TeamName> b3m::MatchRecord::wasContestant(const TeamName& i_team) const
+{
+	if (m_contestants.first == i_team)
+	{
+		return std::make_pair(true, m_contestants.second);
+	}
+	else if (m_contestants.second == i_team)
+	{
+		return std::make_pair(true, m_contestants.first);
+	}
+	else
+	{
+		return std::make_pair(false, "");
+	}
 }

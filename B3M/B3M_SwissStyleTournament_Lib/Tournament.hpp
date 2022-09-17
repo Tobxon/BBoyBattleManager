@@ -26,6 +26,8 @@ public:
 	MatchRecord(const MatchId&, const Match&, const Result&, unsigned int = 0, Tournament* = nullptr);
 
 	MatchId getId() const { return m_id; }
+	std::pair<bool, TeamName> wasContestant(const TeamName&) const;
+
 private:
 	MatchId m_id;
 	Match m_contestants;
@@ -42,6 +44,7 @@ public:
 	using rating = unsigned int;
 	using spot = std::size_t;
 	using MatchHistory = std::vector<MatchRecord>;
+	using Points = unsigned int;
 
 	bool addTeam(const TeamName&, rating = 0);
 	bool setCurSpot(const TeamName&, std::size_t);
@@ -61,12 +64,18 @@ public:
 
 private:
 	std::vector<TeamName> m_teamNames;
-	std::map<spot, std::vector<TeamName>::const_iterator> m_ratingsOfTeams;
+
+	std::map< spot, std::vector<TeamName>::const_iterator > m_ratingsOfTeams; //initial rating
+	bool m_ratingUpdated {false};
+
+	std::map< std::vector<TeamName>::const_iterator, Points > m_TeamPoints;
 
 	MatchHistory m_history;
 
 	//b3m::MatchMaker m_matchMaker;
 	//b3m::History m_history; //TODO
 };
+
+std::vector<TeamName> getPastOpponents(const Tournament::MatchHistory&, const TeamName&);
 
 }

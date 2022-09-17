@@ -23,6 +23,8 @@ std::string SSTLIBRARY_API returnHelloWorld();
 
 TeamName findFirstMatchOpponent(const std::vector<TeamName>::const_iterator& i_ownName, const std::map<Tournament::spot, std::vector<TeamName>::const_iterator>& i_teamsByRating);
 
+TeamName decideWinner(const Match&, const Result&);
+
 }
 
 }

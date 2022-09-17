@@ -30,6 +30,22 @@ b3m::TeamName b3m::sst::findFirstMatchOpponent(const std::vector<b3m::TeamName>:
 	return *i_teamsByRating.at(l_spotOpponent);
 }
 
+b3m::TeamName b3m::sst::decideWinner(const Match& i_contestants, const Result& i_result)
+{
+	if (i_result.first > i_result.second)
+	{
+		return i_contestants.first;
+	}
+	else if (i_result.second > i_result.first)
+	{
+		return i_contestants.second;
+	}
+	else
+	{
+		return "";
+	}
+}
+
 
 b3m::MatchId b3m::createNewUniqueId()
 {

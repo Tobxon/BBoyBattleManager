@@ -1,81 +1,108 @@
 #pragma once
 
+//--------------------------------------------------------------------------------------------------
+//Includes                                                                                     -----
+//--------------------------------------------------------------------------------------------------
 #include "SwissStyleTournamentLibrary.h"
 
-#include <vector>
+//stl
+#include <string>
+#include <memory>
 #include <map>
-#include <ostream>
+#include <vector>
+#include <optional>
 
-#include "Team.hpp"
+//b3m
+#include "TypesAndAliases.hpp"
+#include "Score.hpp"
+#include "MatchMaker.hpp"
+
+
+//--------------------------------------------------------------------------------------------------
+//Declarations                                                                                 -----
+//--------------------------------------------------------------------------------------------------
+
+//error type with error msg
+//using error = std::pair< bool, std::optional<std::string> >; 
 
 namespace b3m
 {
-
-class Tournament;
-
-using TeamName = std::string;
-using MatchId = std::size_t;
-using Match = std::pair< TeamName, TeamName >;
-using Result = std::pair< int, int >;
-
-
-class MatchRecord
-{
-public:
-	MatchRecord() = delete;
-	MatchRecord(const MatchId&, const Match&, const Result&, unsigned int = 0, Tournament* = nullptr);
-
-	MatchId getId() const { return m_id; }
-	std::pair<bool, TeamName> wasContestant(const TeamName&) const;
-
-private:
-	MatchId m_id;
-	Match m_contestants;
-	Result m_result;
-
-	Tournament* m_pTournament{ nullptr };
-	unsigned int m_roundId;
-};
+//namespace b3m ------------------------------------------------------------------------------------
 
 
 class SSTLIBRARY_API Tournament
 {
 public:
-	using rating = unsigned int;
-	using spot = std::size_t;
-	using MatchHistory = std::vector<MatchRecord>;
-	using Points = unsigned int;
+	class Round;
 
-	bool addTeam(const TeamName&, rating = 0);
-	bool setCurSpot(const TeamName&, std::size_t);
-	//bool setRating(const teamName&, rating);
+	Tournament() = delete;
+	explicit Tournament(std::unique_ptr < MatchMaker >);
+	//explicit Tournament(std::shared_ptr < MatchMaker >);
+	Tournament(std::unique_ptr < MatchMaker >, const std::vector< Contestant >&);
+	//Tournament(std::shared_ptr < MatchMaker >, const std::vector< Contestant >&);
+	//TODO implementation
+	//Tournament(std::unique_ptr < MatchMaker >, const std::map< Ranking, std::vector<Contestant> >);
+	//Tournament(std::shared_ptr < MatchMaker >, const std::map< Ranking, std::vector<Contestant> >);
+	Tournament(const Tournament&) = default;
+	//Tournament(const Tournament&&) = default;
+	//TODO rule of five
 
-	//algorithms
-	std::map<MatchId, Match> createCurMatches();
-	bool finishMatch(const MatchId&, const Match&, const Result&, unsigned int);
+	//preparation phase methods
+	bool addContestant(const Contestant&);
+	bool removeContestant(const Contestant&);
+	bool setInitialRanking(const Contestant&, Ranking);
 
-	std::size_t getNumOfTeams() { return m_teamNames.size(); }
-	const std::vector<TeamName>& getTeamNames() { return m_teamNames; }
+	bool start(); //makes m_contestants read only
+	bool isStarted() const { return m_tournamentStarted; }
+	
+	//running phase methods
+	std::unique_ptr<Round> startNewRound();
+	std::unique_ptr<Round> finishCurRound(std::unique_ptr<Round>); //return round again if its not ready to be finished, finish successfull -> returning nullptr
 
-#ifdef _DEBUG
-	void printAllTeamNames(std::ostream&) const;
-	void printTeamTable(std::ostream&) const;
-#endif //_DEBUG
+	const std::vector< Contestant >& showTeams() const { return m_contestants; }
+	std::map< Ranking, Contestant > getCurRankings() const;
+	std::map< Ranking, std::pair< Contestant, Score >> getCurRankingsWithScore() const;
 
 private:
-	std::vector<TeamName> m_teamNames;
+	//std::shared_ptr< MatchMaker > m_matchMaker;
+	std::unique_ptr< MatchMaker > m_matchMaker;
 
-	std::map< spot, std::vector<TeamName>::const_iterator > m_ratingsOfTeams; //initial rating
-	bool m_ratingUpdated {false};
+	//container of Contestants
+	std::vector< Contestant > m_contestants{};
+	bool m_tournamentStarted{ false };
 
-	std::map< std::vector<TeamName>::const_iterator, Points > m_TeamPoints;
+	std::map< Ranking, std::vector< Contestant >::const_iterator > m_initialRankings{};
 
-	MatchHistory m_history;
+	//list of Rounds (past and last entry is current)
+	std::vector< Round > m_history{};
+	bool m_roundInProgress{ false };
 
-	//b3m::MatchMaker m_matchMaker;
-	//b3m::History m_history; //TODO
+	//TODO rearrange members for optimal memory 
 };
 
-std::vector<TeamName> getPastOpponents(const Tournament::MatchHistory&, const TeamName&);
+class Tournament::Round 
+{
+public:
+	//Round() = default;
+	//explicit Round(std::shared_ptr< Tournament >);
 
+	bool recordMatchResult(const Match&, const Score&);
+	const std::vector<Match>& correctMatches(const std::vector<Match>&);
+	bool setFinished();
+
+	bool canBeFinished() const { return m_matchResults.size() == m_matches.size(); }
+	const std::vector<Match>& showMatches() const { return m_matches; }
+	Score getScoreOfContestant(const Contestant&) const;
+
+private:
+	//std::shared_ptr< Tournament > m_correspondingTournament{ nullptr };
+
+	std::vector< Match > m_matches;
+	std::map< std::vector<Match>::const_iterator, Score > m_matchResults;
+
+	bool m_isFinished{ false };
+};
+
+
+//end of namespace b3m -----------------------------------------------------------------------------
 }

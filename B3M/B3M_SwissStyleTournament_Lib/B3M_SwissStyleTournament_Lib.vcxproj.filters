@@ -24,13 +24,19 @@
     <ClInclude Include="SwissStyleTournamentLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sst_functions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tournament.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Team.hpp">
+    <ClInclude Include="SwissStyleMM.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchMaker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TypesAndAliases.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,13 +47,16 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sst_functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Tournament.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Team.cpp">
+    <ClCompile Include="SwissStyleMM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchMaker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

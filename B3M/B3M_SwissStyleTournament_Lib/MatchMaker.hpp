@@ -25,6 +25,7 @@ class SSTLIBRARY_API MatchMaker
 {
 public:
 	struct MatchingInfos {
+		virtual ~MatchingInfos() = default;
 
 	};
 

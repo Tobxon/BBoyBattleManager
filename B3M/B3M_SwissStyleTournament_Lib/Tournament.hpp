@@ -64,6 +64,8 @@ public:
 	std::map< Ranking, std::pair< Contestant, Score >> getCurRankingsWithScore() const;
 
 private:
+	Score getScoreOfContestant(const Contestant&);
+
 	//std::shared_ptr< MatchMaker > m_matchMaker;
 	std::unique_ptr< MatchMaker > m_matchMaker;
 
@@ -83,22 +85,25 @@ private:
 class Tournament::Round 
 {
 public:
-	//Round() = default;
+	Round() = delete;
 	//explicit Round(std::shared_ptr< Tournament >);
+	Round(const std::vector< Match >& i_matches) : m_matches(i_matches){}
+
+	const std::vector<Match>& correctMatches(const std::vector<Match>&);
 
 	bool recordMatchResult(const Match&, const Score&);
-	const std::vector<Match>& correctMatches(const std::vector<Match>&);
 	bool setFinished();
 
 	bool canBeFinished() const { return m_matchResults.size() == m_matches.size(); }
 	const std::vector<Match>& showMatches() const { return m_matches; }
 	Score getScoreOfContestant(const Contestant&) const;
+	std::vector< Contestant > getOpponents(const Contestant&) const;
 
 private:
 	//std::shared_ptr< Tournament > m_correspondingTournament{ nullptr };
 
 	std::vector< Match > m_matches;
-	std::map< std::vector<Match>::const_iterator, Score > m_matchResults;
+	std::map< std::vector<Match>::const_iterator, std::pair<Score, Score> > m_matchResults;
 
 	bool m_isFinished{ false };
 };

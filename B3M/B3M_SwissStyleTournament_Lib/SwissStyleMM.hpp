@@ -9,6 +9,7 @@
 //b3m
 #include "MatchMaker.hpp"
 #include "Score.hpp"
+#include "Tournament.hpp"
 
 //--------------------------------------------------------------------------------------------------
 //Declarations                                                                                 -----
@@ -26,9 +27,12 @@ public:
 	{
 		SwissStyleMatchingInfos() = delete;
 		SwissStyleMatchingInfos(const std::map< std::vector< Contestant >::const_iterator, Score >& 
-			i_ScoreOfContestants)	: m_ScoreOfContestants(i_ScoreOfContestants) {}
+			i_ScoreOfContestants, const std::vector< Tournament::Round >& i_history = {}) 
+			: m_ScoreOfContestants(i_ScoreOfContestants), m_history(i_history) {}
+		//SwissStyleMatchingInfos(const std:.vector< Contestant >& i_contants, const Tournament& i_tournament); //TODO define this constructor
 
 		std::map< std::vector< Contestant >::const_iterator, Score > m_ScoreOfContestants;
+		std::vector< Tournament::Round > m_history;
 	};
 
 	std::vector< Match > createMatches(const std::vector< Contestant >&,

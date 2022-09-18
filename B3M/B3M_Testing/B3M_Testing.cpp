@@ -31,7 +31,7 @@ int main()
 
     //entering team names
     std::cout << "Enter Team Names - end with empty line:" << std::endl;
-    while (true)
+    while (true) 
     {
         std::string l_userInput;
         std::getline(std::cin, l_userInput);
@@ -77,11 +77,26 @@ int main()
 
     printLineSeperator(std::cout);
 
-    //l_mainTournament.printTeamTable(std::cout);
-    //
-    //printLineSeperator(std::cout);
-    //printLineSeperator(std::cout);
-    //printLineSeperator(std::cout);
+    std::cout << "Current ranking:" << std::endl;
+    for (const auto& l_contantWithRanking : l_mainTournament.getCurRankings())
+    {
+        std::cout << "# " << l_contantWithRanking.first << "\t" << l_contantWithRanking.second << std::endl;
+    }
+
+    printLineSeperator(std::cout);
+
+    std::cout << "press Enter to start Tournament" << std::endl;
+    std::cin.get();
+    if (l_mainTournament.start())
+    {
+        std::cout << "Tournament started!" << std::endl;
+    }
+    else
+    {
+        throw;
+    }
+
+    const auto l_round = l_mainTournament.startNewRound();
 
     //auto l_firstMatches = l_mainTournament.createCurMatches();
 

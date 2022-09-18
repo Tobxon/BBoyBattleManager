@@ -11,6 +11,7 @@
 
 //b3m
 #include "Tournament.hpp"
+#include "SwissStyleMM.hpp"
 
 //--------------------------------------------------------------------------------------------------
 //Implementations                                                                              -----
@@ -153,12 +154,20 @@ std::unique_ptr<b3m::Tournament::Round> b3m::Tournament::startNewRound()
 		//TODO how to get to the round again if data has been lost?
 	}
 
-	//actual create Round by using MatchMaker to create a match for evere (or every -1) contestant
-	//TODO
+	//actual create Round by using MatchMaker to create a match for every (or every -1) contestant
+	std::map< std::vector< Contestant >::const_iterator, Score > l_ScoresOfContants;
+	for (auto l_contantIt = m_contestants.cbegin(); l_contantIt != m_contestants.cend(); ++l_contantIt)
+	{
+		l_ScoresOfContants[l_contantIt] = getScoreOfContestant(*l_contantIt);
+	}
+
+	const auto l_matches = m_matchMaker->createMatches(m_contestants, m_initialRankings, b3m::SwissStyleMM::SwissStyleMatchingInfos(l_ScoresOfContants));
+
+	//TODO check if some Contestants didn't get a match, if yes (1 -> give him a free ticket), (2 or more -> error)
 
 	m_roundInProgress = true;
 
-	return std::unique_ptr<Round>();
+	return std::make_unique<Round>(l_matches);
 }
 
 std::unique_ptr<b3m::Tournament::Round> b3m::Tournament::finishCurRound(
@@ -203,6 +212,23 @@ std::map<b3m::Ranking, b3m::Contestant> b3m::Tournament::getCurRankings() const
 std::map<b3m::Ranking, std::pair<b3m::Contestant, b3m::Score>> b3m::Tournament::getCurRankingsWithScore() const
 {
 	return std::map<Ranking, std::pair<Contestant, Score>>();
+}
+
+b3m::Score b3m::Tournament::getScoreOfContestant(const Contestant& i_contant)
+{
+	if (std::find(m_contestants.cbegin(), m_contestants.cend(), i_contant) == m_contestants.cend())
+	{
+		throw; //TODO specify exception
+	}
+
+	Score r_score;
+
+	for (const auto& l_round : m_history)
+	{
+		r_score += l_round.getScoreOfContestant(i_contant);
+	}
+
+	return r_score;
 }
 
 
@@ -385,6 +411,12 @@ bool b3m::Tournament::Round::recordMatchResult(const Match&, const Score&)
 
 const std::vector<b3m::Match>& b3m::Tournament::Round::correctMatches(const std::vector<Match>&)
 {
+	if (!m_matchResults.empty())
+	{
+		return m_matches;
+	}
+
+	//TODO implementation
 	return m_matches;
 }
 
@@ -393,7 +425,49 @@ bool b3m::Tournament::Round::setFinished()
 	return false;
 }
 
-b3m::Score b3m::Tournament::Round::getScoreOfContestant(const Contestant&) const
+b3m::Score b3m::Tournament::Round::getScoreOfContestant(const Contestant& i_contant) const
 {
-	return Score();
+	//TODO anything to check first?
+
+	Score r_score;
+
+	for (auto itMatch = m_matches.cbegin(); itMatch != m_matches.cend(); ++itMatch)
+	{
+		try
+		{
+			if (itMatch->first == i_contant)
+			{
+				r_score += m_matchResults.at(itMatch).first;
+			}
+			else if (itMatch->second == i_contant)
+			{
+				r_score += m_matchResults.at(itMatch).second;
+			}
+		}
+		catch (const std::out_of_range&)
+		{
+			//result not recorded yet
+		}
+	}
+
+	return r_score;
+}
+
+std::vector< b3m::Contestant > b3m::Tournament::Round::getOpponents(const Contestant& i_contant) const
+{
+	std::vector< b3m::Contestant > r_opponents;
+
+	for (const auto& l_match : m_matches)
+	{
+		if (l_match.first == i_contant)
+		{
+			r_opponents.push_back(l_match.second);
+		}
+		else if (l_match.second == i_contant)
+		{
+			r_opponents.push_back(l_match.first);
+		}
+	}
+
+	return r_opponents;
 }

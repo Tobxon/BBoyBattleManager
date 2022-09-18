@@ -98,29 +98,44 @@ int main()
 
     printLineSeperator(std::cout);
 
-    const auto l_round = l_mainTournament.startNewRound();
-
-    for (const auto& l_match : l_round->showMatches())
+    for (unsigned i = 1; i <= 3; ++i)
     {
-        std::cout << l_match.first << " vs. " << l_match.second << std::endl;
+        auto l_pRound = l_mainTournament.startNewRound();
+        if (l_pRound == nullptr)
+        {
+            std::cout << "Error starting Round " << i << std::endl;
+        }
+
+        std::cout << "Matches of Round " << i << ": " << std::endl;
+        for (const auto& l_match : l_pRound->showMatches())
+        {
+            std::cout << l_match.first << " vs. " << l_match.second << std::endl;
+        }
+
+        printLineSeperator(std::cout);
+
+        std::cout << "Input results of Matches of Round " << i << ": " << std::endl;
+
+        for (const auto& l_match : l_pRound->showMatches())
+        {
+            std::pair< int, int> l_hands = std::make_pair<int, int>(0, 0);
+            do
+            {
+                std::cout << l_match.first << ": ";
+                std::cin >> l_hands.first;
+                std::cout << l_match.second << ": ";
+                std::cin >> l_hands.second;
+            } while (!l_pRound->recordMatchResult(l_match, std::make_pair(b3m::Score(l_hands.first), b3m::Score(l_hands.first))));
+        }
+
+        if (l_mainTournament.finishCurRound(std::move(l_pRound)) != nullptr)
+        {
+            std::cout << "Error finishing Round " << i << std::endl;
+        }
     }
 
-    //auto l_firstMatches = l_mainTournament.createCurMatches();
-
-    //std::cout << "Matches of Round 1:" << std::endl;
-    //for (const auto& l_match : l_firstMatches)
-    //{
-    //    std::cout << "#" << l_match.first << l_match.second.first << " vs. " << l_match.second.second << std::endl;
-    //}
-    //printLineSeperator(std::cout);
-
-    //std::cout << "Input results of Matches of Round 1:" << std::endl;
     //do
     //{
-    //    b3m::MatchId l_curId;
-    //    std::cout << "Match Nr:";
-    //    std::cin >> l_curId;
-
     //    try
     //    {
     //        const auto& l_curMatch = l_firstMatches.at(l_curId);

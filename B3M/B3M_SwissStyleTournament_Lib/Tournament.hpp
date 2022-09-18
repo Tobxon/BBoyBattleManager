@@ -82,7 +82,7 @@ private:
 	//TODO rearrange members for optimal memory 
 };
 
-class Tournament::Round 
+class SSTLIBRARY_API Tournament::Round
 {
 public:
 	Round() = delete;
@@ -91,19 +91,21 @@ public:
 
 	const std::vector<Match>& correctMatches(const std::vector<Match>&);
 
-	bool recordMatchResult(const Match&, const Score&);
+	bool recordMatchResult(const Match&, const std::pair< Score, Score >&);
 	bool setFinished();
 
 	bool canBeFinished() const { return m_matchResults.size() == m_matches.size(); }
 	const std::vector<Match>& showMatches() const { return m_matches; }
 	Score getScoreOfContestant(const Contestant&) const;
 	std::vector< Contestant > getOpponents(const Contestant&) const;
+	//const std::map< std::vector<Match>::const_iterator, std::pair<Score, Score> >& showMatchResults() const { return m_matchResults; } //TODO überdenke das Design
 
 private:
 	//std::shared_ptr< Tournament > m_correspondingTournament{ nullptr };
 
 	std::vector< Match > m_matches;
-	std::map< std::vector<Match>::const_iterator, std::pair<Score, Score> > m_matchResults;
+	//std::map< std::vector<Match>::const_iterator, std::pair<Score, Score> > m_matchResults;
+	std::map< Match, std::pair<Score, Score> > m_matchResults; //TODO back to iterator version
 
 	bool m_isFinished{ false };
 };

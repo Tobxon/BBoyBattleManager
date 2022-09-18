@@ -96,8 +96,8 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 			l_contantIsTaken[itContant] = false;
 		}
 
-		for (const auto& l_contant : l_contantsToMatch)
-		{
+		//for (const auto& l_contant : l_contantsToMatch)
+		//{
 			//for Debug
 			const auto l_midIt = l_contantsToMatch.cbegin() + divideUintRoundUp< std::size_t >(l_contantsToMatch.size(), 2);
 
@@ -131,7 +131,7 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 				for (const auto& l_pastRound : l_furtherInfos.m_history)
 				{
 					const auto l_curPastOpponents = l_pastRound.getOpponents(*l_itUppBraContant);
-					l_pastOpponents.insert(l_curPastOpponents.cbegin(), l_curPastOpponents.cend(), l_pastOpponents.cend());
+					l_pastOpponents.insert(l_pastOpponents.cend(), l_curPastOpponents.cbegin(), l_curPastOpponents.cend());
 				}
 
 				for (const auto& l_itLowBraContant : l_lowerBracket)
@@ -139,7 +139,7 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 				{
 					if (!l_contantIsTaken.at(l_itLowBraContant)) //not already taken
 					{
-						if (l_pastOpponents.empty() || std::find(l_pastOpponents.cbegin(), l_pastOpponents.cend(), *l_itLowBraContant) != l_pastOpponents.cend()) //haven't been opponents before
+						if (l_pastOpponents.empty() || std::find(l_pastOpponents.cbegin(), l_pastOpponents.cend(), *l_itLowBraContant) == l_pastOpponents.cend()) //haven't been opponents before
 						{
 							r_matches.emplace_back(*l_itUppBraContant, *l_itLowBraContant);
 							l_contantIsTaken[l_itUppBraContant] = true;
@@ -157,7 +157,7 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 					l_remainingContants.push_back(*l_contantTakenEntry.first);
 				}
 			}
-		}
+		//}
 
 	}
 	if (l_remainingContants.size() > 1)

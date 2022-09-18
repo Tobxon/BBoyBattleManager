@@ -163,11 +163,37 @@ if (!m_tournamentStarted)
 
 	const auto l_matches = m_matchMaker->createMatches(m_contestants, m_initialRankings, b3m::SwissStyleMM::SwissStyleMatchingInfos(l_ScoresOfContants, m_history));
 
-	//TODO check if some Contestants didn't get a match, if yes (1 -> give him a free ticket), (2 or more -> error)
-
 	m_roundInProgress = true;
 
-	return std::make_unique<Round>(l_matches);
+	//TODO check if some Contestants didn't get a match, if yes (1 -> give him a free ticket), (2 or more -> error)
+	
+	if ((l_matches.size() * 2) == (m_contestants.size() - 1))
+	{
+	Contestant l_remainingContant;
+		for (const auto& l_contant : m_contestants)
+		{
+			bool l_hasMatch = false;
+
+			for (const auto& l_match : l_matches)
+			{
+				if (l_match.first == l_contant || l_match.second == l_contant)
+				{
+					l_hasMatch = true;
+				}
+			}
+
+			if (!l_hasMatch)
+			{
+				l_remainingContant = l_contant;
+			}
+		}
+
+		return std::make_unique<Round>(l_matches, l_remainingContant);
+	}
+	else
+	{
+		return std::make_unique<Round>(l_matches);
+	}
 }
 
 std::unique_ptr<b3m::Tournament::Round> b3m::Tournament::finishCurRound(
@@ -458,6 +484,11 @@ b3m::Score b3m::Tournament::Round::getScoreOfContestant(const Contestant& i_cont
 	//TODO anything to check first?
 
 	Score r_score;
+
+	if (m_freeTicket == i_contant)
+	{
+		r_score.m_freeTickets += 1;
+	}
 
 	for (auto itMatch = m_matches.cbegin(); itMatch != m_matches.cend(); ++itMatch)
 	{

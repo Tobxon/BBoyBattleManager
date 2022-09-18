@@ -125,7 +125,7 @@ int main()
                 std::cin >> l_hands.first;
                 std::cout << l_match.second << ": ";
                 std::cin >> l_hands.second;
-            } while (!l_pRound->recordMatchResult(l_match, std::make_pair(b3m::Score(l_hands.first), b3m::Score(l_hands.first))));
+            } while (!l_pRound->recordMatchResult(l_match, std::make_pair(b3m::Score(l_hands.first), b3m::Score(l_hands.second))));
         }
 
         if (l_mainTournament.finishCurRound(std::move(l_pRound)) != nullptr)

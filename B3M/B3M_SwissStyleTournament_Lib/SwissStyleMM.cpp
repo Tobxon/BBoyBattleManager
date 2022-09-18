@@ -48,13 +48,19 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 
 	//from max score to min score
 
-	auto l_scoreCmp = [](const Score& i_lhs, const Score& i_rhs) {
-		return i_lhs.m_wins + i_lhs.m_freeTickets > i_rhs.m_wins + i_rhs.m_freeTickets;
-	};
-	std::set< Score, decltype(l_scoreCmp) > l_existingScores(l_scoreCmp);
+	//auto l_scoreCmp = [](const Score& i_lhs, const Score& i_rhs) {
+	//	return i_lhs.m_wins + i_lhs.m_freeTickets > i_rhs.m_wins + i_rhs.m_freeTickets;
+	//};
+	//std::set< Score, decltype(l_scoreCmp) > l_existingScores(l_scoreCmp);
+	//for (const auto& l_scoreEntry : l_scoreOfAskedContants)
+	//{
+	//	l_existingScores.insert(l_scoreEntry.second);
+	//}
+	
+	std::set< int, std::greater<int> > l_existingScores;
 	for (const auto& l_scoreEntry : l_scoreOfAskedContants)
 	{
-		l_existingScores.insert(l_scoreEntry.second);
+		l_existingScores.insert(l_scoreEntry.second.m_wins + l_scoreEntry.second.m_freeTickets);
 	}
 
 
@@ -71,7 +77,8 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 		for (const auto& l_contantEntry : i_initialRankings)
 		{
 			using namespace b3m::sst;
-			if (l_scoreOfAskedContants.at(l_contantEntry.second) == l_score)
+			//if (l_scoreCmp(l_scoreOfAskedContants.at(l_contantEntry.second), l_score))
+			if ((l_scoreOfAskedContants.at(l_contantEntry.second).m_wins + l_scoreOfAskedContants.at(l_contantEntry.second).m_freeTickets) == l_score)
 			{
 				l_contantsToMatch.push_back(*l_contantEntry.second);
 			}
@@ -164,6 +171,8 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 	{
 		//TODO error
 	}
+
+	
 	
 	//TODO get all Scores from highest to lowest
 	//{

@@ -87,7 +87,8 @@ class SSTLIBRARY_API Tournament::Round
 public:
 	Round() = delete;
 	//explicit Round(std::shared_ptr< Tournament >);
-	Round(const std::vector< Match >& i_matches) : m_matches(i_matches){}
+	Round(const std::vector< Match >& i_matches) : m_matches(i_matches) {}
+	Round(const std::vector< Match >& i_matches, const Contestant& i_freeTicketContant) : m_matches(i_matches), m_freeTicket(i_freeTicketContant) {}
 
 	const std::vector<Match>& correctMatches(const std::vector<Match>&);
 
@@ -106,6 +107,8 @@ private:
 	std::vector< Match > m_matches;
 	//std::map< std::vector<Match>::const_iterator, std::pair<Score, Score> > m_matchResults;
 	std::map< Match, std::pair<Score, Score> > m_matchResults; //TODO back to iterator version
+
+	std::optional< Contestant > m_freeTicket{ std::nullopt };
 
 	bool m_isFinished{ false };
 };

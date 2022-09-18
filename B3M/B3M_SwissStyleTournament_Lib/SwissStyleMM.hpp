@@ -33,6 +33,8 @@ public:
 
 		std::map< std::vector< Contestant >::const_iterator, Score > m_ScoreOfContestants;
 		std::vector< Tournament::Round > m_history;
+
+		//TODO report past freeTickets -> when creating matches don't give another free ticket to someone
 	};
 
 	std::vector< Match > createMatches(const std::vector< Contestant >&,

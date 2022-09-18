@@ -148,6 +148,7 @@
     <ClInclude Include="SwissStyleTournamentLibrary.h" />
     <ClInclude Include="Tournament.hpp" />
     <ClInclude Include="TypesAndAliases.hpp" />
+    <ClInclude Include="utility.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

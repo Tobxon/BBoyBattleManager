@@ -96,7 +96,14 @@ int main()
         throw;
     }
 
+    printLineSeperator(std::cout);
+
     const auto l_round = l_mainTournament.startNewRound();
+
+    for (const auto& l_match : l_round->showMatches())
+    {
+        std::cout << l_match.first << " vs. " << l_match.second << std::endl;
+    }
 
     //auto l_firstMatches = l_mainTournament.createCurMatches();
 

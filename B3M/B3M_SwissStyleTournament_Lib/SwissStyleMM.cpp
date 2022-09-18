@@ -11,6 +11,7 @@
 
 //corresponding header
 #include "SwissStyleMM.hpp"
+#include "utility.hpp"
 
 //--------------------------------------------------------------------------------------------------
 //Implementations                                                                              -----
@@ -76,23 +77,87 @@ std::vector<b3m::Match> b3m::SwissStyleMM::createMatches(
 			}
 		}
 
-		const auto c_halfBracketSize = l_contantsToMatch.size() / 2;
-		for (std::size_t iContant = 0; iContant < l_contantsToMatch.size()/2; ++iContant)
-		{
-			//TODO
-			r_matches.push_back(Match(l_contantsToMatch.at(iContant), l_contantsToMatch.at(iContant+ c_halfBracketSize)));
-		}
-
-		//TODO append remaining Contants for next iteration
-		if (l_contantsToMatch.size() % 2 != 0)
-		{
-			l_remainingContants.push_back(l_contantsToMatch.at(l_contantsToMatch.size() / 2 + 1));
-		}
-
-		//for (const auto& l_contant : l_contantsToMatch)
+		//const auto c_halfBracketSize = l_contantsToMatch.size() / 2;
+		//for (std::size_t iContant = 0; iContant < l_contantsToMatch.size()/2; ++iContant)
 		//{
-		//	std::vector< Contestant > l_upperBracket{ l_contantsToMatch.cbegin(), l_contantsToMatch.cbegin() + l_contantsToMatch.size()}
+		//	//TODO
+		//	r_matches.push_back(Match(l_contantsToMatch.at(iContant), l_contantsToMatch.at(iContant+ c_halfBracketSize)));
 		//}
+
+		////TODO append remaining Contants for next iteration
+		//if (l_contantsToMatch.size() % 2 != 0)
+		//{
+		//	l_remainingContants.push_back(l_contantsToMatch.at(l_contantsToMatch.size() / 2 + 1));
+		//}
+
+		std::map< std::vector<Contestant>::const_iterator, bool> l_contantIsTaken;
+		for (auto itContant = l_contantsToMatch.begin(); itContant != l_contantsToMatch.end(); ++itContant)
+		{
+			l_contantIsTaken[itContant] = false;
+		}
+
+		for (const auto& l_contant : l_contantsToMatch)
+		{
+			//for Debug
+			const auto l_midIt = l_contantsToMatch.cbegin() + divideUintRoundUp< std::size_t >(l_contantsToMatch.size(), 2);
+
+			std::vector< std::vector<Contestant>::const_iterator > l_upperBracket/*{ l_contantsToMatch.cbegin(), l_midIt }*/; //TODO uprounding div
+			for (auto itUppBra = l_contantsToMatch.cbegin(); itUppBra != l_midIt; ++itUppBra)
+			{
+				l_upperBracket.push_back(itUppBra);
+			}
+
+			std::vector< std::vector<Contestant>::const_iterator > l_lowerBracket/*{ l_midIt, l_contantsToMatch.cend() }*/;
+			for(auto itUppBra = l_midIt; itUppBra != l_contantsToMatch.cend(); ++itUppBra)
+			{
+				l_lowerBracket.push_back(itUppBra);
+			}
+
+			//std::map< std::vector<Contestant>::const_iterator, bool> l_contantIsTaken;
+			//for (auto itContant = l_upperBracket.begin(); itContant != l_upperBracket.end(); ++itContant)
+			//{
+			//	l_contantIsTaken[itContant] = false;
+			//}
+			//for (auto itContant = l_lowerBracket.begin(); itContant != l_lowerBracket.end(); ++itContant)
+			//{
+			//	l_contantIsTaken[itContant] = false;
+			//}
+
+			for (const auto& l_itUppBraContant : l_upperBracket)
+				//auto ituppBraContant = l_upperBracket.cbegin(); ituppBraContant != l_upperBracket.cend(); ++ituppBraContant)
+			{
+				//get all previous Opponents
+				std::vector< Contestant > l_pastOpponents;
+				for (const auto& l_pastRound : l_furtherInfos.m_history)
+				{
+					const auto l_curPastOpponents = l_pastRound.getOpponents(*l_itUppBraContant);
+					l_pastOpponents.insert(l_curPastOpponents.cbegin(), l_curPastOpponents.cend(), l_pastOpponents.cend());
+				}
+
+				for (const auto& l_itLowBraContant : l_lowerBracket)
+					//auto itLowBraContant = l_lowerBracket.cbegin(); itLowBraContant != l_lowerBracket.cend(); ++itLowBraContant)
+				{
+					if (!l_contantIsTaken.at(l_itLowBraContant)) //not already taken
+					{
+						if (l_pastOpponents.empty() || std::find(l_pastOpponents.cbegin(), l_pastOpponents.cend(), *l_itLowBraContant) != l_pastOpponents.cend()) //haven't been opponents before
+						{
+							r_matches.emplace_back(*l_itUppBraContant, *l_itLowBraContant);
+							l_contantIsTaken[l_itUppBraContant] = true;
+							l_contantIsTaken[l_itLowBraContant] = true;
+							break;
+						}
+					}					
+				}
+			}
+
+			for (const auto& l_contantTakenEntry : l_contantIsTaken)
+			{
+				if (!l_contantTakenEntry.second)
+				{
+					l_remainingContants.push_back(*l_contantTakenEntry.first);
+				}
+			}
+		}
 
 	}
 	if (l_remainingContants.size() > 1)

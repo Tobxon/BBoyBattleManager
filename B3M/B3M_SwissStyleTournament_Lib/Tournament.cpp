@@ -143,7 +143,7 @@ bool b3m::Tournament::start()
 
 std::unique_ptr<b3m::Tournament::Round> b3m::Tournament::startNewRound()
 {
-	if (!m_tournamentStarted)
+if (!m_tournamentStarted)
 	{
 		return nullptr;
 	}

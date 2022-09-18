@@ -39,6 +39,9 @@
     <ClInclude Include="TypesAndAliases.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utility.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

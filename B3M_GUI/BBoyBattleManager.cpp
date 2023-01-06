@@ -8,11 +8,25 @@
 //std
 #include <iostream>
 
+//Qt
+#include <QApplication>
+#include <QMainWindow>
+
 //--------------------------------------------------------------------------------------------------
 //------ Implementation                                                                       ------
 //--------------------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
     std::cout << "Hello Lena!";
-    return EXIT_SUCCESS;
+    
+	QApplication app(argc, argv);
+
+	//WavedromViewerMainWindow* mainWin = new WavedromViewerMainWindow();
+	QMainWindow mainWin;
+
+	//mainWin.initUI();
+	mainWin.show();
+
+	const int result = app.exec();
+	return result;
 }

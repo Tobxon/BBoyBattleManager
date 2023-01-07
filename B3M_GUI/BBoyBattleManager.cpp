@@ -23,9 +23,11 @@ int main(int argc, char** argv)
 
 	//WavedromViewerMainWindow* mainWin = new WavedromViewerMainWindow();
 	QMainWindow mainWin;
+	QWidget showWin;
 
 	//mainWin.initUI();
 	mainWin.show();
+	showWin.show();
 
 	const int result = app.exec();
 	return result;

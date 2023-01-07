@@ -1,6 +1,10 @@
 
-set(BBoyBattleManager_GUI_sources
-    BBoyBattleManager.cpp
+set(B3M_GUI_public_headers
+    
+)
+
+set(B3M_GUI_sources
+    src/emtpy.cpp
 )
 
 
@@ -12,15 +16,13 @@ find_package(${Qt_Version_used} COMPONENTS Widgets REQUIRED)
 qt_standard_project_setup()
 
 
-add_executable(BBoyBattleManager_GUI
-    ${BBoyBattleManager_GUI_sources}
+add_library(B3M_GUI
+    ${B3M_GUI_sources}
 )
 
-set_property(TARGET BBoyBattleManager_GUI PROPERTY CXX_STANDARD 20)
 
-
-target_link_libraries(BBoyBattleManager_GUI 
-    PRIVATE 
-        ${Qt_Version_used}::Core
+target_link_libraries(B3M_GUI 
+    PUBLIC 
+        # ${Qt_Version_used}::Core
         ${Qt_Version_used}::Widgets
 )

@@ -12,6 +12,8 @@
 #include <QApplication>
 #include <QMainWindow>
 
+#include "B3M_MainWindow.hpp"
+
 //--------------------------------------------------------------------------------------------------
 //------ Implementation                                                                       ------
 //--------------------------------------------------------------------------------------------------
@@ -21,12 +23,13 @@ int main(int argc, char** argv)
     
 	QApplication app(argc, argv);
 
-	//WavedromViewerMainWindow* mainWin = new WavedromViewerMainWindow();
-	QMainWindow mainWin;
+	//main window
+	B3M_MainWindow b3mMainWin;	
+	//presentation window
 	QWidget showWin;
 
 	//mainWin.initUI();
-	mainWin.show();
+	b3mMainWin.show();
 	showWin.show();
 
 	const int result = app.exec();

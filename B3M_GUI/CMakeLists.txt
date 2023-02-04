@@ -25,6 +25,11 @@ if(B3M_use_cxx_modules)
             FILE_SET cxx_modules TYPE CXX_MODULES FILES
             "src/B3M_MainWindow.ixx"
     )
+else()
+    target_sources(B3M_GUI
+        PRIVATE
+            "src/B3M_MainWindow.hpp"
+    )
 endif()
 
 target_link_libraries(B3M_GUI 

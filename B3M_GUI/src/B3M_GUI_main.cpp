@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------
-// Application Entry for the GUI of the B-Boy Battle Manager - B3M.
+// \brief Application Entry for the GUI of the B-Boy Battle Manager (B3M).
 
 
 //--------------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	QApplication app(argc, argv);
 
 	//main window
-	B3M_MainWindow b3mMainWin;
+	b3m::gui::MainWindow b3mMainWin;
 	//presentation window
 	QWidget showWin;
 

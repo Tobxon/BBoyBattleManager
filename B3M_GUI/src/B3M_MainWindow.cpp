@@ -3,22 +3,24 @@
 
 
 //--------------------------------------------------------------------------------------------------
-//------ Includes                                                                             ------
+//------ GLOBAL MODULE FRAGMENT                                                               ------
 //--------------------------------------------------------------------------------------------------
-#include "B3M_MainWindow.hpp"
+module;
 
 #include "ui_B3M_MainWindow.h"
 
 //--------------------------------------------------------------------------------------------------
-//------ Implementations                                                                      ------
+//------ MODULE IMPLEMENTATIONS                                                               ------
 //--------------------------------------------------------------------------------------------------
-B3M_MainWindow::B3M_MainWindow(QMainWindow* parent) 
+module B3M_MainWindow;
+
+b3m::gui::MainWindow::MainWindow(QMainWindow* parent)
 	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow)
 {
 	m_ui->setupUi(this);
 }
 
-B3M_MainWindow::~B3M_MainWindow()
+b3m::gui::MainWindow::~MainWindow()
 {
 	delete m_ui;
 }

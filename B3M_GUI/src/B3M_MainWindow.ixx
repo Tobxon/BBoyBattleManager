@@ -11,6 +11,7 @@
 module;
 
 #include <QMainWindow>
+#include "ui_B3M_MainWindow.h"
 
 //--------------------------------------------------------------------------------------------------
 //------ MODULE PURVIEW                                                                       ------
@@ -21,10 +22,18 @@ export class B3M_MainWindow : public QMainWindow
 {
 
 public:
+	B3M_MainWindow(QMainWindow* parent = nullptr)
+		: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow)
+	{
+		m_ui->setupUi(this);
+	};
+	virtual ~B3M_MainWindow() { delete m_ui; };
+	//TODO rule of 5
 
 protected:
 
 private:
+	Ui::B3M_MainWindow* m_ui;
 };
 
 //--------------------------------------------------------------------------------------------------

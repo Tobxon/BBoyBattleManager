@@ -34,3 +34,7 @@
 
 # Visual Studio
 .vs/
+
+
+#CMake
+CMakeUserPresets.json

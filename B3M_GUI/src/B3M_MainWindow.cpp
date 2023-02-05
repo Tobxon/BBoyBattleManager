@@ -1,34 +1,26 @@
 //--------------------------------------------------------------------------------------------------
-// Application Entry for the GUI of the B-Boy Battle Manager.
+// For explanation see header.
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Includes                                                                             ------
 //--------------------------------------------------------------------------------------------------
+#include "B3M_MainWindow.hpp"
 
-//std
-#include <iostream>
-
-//Qt
-#include <QApplication>
-#include <QMainWindow>
+#include "ui_B3M_MainWindow.h"
 
 //--------------------------------------------------------------------------------------------------
-//------ Implementation                                                                       ------
+//------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
-int main(int argc, char** argv)
+B3M_MainWindow::B3M_MainWindow(QMainWindow* parent) 
+	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow)
 {
-    std::cout << "Hello Lena!";
-    
-	QApplication app(argc, argv);
-
-	//WavedromViewerMainWindow* mainWin = new WavedromViewerMainWindow();
-	QMainWindow mainWin;
-	QWidget showWin;
-
-	//mainWin.initUI();
-	mainWin.show();
-	showWin.show();
-
-	const int result = app.exec();
-	return result;
+	m_ui->setupUi(this);
 }
+
+B3M_MainWindow::~B3M_MainWindow()
+{
+	delete m_ui;
+}
+
+//END OF FILE --------------------------------------------------------------------------------------

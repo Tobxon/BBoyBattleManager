@@ -22,6 +22,8 @@ add_subdirectory(B3M_Common)
 add_subdirectory(B3M_Database)
 add_subdirectory(B3M_Engine)
 
+add_subdirectory(B3M_ConsoleApp)
+
 # Start Up Project - B-Boy Battle Manager                                                     ######
 add_subdirectory(B3M_GUI)
 # Settings for Visual Studio 

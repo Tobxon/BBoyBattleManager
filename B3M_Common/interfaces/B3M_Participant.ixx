@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * @brief
+ * \brief Module Interface Unit for the Participant class.
  *
  */
 
@@ -27,7 +27,7 @@ export module b3m_common:participant;
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export namespace b3m
+namespace b3m
 {
 namespace common
 {
@@ -41,6 +41,8 @@ public:
 
 	virtual ~Participant() = default;
 	Participant(const name_t&);
+
+	name_t getName() const { return m_name; }
 private:
 	name_t m_name;
 };

@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * @brief
+ * \brief General Module Interface Unit for bem_common which combines als module partitions.
  *
  */
 

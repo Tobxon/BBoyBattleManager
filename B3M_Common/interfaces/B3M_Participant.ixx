@@ -1,9 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief B3M_Mainwindow is supposed to be the GUI Element that is used for the main interactions by
- *        the user.
- * So its the Window where e.g. contestants are registered, tournaments are planned and results of 
- * matches are noted.
+ * @brief
  *
  */
 
@@ -13,17 +10,18 @@
 //--------------------------------------------------------------------------------------------------
 module;
 
-//Qt
-#include <QMainWindow>
+#include <string> //TODO to modules like import
 
-//Qt custom
-#include "ui_B3M_MainWindow.h"
+//--------------------------------------------------------------------------------------------------
+//------ MODULE CONTENT                                                                       ------
+//--------------------------------------------------------------------------------------------------
+export module b3m_common:participant;
 
 
 //--------------------------------------------------------------------------------------------------
-//------ MODULE DECLARATIONS                                                                  ------
+//------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export module B3M_MainWindow;
+//import <string>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -31,28 +29,25 @@ export module B3M_MainWindow;
 //--------------------------------------------------------------------------------------------------
 export namespace b3m
 {
-namespace gui
+namespace common
 {
 
 
 
-class MainWindow : public QMainWindow
+export class Participant
 {
-
 public:
-	MainWindow(QMainWindow* parent = nullptr);
-	virtual ~MainWindow();
-	//TODO rule of 5
+	using name_t = std::string;
 
-protected:
-
+	virtual ~Participant() = default;
+	Participant(const name_t&);
 private:
-	Ui::B3M_MainWindow* m_ui;
+	name_t m_name;
 };
 
 
 
-} //namespace gui
+} //namespace common
 } //namespace b3m
 
 

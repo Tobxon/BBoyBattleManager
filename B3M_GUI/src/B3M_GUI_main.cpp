@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------------------------------
 
 import B3M_MainWindow;
+import b3m_common;
 
 //std
 #include <iostream>
@@ -24,7 +25,10 @@ import B3M_MainWindow;
 //--------------------------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
+	//simple testing - can be removed when functional development starts                      ------
+	b3m::common::Participant testParticipant{ "Human0" };
     std::cout << "Hello Lena!";
+	//                                                                                        ------
     
 	QApplication app(argc, argv);
 
@@ -33,7 +37,6 @@ int main(int argc, char** argv)
 	//presentation window
 	QWidget showWin;
 
-	//mainWin.initUI();
 	b3mMainWin.show();
 	showWin.show();
 

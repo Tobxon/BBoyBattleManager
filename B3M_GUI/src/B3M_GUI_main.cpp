@@ -9,6 +9,7 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+import b3m_common;
 import B3M_MainWindow;
 import b3m_common;
 
@@ -18,6 +19,9 @@ import b3m_common;
 //Qt
 #include <QApplication>
 #include <QMainWindow>
+
+//Qt custom
+#include "ui_B3M_ParticipantsDialog.h"
 
 //#include "B3M_MainWindow.hpp"
 
@@ -38,6 +42,8 @@ int main(int argc, char** argv)
 	b3m::gui::MainWindow b3mMainWin;
 	//presentation window
 	QWidget showWin;
+	auto* const partiDialog = new Ui::ParticipantsDialog();
+	partiDialog->setupUi(&showWin);
 
 	b3mMainWin.show();
 	showWin.show();

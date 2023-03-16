@@ -1,15 +1,16 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.26)
 
 project(BBoyBattleManager VERSION 0.1.0 LANGUAGES CXX)
 
 # C++20 as base language version for this project
 set(CMAKE_CXX_STANDARD 20)
 #C++20 Modules
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "3c375311-a3c9-4396-a187-3227ef642046")
-if(WIN32)
-	include("cmake/msvc_modules.cmake")
-else()
-	include("cmake/gcc_modules.cmake")
+set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1) #request experimental C++20 modules support
+set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "2182bf5c-ef0d-489a-91da-49dbc3090d2a")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  include(clang_modules.cmake)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  include(gcc_modules.cmake)
 endif()
 
 

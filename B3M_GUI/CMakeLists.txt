@@ -13,6 +13,9 @@ target_sources(B3M_GUI
 	PRIVATE
 		"src/B3M_MainWindow.cpp"
 		"src/B3M_MainWindow.ui"
+		"src/ParticipantsDialog.hpp"
+		"src/ParticipantsDialog.cpp"
+		"src/ParticipantsDialog.ui"
 	#C++20 Modules
 	PRIVATE
 		FILE_SET cxx_modules TYPE CXX_MODULES FILES

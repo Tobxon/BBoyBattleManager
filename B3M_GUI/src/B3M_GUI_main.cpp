@@ -20,7 +20,7 @@ import B3M_MainWindow;
 #include <QMainWindow>
 
 //Qt custom
-#include "ui_B3M_ParticipantsDialog.h"
+#include "ParticipantsDialog.hpp"
 
 //#include "B3M_MainWindow.hpp"
 
@@ -41,9 +41,7 @@ int main(int argc, char** argv)
 	//main window
 	b3m::gui::MainWindow b3mMainWin;
 	//presentation window
-	QWidget showWin;
-	auto* const partiDialog = new Ui::ParticipantsDialog();
-	partiDialog->setupUi(&showWin);
+	b3m::gui::ParticipantsDialog showWin;
 
 	b3mMainWin.show();
 	showWin.show();

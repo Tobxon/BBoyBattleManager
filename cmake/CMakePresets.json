@@ -12,8 +12,7 @@
 				"type": "equals",
 				"lhs": "${hostSystemName}",
 				"rhs": "Windows"
-			},
-			"cmakeExecutable": "E:/Dev/Installs/CMake/bin/"
+			}
 		},
 		{
 			"name": "x64-debug",

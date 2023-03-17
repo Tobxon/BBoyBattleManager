@@ -27,8 +27,9 @@ import b3m_common;
 
 
 //--------------------------------------------------------------------------------------------------
-//------ Implementations                                                                      ------
+//------ Main                                                                                 ------
 //--------------------------------------------------------------------------------------------------
+
 int main(int argc, char** argv)
 {
 	//simple testing - can be removed when functional development starts                      ------
@@ -51,3 +52,6 @@ int main(int argc, char** argv)
 	const int result = app.exec();
 	return result;
 }
+
+
+//END OF FILE --------------------------------------------------------------------------------------

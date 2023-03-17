@@ -18,3 +18,6 @@ b3m::common::Participant::Participant(const name_t& i_name)
 	: m_name(i_name)
 {
 }
+
+
+//END OF FILE --------------------------------------------------------------------------------------

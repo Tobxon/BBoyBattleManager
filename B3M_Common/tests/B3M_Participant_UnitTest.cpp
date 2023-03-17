@@ -34,3 +34,6 @@ TEST_CASE("b3m Participant - creating a participant and check for valid state")
 
 	REQUIRE_NOTHROW(firstParticipant.getName() == std::string(firstName));
 }
+
+
+//END OF FILE --------------------------------------------------------------------------------------

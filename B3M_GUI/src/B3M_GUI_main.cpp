@@ -17,12 +17,9 @@ import B3M_MainWindow;
 
 //Qt
 #include <QApplication>
-#include <QMainWindow>
 
-//Qt custom
+//B3M GUI
 #include "ParticipantsDialog.hpp"
-
-//#include "B3M_MainWindow.hpp"
 
 
 //--------------------------------------------------------------------------------------------------

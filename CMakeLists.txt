@@ -14,6 +14,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #subprojects
 add_subdirectory(B3M_Common)
+add_subdirectory(B3M_Database)
 
 add_subdirectory(B3M_ConsoleApp)
 

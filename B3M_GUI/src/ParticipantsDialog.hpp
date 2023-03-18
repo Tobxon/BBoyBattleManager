@@ -13,6 +13,8 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+import b3m_database;
+
 //Qt
 #include <QWidget>
 #include <QAbstractTableModel>
@@ -53,6 +55,9 @@ public:
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+
+private:
+	b3m::database::IParticipantsContainer* m_data;
 };
 
 
@@ -62,4 +67,4 @@ public:
 
 
 #endif //B3M_GUI__PARTICIPANTS_DIGALOG_HPP__
- //END OF FILE --------------------------------------------------------------------------------------
+//END OF FILE --------------------------------------------------------------------------------------

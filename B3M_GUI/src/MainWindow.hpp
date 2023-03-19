@@ -48,8 +48,6 @@ private:
 
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
 	b3m::gui::ParticipantsDialog* m_participantDialog;
-
-	//void slot_setCentralWidget(QWidget* const);
 };
 
 

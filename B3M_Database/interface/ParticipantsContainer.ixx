@@ -11,7 +11,7 @@
 module;
 
 //std
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 
@@ -28,7 +28,7 @@ export module b3m.database:participants_container;
 import b3m.common;
 
 //std
-//import <map>;
+//import <unordered_map>;
 //import <memory>;
 
 
@@ -51,6 +51,8 @@ public:
 
 	virtual bool createParticipant(const participant::name_t&) = 0;
 	virtual bool removeParticipant(const participant::name_t&) = 0;
+
+	virtual std::size_t size() const = 0;
 };
 
 
@@ -60,8 +62,10 @@ public:
 	bool createParticipant(const participant::name_t&) override;
 	bool removeParticipant(const participant::name_t&) override;
 
+	std::size_t size() const override;
+
 private:
-	std::map< participant::name_t, std::unique_ptr< participant >> m_data;
+	std::unordered_map< participant::name_t, std::unique_ptr< participant >> m_data;
 };
 
 

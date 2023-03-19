@@ -7,7 +7,7 @@
 //--------------------------------------------------------------------------------------------------
 module;
 
-//#include <map>
+#include <unordered_map>
 #include <string>
 #include <memory>
 
@@ -28,6 +28,11 @@ bool b3m::database::SimpleParticipantsContainer::createParticipant(
 bool b3m::database::SimpleParticipantsContainer::removeParticipant(const participant::name_t& i_participantName)
 {
 	return m_data.erase(i_participantName) > 0;
+}
+
+std::size_t b3m::database::SimpleParticipantsContainer::size() const
+{
+	return m_data.size();
 }
 
 

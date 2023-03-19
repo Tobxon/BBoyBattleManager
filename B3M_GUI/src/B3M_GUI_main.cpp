@@ -32,7 +32,8 @@ int main(int argc, char** argv)
 	QApplication app(argc, argv);
 
 	b3m::database::SimpleParticipantsContainer participantsContainer;
-	b3m::gui::ParticipantsDialog* participantsDialog{ new b3m::gui::ParticipantsDialog(participantsContainer) };
+	b3m::gui::ParticipantsDialog* participantsDialog{ 
+		new b3m::gui::ParticipantsDialog(participantsContainer) };
 
 	//main window
 	b3m::gui::MainWindow b3mMainWin(*participantsDialog);

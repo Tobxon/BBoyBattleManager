@@ -8,7 +8,7 @@
 module;
 
 
-module b3m_database;
+module b3m.database;
 import :participants_container;
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------

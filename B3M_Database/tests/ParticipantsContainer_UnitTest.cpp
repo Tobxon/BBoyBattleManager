@@ -9,7 +9,7 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import b3m_database;
+import b3m.database;
 
 //std
 //import <string_view>; //TODO

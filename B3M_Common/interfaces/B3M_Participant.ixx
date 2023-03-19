@@ -34,15 +34,22 @@ namespace common
 
 
 
-export class Participant
+export class IParticipant
 {
 public:
 	using name_t = std::string;
 
+	virtual name_t getName() const = 0;
+};
+
+
+export class Participant : public IParticipant
+{
+public:
 	virtual ~Participant() = default;
 	Participant(const name_t&);
 
-	name_t getName() const { return m_name; }
+	name_t getName() const override { return m_name; }
 private:
 	name_t m_name;
 };

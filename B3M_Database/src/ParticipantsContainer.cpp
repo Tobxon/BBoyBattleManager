@@ -7,6 +7,10 @@
 //--------------------------------------------------------------------------------------------------
 module;
 
+//#include <map>
+#include <string>
+#include <memory>
+
 
 module b3m.database;
 import :participants_container;
@@ -14,28 +18,16 @@ import :participants_container;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-bool b3m::database::SimpleParticipantsContainer::addParticipant(const b3m::common::Participant& i_participant)
+bool b3m::database::SimpleParticipantsContainer::createParticipant(
+	const participant::name_t& i_participantName)
 {
-	return m_data.insert(i_participant).second;
+	return m_data.try_emplace(i_participantName, 
+		std::make_unique<b3m::common::Participant>(i_participantName)).second;
 }
 
-bool b3m::database::SimpleParticipantsContainer::removeParticipant(const b3m::common::Participant& i_participant)
+bool b3m::database::SimpleParticipantsContainer::removeParticipant(const participant::name_t& i_participantName)
 {
-	return m_data.erase(i_participant) > 0;
-}
-
-bool b3m::database::SimpleParticipantsContainer::cmpParticipantsOnlyName(
-	const participant& i_a, const participant& i_b)
-{
-	const auto cmpResult = i_a.getName().compare(i_b.getName());
-	if (cmpResult < 0)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return m_data.erase(i_participantName) > 0;
 }
 
 

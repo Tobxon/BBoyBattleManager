@@ -33,8 +33,8 @@ TEST_CASE("addParticipant")
 	SECTION("simply try adding a same named participant twice")
 	{
 		static constexpr std::string_view player1{ "Storm" };
-		REQUIRE(dut->addParticipant(b3m::common::Participant(std::string(player1))));
-		CHECK(!dut->addParticipant(b3m::common::Participant(std::string(player1))));
+		REQUIRE(dut->createParticipant(std::string(player1)));
+		CHECK(!dut->createParticipant(std::string(player1)));
 	}
 
 	SECTION("adding multiple participants")
@@ -42,7 +42,7 @@ TEST_CASE("addParticipant")
 		static const std::vector< std::string_view > players{ "Storm", "Hong10", "Lil Kev", "Tynee" };
 		for (const auto& player : players)
 		{
-			REQUIRE(dut->addParticipant(b3m::common::Participant(std::string(player))));
+			REQUIRE(dut->createParticipant(std::string(player)));
 		}
 	}
 }
@@ -55,18 +55,18 @@ TEST_CASE("removeParticipant")
 	static const std::vector< std::string_view > players{ "Limit", "Mav", "Luisa", "Elina" };
 	for (const auto& player : players)
 	{
-		REQUIRE(dut->addParticipant(b3m::common::Participant(std::string(player))));
+		REQUIRE(dut->createParticipant(std::string(player)));
 	}
 
 	SECTION("removing all participants")
 	{
 		for (const auto& player : players)
 		{
-			REQUIRE(dut->removeParticipant(b3m::common::Participant(std::string(player))));
+			REQUIRE(dut->removeParticipant(std::string(player)));
 		}
 		for (const auto& player : players)
 		{
-			REQUIRE(!dut->removeParticipant(b3m::common::Participant(std::string(player))));
+			REQUIRE(!dut->removeParticipant(std::string(player)));
 		}
 	}
 }

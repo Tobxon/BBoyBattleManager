@@ -11,8 +11,8 @@
 module;
 
 //std
-#include <set>
-#include <ranges>
+#include <map>
+#include <memory>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -28,8 +28,8 @@ export module b3m.database:participants_container;
 import b3m.common;
 
 //std
-//import <set>;
-//import <ranges>;
+//import <map>;
+//import <memory>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -45,24 +45,23 @@ namespace database
 export class IParticipantsContainer
 {
 public:
+	using participant = b3m::common::IParticipant;
+
 	virtual ~IParticipantsContainer() noexcept = default; //interface class - meant for polymorphic use
 
-	virtual bool addParticipant(const b3m::common::Participant&) = 0;
-	virtual bool removeParticipant(const b3m::common::Participant&) = 0;
+	virtual bool createParticipant(const participant::name_t&) = 0;
+	virtual bool removeParticipant(const participant::name_t&) = 0;
 };
 
 
 export class SimpleParticipantsContainer : public IParticipantsContainer
 {
 public:
-	using participant = b3m::common::Participant;
-
-	bool addParticipant(const b3m::common::Participant&) override;
-	bool removeParticipant(const b3m::common::Participant&) override;
+	bool createParticipant(const participant::name_t&) override;
+	bool removeParticipant(const participant::name_t&) override;
 
 private:
-	static bool cmpParticipantsOnlyName(const participant& i_a, const participant& i_b);
-	std::set<participant, bool(*)(const participant&, const participant&)> m_data{ &cmpParticipantsOnlyName };
+	std::map< participant::name_t, std::unique_ptr< participant >> m_data;
 };
 
 

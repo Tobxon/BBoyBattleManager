@@ -9,7 +9,7 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import b3m_common;
+import b3m.common;
 
 //Catch2 - Test Framework
 #include <catch2/catch_test_macros.hpp>

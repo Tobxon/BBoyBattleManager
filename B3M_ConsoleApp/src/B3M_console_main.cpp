@@ -9,7 +9,7 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import b3m_common;
+import b3m.common;
 
 #include <iostream>
 #include <string>

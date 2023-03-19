@@ -8,7 +8,7 @@
 module;
 
 
-module b3m_common;
+module b3m.common;
 import :participant;
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------

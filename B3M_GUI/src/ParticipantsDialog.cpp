@@ -12,9 +12,9 @@
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-b3m::gui::ParticipantsDialog::ParticipantsDialog(QWidget* const i_parent)
+b3m::gui::ParticipantsDialog::ParticipantsDialog(participantsContainer& i_container, QWidget* const i_parent)
 	: QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()), 
-	m_model(new ParticipantsDialogModel(this))
+	m_model(new ParticipantsDialogModel(i_container, this))
 {
 	m_ui->setupUi(this);
 
@@ -26,8 +26,8 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 	delete m_ui;
 }
 
-b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
-	: QAbstractTableModel(i_parent)
+b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(participantsContainer& i_container, QObject* const i_parent)
+	: QAbstractTableModel(i_parent), m_data(&i_container)
 {
 }
 

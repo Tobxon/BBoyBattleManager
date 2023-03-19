@@ -32,12 +32,14 @@ namespace gui
 
 
 
+using participantsContainer = b3m::database::IParticipantsContainer;
+
 class ParticipantsDialog : public QWidget
 {
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialog(QWidget* const = nullptr);
+	explicit ParticipantsDialog(participantsContainer&, QWidget* const = nullptr);
 	~ParticipantsDialog();
 
 private:
@@ -50,14 +52,14 @@ class ParticipantsDialogModel : public QAbstractTableModel
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialogModel(QObject* parent = nullptr);
+	explicit ParticipantsDialogModel(participantsContainer&, QObject* const parent = nullptr);
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
 private:
-	b3m::database::IParticipantsContainer* m_data;
+	participantsContainer* m_data;
 };
 
 

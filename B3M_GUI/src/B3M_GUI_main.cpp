@@ -10,15 +10,16 @@
 //--------------------------------------------------------------------------------------------------
 
 import b3m.common;
-import B3M_MainWindow;
 
 //std
 #include <iostream>
 
 //Qt
 #include <QApplication>
+#include <QWidget>
 
 //B3M GUI
+#include "MainWindow.hpp"
 #include "ParticipantsDialog.hpp"
 
 
@@ -27,21 +28,18 @@ import B3M_MainWindow;
 //--------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv)
-{
-	//simple testing - can be removed when functional development starts                      ------
-	b3m::common::Participant testParticipant{ "Human0" };
-    std::cout << "Hello Lena!";
-	//                                                                                        ------
-    
+{    
 	QApplication app(argc, argv);
 
 	//main window
-	b3m::gui::MainWindow b3mMainWin;
-	//presentation window
-	b3m::gui::ParticipantsDialog showWin;
+	b3m::gui::ParticipantsDialog* participantsDialog{ new b3m::gui::ParticipantsDialog() };
+	b3m::gui::MainWindow b3mMainWin(*participantsDialog);
+	
+	////presentation window
+	//QWidget showWin;
 
 	b3mMainWin.show();
-	showWin.show();
+	//showWin.show();
 
 	const int result = app.exec();
 	return result;

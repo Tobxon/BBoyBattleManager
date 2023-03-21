@@ -19,6 +19,7 @@ import b3m.common;
 #include <string>
 #include <vector>
 #include <optional>
+#include <array>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -52,7 +53,7 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 
 	const auto itCrew = std::find(attributes.cbegin(), attributes.cend(), "Crew");
 	static constexpr std::string_view crewOfParticipant{ "Powerheadz" };
-	participant.setData(*itCrew, std::string(crewOfParticipant) );
+	REQUIRE(participant.setDataSingle(*itCrew, std::string(crewOfParticipant))); //TODO
 	for (const auto& attribute : attributes)
 	{
 		if (attribute == *itCrew)
@@ -70,6 +71,35 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 	}
 
 	//TODO add a data with multiple entrys
+	const auto itCity = std::find(attributes.cbegin(), attributes.cend(), "City");
+	//static constexpr std::array< std::string_view, 3 > citiesOfParticipant{ "Tokyo-Yokohama", "Hum", "New York City" }; //TODO
+	static const std::vector< std::string > citiesOfParticipant{ 
+		"Tokyo-Yokohama", "Hum", "New York City" };
+	REQUIRE(participant.setData("City", citiesOfParticipant));
+	for (const auto& attribute : attributes)
+	{
+		if (attribute == *itCity)
+		{
+			const auto& cityDataOpt = participant.getData(attribute);
+			REQUIRE(cityDataOpt.has_value());
+			const auto& cityData = cityDataOpt.value();
+			REQUIRE(cityData.size() == citiesOfParticipant.size());
+			REQUIRE(std::ranges::equal(cityData, citiesOfParticipant));
+		}
+		else if (attribute == *itCrew)
+		{
+			//TODO to common function
+			const auto& crewDataOpt = participant.getData(attribute);
+			REQUIRE(crewDataOpt.has_value());
+			const auto& crewData = crewDataOpt.value();
+			REQUIRE(crewData.size() == 1);
+			REQUIRE(std::ranges::equal(crewData.front(), crewOfParticipant));
+		}
+		else
+		{
+			REQUIRE(participant.getData(attribute) == std::nullopt);
+		}
+	}
 }
 
 

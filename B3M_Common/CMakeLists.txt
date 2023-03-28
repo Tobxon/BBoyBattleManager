@@ -7,6 +7,7 @@ target_sources(B3M_Common
 		FILE_SET cxx_modules TYPE CXX_MODULES FILES
 		"interfaces/B3M_Common.ixx"
 		"interfaces/B3M_Participant.ixx"
+		"interfaces/AttributeMap.ixx"
 )
 
 target_compile_features(B3M_Common PUBLIC cxx_std_20)
@@ -20,6 +21,7 @@ if(Catch2_FOUND)
 	target_sources(B3M_Common_UnitTests
 		PRIVATE
 			"tests/B3M_Participant_UnitTest.cpp"
+			"tests/AttributeMap_UnitTests.cpp"
 	)
 
 	target_link_libraries(B3M_Common_UnitTests

@@ -10,6 +10,7 @@ module;
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <algorithm>
 
 
 module b3m.database;
@@ -18,21 +19,66 @@ import :participants_container;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
+std::size_t b3m::database::SimpleParticipantsContainer::numOfParticipant() const
+{
+	return m_participants.size();
+}
+
+std::size_t b3m::database::SimpleParticipantsContainer::numOfAttributes() const
+{
+	return std::size_t();
+}
+
+auto b3m::database::SimpleParticipantsContainer::readAttributeOfParticipant(
+	const participant::name_t&, const participant::attribute_name_t&) 
+	-> std::optional<participant::attribute_data_t>
+{
+	return std::optional<participant::attribute_data_t>();
+}
+
 bool b3m::database::SimpleParticipantsContainer::createParticipant(
 	const participant::name_t& i_participantName)
 {
-	return m_data.try_emplace(i_participantName, 
-		std::make_unique<b3m::common::Participant>(i_participantName)).second;
+	if (std::ranges::find_if(m_participants, 
+		[i_participantName](const decltype(m_participants)::value_type& i_participant)
+		{ 
+			return i_participant->getName().has_value() && 
+				(i_participant->getName().value() == i_participantName); 
+		}) != m_participants.cend())
+	{
+		return false;
+	}
+
+	try
+	{
+		m_participants.push_back(std::make_unique<b3m::common::Participant>(i_participantName));
+	}
+	catch (const std::bad_alloc&)
+	{
+		return false;
+	}
+	return true;
 }
 
-bool b3m::database::SimpleParticipantsContainer::removeParticipant(const participant::name_t& i_participantName)
+bool b3m::database::SimpleParticipantsContainer::removeParticipant(
+	const participant::name_t& i_participantName)
 {
-	return m_data.erase(i_participantName) > 0;
+	//return m_participants.erase(i_participantName) > 0
+	return false;;
 }
 
-std::size_t b3m::database::SimpleParticipantsContainer::size() const
+bool b3m::database::SimpleParticipantsContainer::setAttributeOfParticipant(
+	const participant::name_t&, const participant::attribute_name_t&, 
+	const participant::attribute_element_t&)
 {
-	return m_data.size();
+	return false;
+}
+
+bool b3m::database::SimpleParticipantsContainer::setAttributeOfParticipant(
+	const participant::name_t&, const participant::attribute_name_t&, 
+	const participant::attribute_data_t&)
+{
+	return false;
 }
 
 

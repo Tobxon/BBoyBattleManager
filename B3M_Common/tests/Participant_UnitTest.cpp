@@ -48,17 +48,17 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 	static const std::vector< std::string > attributes{ "Crew", "City" };
 	for (const auto& attribute : attributes)
 	{
-		REQUIRE(participant.getData(attribute) == std::nullopt);
+		REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 	}
 
 	const auto itCrew = std::find(attributes.cbegin(), attributes.cend(), "Crew");
 	static constexpr std::string_view crewOfParticipant{ "Powerheadz" };
-	REQUIRE(participant.setDataSingle(*itCrew, std::string(crewOfParticipant))); //TODO
+	REQUIRE(participant.setAttribute(*itCrew, std::string(crewOfParticipant))); //TODO
 	for (const auto& attribute : attributes)
 	{
 		if (attribute == *itCrew)
 		{
-			const auto& crewDataOpt = participant.getData(attribute);
+			const auto& crewDataOpt = participant.getAttributeData(attribute);
 			REQUIRE(crewDataOpt.has_value());
 			const auto& crewData = crewDataOpt.value();
 			REQUIRE(crewData.size() == 1);
@@ -66,21 +66,18 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		}
 		else
 		{
-			REQUIRE(participant.getData(attribute) == std::nullopt);
+			REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 		}
 	}
 
-	//TODO add a data with multiple entrys
 	const auto itCity = std::find(attributes.cbegin(), attributes.cend(), "City");
-	//static constexpr std::array< std::string_view, 3 > citiesOfParticipant{ "Tokyo-Yokohama", "Hum", "New York City" }; //TODO
-	static const std::vector< std::string > citiesOfParticipant{ 
-		"Tokyo-Yokohama", "Hum", "New York City" };
-	REQUIRE(participant.setData("City", citiesOfParticipant));
+	static constexpr std::array< std::string_view, 3 > citiesOfParticipant{ "Tokyo-Yokohama", "Hum", "New York City" }; //TODO
+	REQUIRE(participant.setAttribute("City", citiesOfParticipant));
 	for (const auto& attribute : attributes)
 	{
 		if (attribute == *itCity)
 		{
-			const auto& cityDataOpt = participant.getData(attribute);
+			const auto& cityDataOpt = participant.getAttributeData(attribute);
 			REQUIRE(cityDataOpt.has_value());
 			const auto& cityData = cityDataOpt.value();
 			REQUIRE(cityData.size() == citiesOfParticipant.size());
@@ -89,7 +86,7 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		else if (attribute == *itCrew)
 		{
 			//TODO to common function
-			const auto& crewDataOpt = participant.getData(attribute);
+			const auto& crewDataOpt = participant.getAttributeData(attribute);
 			REQUIRE(crewDataOpt.has_value());
 			const auto& crewData = crewDataOpt.value();
 			REQUIRE(crewData.size() == 1);
@@ -97,7 +94,7 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		}
 		else
 		{
-			REQUIRE(participant.getData(attribute) == std::nullopt);
+			REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 		}
 	}
 }

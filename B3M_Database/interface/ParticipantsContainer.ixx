@@ -56,7 +56,7 @@ public:
 	virtual std::size_t numOfAttributes() const = 0;
 
 	virtual std::optional< participant::attribute_data_t > readAttributeOfParticipant(
-		const participant::name_t&, const participant::attribute_name_t&) = 0; //TODO return std::expected
+		const participant::name_t&, const participant::attribute_name_t&) = 0; //TODO C++23 return std::expected
 
 	virtual bool createParticipant(const participant::name_t&) = 0;
 	virtual bool removeParticipant(const participant::name_t&) = 0;

@@ -13,6 +13,7 @@ module;
 #include <algorithm>
 #include <set>
 #include <ranges>
+#include <optional>
 
 
 module b3m.database;
@@ -44,10 +45,23 @@ std::size_t b3m::database::SimpleParticipantsContainer::numOfAttributes() const
 }
 
 auto b3m::database::SimpleParticipantsContainer::readAttributeOfParticipant(
-	const participant::name_t&, const participant::attribute_name_t&) 
+	const participant::name_t& i_participantName, const participant::attribute_name_t& i_attribute)
 	-> std::optional<participant::attribute_data_t>
 {
-	return std::optional<participant::attribute_data_t>();
+	//TODO to find participantByName
+	const auto itMatchingParticipant = std::ranges::find_if(m_participants,
+		[&i_participantName](const decltype(m_participants)::value_type& i_findParticipant)
+		{
+			const auto findParticipantNameOpt = i_findParticipant->getName();
+			return (!findParticipantNameOpt) ? false : findParticipantNameOpt.value() == i_participantName;
+		});
+
+	if (itMatchingParticipant != m_participants.cend())
+	{
+		return itMatchingParticipant->get()->getAttributeData(i_attribute);
+	}
+
+	return std::nullopt;
 }
 
 bool b3m::database::SimpleParticipantsContainer::createParticipant(
@@ -77,11 +91,12 @@ bool b3m::database::SimpleParticipantsContainer::createParticipant(
 bool b3m::database::SimpleParticipantsContainer::removeParticipant(
 	const participant::name_t& i_participantName)
 {
+	//TODO to find participantByName
 	const auto itMatchingParticipant = std::ranges::find_if(m_participants, 
 		[&i_participantName](const decltype(m_participants)::value_type& i_findParticipant)
 		{
-			const auto findPaticipantNameOpt = i_findParticipant->getName();
-			return (!findPaticipantNameOpt) ? false : findPaticipantNameOpt.value() == i_participantName;
+			const auto findParticipantNameOpt = i_findParticipant->getName();
+			return (!findParticipantNameOpt) ? false : findParticipantNameOpt.value() == i_participantName;
 		});
 
 	if (itMatchingParticipant != m_participants.cend())
@@ -94,16 +109,31 @@ bool b3m::database::SimpleParticipantsContainer::removeParticipant(
 }
 
 bool b3m::database::SimpleParticipantsContainer::setAttributeOfParticipant(
-	const participant::name_t&, const participant::attribute_name_t&, 
-	const participant::attribute_element_t&)
+	const participant::name_t& i_participantName, const participant::attribute_name_t& i_attribute, 
+	const participant::attribute_element_t& i_attributeData)
 {
-	return false;
+	return setAttributeOfParticipant(i_participantName, i_attribute, 
+		participant::attribute_data_t{ i_attributeData });
 }
 
 bool b3m::database::SimpleParticipantsContainer::setAttributeOfParticipant(
-	const participant::name_t&, const participant::attribute_name_t&, 
-	const participant::attribute_data_t&)
+	const participant::name_t& i_participantName, const participant::attribute_name_t& i_attribute,
+	const participant::attribute_data_t& i_attributeData)
 {
+	//TODO to find participantByName
+	const auto itMatchingParticipant = std::ranges::find_if(m_participants,
+		[&i_participantName](const decltype(m_participants)::value_type& i_findParticipant)
+		{
+			const auto findParticipantNameOpt = i_findParticipant->getName();
+			return (!findParticipantNameOpt) ? false : findParticipantNameOpt.value() == i_participantName;
+		});
+
+	if (itMatchingParticipant != m_participants.cend())
+	{
+		itMatchingParticipant->get()->setAttribute(i_attribute, i_attributeData, true);
+		return true;
+	}
+
 	return false;
 }
 

@@ -172,9 +172,9 @@ TEST_CASE("modifying attributes of participants")
 		CHECK(dut->numOfParticipant() == 1);
 		CHECK(dut->numOfAttributes() == 2);
 		REQUIRE(firstAttributeData);
-		REQUIRE(firstAttributeData.value().size() == 1);
-		CHECK(firstAttributeData.value() == attribute_data_t{ std::begin(attributeData),
-			std::end(attributeData) });
+		REQUIRE(firstAttributeData.value().size() == std::size(attributeData));
+		CHECK(std::ranges::is_permutation(firstAttributeData.value(), 
+			attributeData));
 	}
 
 	//TODO set attribute with the same value multiple times -> decide behaviour

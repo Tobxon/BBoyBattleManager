@@ -21,6 +21,7 @@ module;
 #include <vector>
 #include <optional>
 #include <initializer_list>
+#include <ranges>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -54,7 +55,13 @@ class AttributeMap
 public:
 	using attribute_element_t = attribute_data_t::value_type;
 
-	std::optional< attribute_data_t > getAttribute(const attribute_name_t& i_attribute) const
+	std::vector< attribute_name_t > getAttributes() const
+	{
+		auto keyView = std::views::keys(m_data);
+		return std::vector< attribute_name_t >{ keyView.begin(), keyView.end() };
+	}
+
+	std::optional< attribute_data_t > getAttributeData(const attribute_name_t& i_attribute) const
 	{
 		if (m_data.contains(i_attribute))
 		{

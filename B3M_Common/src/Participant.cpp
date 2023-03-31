@@ -27,7 +27,7 @@ b3m::common::Participant::Participant(const name_t& i_name)
 
 auto b3m::common::Participant::getName() const -> std::optional< name_t >
 {
-	const auto& nameOpt = m_attributes.getAttribute(nameAttribute);
+	const auto& nameOpt = m_attributes.getAttributeData(nameAttribute);
 
 	if (nameOpt)
 	{
@@ -44,7 +44,7 @@ auto b3m::common::Participant::getAttributes() const -> std::vector<attribute_na
 auto b3m::common::Participant::getAttributeData(const attribute_name_t& i_attribute) -> 
 std::optional< attribute_data_t >
 {
-	return m_attributes.getAttribute(i_attribute);
+	return m_attributes.getAttributeData(i_attribute);
 }
 
 bool b3m::common::Participant::setAttributeSingle(const attribute_name_t& i_attribute, 

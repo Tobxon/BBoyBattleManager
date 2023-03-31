@@ -48,7 +48,7 @@ export class IParticipant
 {
 public:
 	using name_t = std::string;
-	const name_t nameAttribute{ "name" }; //TODO to constexpr
+	static inline const name_t nameAttribute{ "name" }; //TODO to constexpr
 	using attribute_name_t = std::string;
 	using attribute_data_t = std::vector< std::string >;
 	using attribute_element_t = attribute_data_t::value_type;

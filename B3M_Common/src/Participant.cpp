@@ -38,7 +38,7 @@ auto b3m::common::Participant::getName() const -> std::optional< name_t >
 
 auto b3m::common::Participant::getAttributes() const -> std::vector<attribute_name_t>
 {
-	return std::vector<attribute_name_t>(); //TODO implementation
+	return m_attributes.getAttributes();
 }
 
 auto b3m::common::Participant::getAttributeData(const attribute_name_t& i_attribute) -> 

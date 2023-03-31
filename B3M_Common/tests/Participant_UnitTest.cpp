@@ -20,6 +20,15 @@ import b3m.common;
 #include <vector>
 #include <optional>
 #include <array>
+#include <initializer_list>
+
+
+//--------------------------------------------------------------------------------------------------
+//------ Declarations                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+template< std::ranges::input_range AttributeRange = std::initializer_list< std::string > >
+bool checkProperAttributes(const b3m::common::IParticipant&, const AttributeRange&);
 
 
 //--------------------------------------------------------------------------------------------------
@@ -38,6 +47,12 @@ TEST_CASE("b3m Participant - creating a participant and check for valid state")
 	b3m::common::Participant anotherSameParticipant{ std::string(firstName) };
 
 	REQUIRE_NOTHROW(firstParticipant.getName() == std::string(firstName));
+	
+	REQUIRE(firstParticipant.getAttributes() == anotherSameParticipant.getAttributes());
+	REQUIRE(checkProperAttributes(firstParticipant, { b3m::common::IParticipant::nameAttribute  }));
+	//auto attributes = firstParticipant.getAttributes();
+	//REQUIRE(attributes.size() == 1);
+	//REQUIRE(attributes.front() == b3m::common::IParticipant::nameAttribute);
 }
 
 TEST_CASE("b3m Participant - create participants and set and check basic data")
@@ -50,6 +65,7 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 	{
 		REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 	}
+	REQUIRE(checkProperAttributes(participant, { b3m::common::IParticipant::nameAttribute }));
 
 	const auto itCrew = std::find(attributes.cbegin(), attributes.cend(), "Crew");
 	static constexpr std::string_view crewOfParticipant{ "Powerheadz" };
@@ -68,6 +84,7 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		{
 			REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 		}
+		REQUIRE(checkProperAttributes(participant, { b3m::common::IParticipant::nameAttribute, *itCrew }));
 	}
 
 	const auto itCity = std::find(attributes.cbegin(), attributes.cend(), "City");
@@ -96,7 +113,24 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		{
 			REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 		}
+		REQUIRE(checkProperAttributes(participant, { b3m::common::IParticipant::nameAttribute, *itCrew, *itCity }));
 	}
+}
+
+
+//--------------------------------------------------------------------------------------------------
+//------ Implementations                                                                      ------
+//--------------------------------------------------------------------------------------------------
+
+template< std::ranges::input_range AttributeRange >
+bool checkProperAttributes(const b3m::common::IParticipant& i_participant, const AttributeRange& i_attributes)
+{
+	const auto attributesOfDut = i_participant.getAttributes();
+
+	REQUIRE(attributesOfDut.size() == i_attributes.size());
+	REQUIRE(std::ranges::is_permutation(attributesOfDut, i_attributes));
+
+	return true;
 }
 
 

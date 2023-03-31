@@ -11,6 +11,7 @@ module;
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <set>
 
 
 module b3m.database;
@@ -26,7 +27,19 @@ std::size_t b3m::database::SimpleParticipantsContainer::numOfParticipant() const
 
 std::size_t b3m::database::SimpleParticipantsContainer::numOfAttributes() const
 {
-	return std::size_t();
+	std::set< participant::attribute_name_t > attributes;
+
+	for (const auto& participant : m_participants)
+	{
+		const auto& curAttributes = participant->getAttributes();
+		for (const auto& curAttribute : curAttributes)
+		{
+			attributes.insert(curAttribute);
+		}
+	}
+
+	return attributes.size();
+	//return std::size_t();
 }
 
 auto b3m::database::SimpleParticipantsContainer::readAttributeOfParticipant(

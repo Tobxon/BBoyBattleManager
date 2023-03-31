@@ -56,14 +56,15 @@ TEST_CASE("create Participants")
 	{
 		static const std::array< std::string_view, 4 > players{ 
 			"Storm", "Hong10", "Lil Kev", "Tynee" };
+		
+		REQUIRE(dut->numOfAttributes() == 0);
 		std::size_t curSize = 0;
 		for (const auto& player : players)
 		{
 			REQUIRE(dut->numOfParticipant() == curSize);
-			CHECK(dut->numOfAttributes() == 0);
 			REQUIRE(dut->createParticipant(participant_name_t{ player }));
 			CHECK(dut->numOfParticipant() == ++curSize);
-			CHECK(dut->numOfAttributes() == 0);
+			CHECK(dut->numOfAttributes() == 1);
 		}
 	}
 }

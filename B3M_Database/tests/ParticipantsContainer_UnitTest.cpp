@@ -76,6 +76,15 @@ TEST_CASE("remove Participants")
 
 	static const std::array< std::string_view, 5 > players{ 
 		"Limit", "Mav", "Luisa", "Elina", "another contestant" };
+
+	for (const auto& player : players)
+	{
+		CHECK(dut->numOfParticipant() == 0);
+		CHECK(dut->numOfAttributes() == 0);
+		REQUIRE(!dut->removeParticipant(participant_name_t{ player }));
+		REQUIRE(dut->numOfParticipant() == 0);
+		CHECK(dut->numOfAttributes() == 0);
+	}
 	
 	CHECK(dut->numOfAttributes() == 0);
 	std::size_t curSize = 0;

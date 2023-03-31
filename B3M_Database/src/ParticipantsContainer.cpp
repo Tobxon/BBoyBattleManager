@@ -12,6 +12,7 @@ module;
 #include <memory>
 #include <algorithm>
 #include <set>
+#include <ranges>
 
 
 module b3m.database;
@@ -76,7 +77,19 @@ bool b3m::database::SimpleParticipantsContainer::createParticipant(
 bool b3m::database::SimpleParticipantsContainer::removeParticipant(
 	const participant::name_t& i_participantName)
 {
-	//return m_participants.erase(i_participantName) > 0
+	const auto itMatchingParticipant = std::ranges::find_if(m_participants, 
+		[&i_participantName](const decltype(m_participants)::value_type& i_findParticipant)
+		{
+			const auto findPaticipantNameOpt = i_findParticipant->getName();
+			return (!findPaticipantNameOpt) ? false : findPaticipantNameOpt.value() == i_participantName;
+		});
+
+	if (itMatchingParticipant != m_participants.cend())
+	{
+		m_participants.erase(itMatchingParticipant);
+		return true;
+	}
+
 	return false;;
 }
 

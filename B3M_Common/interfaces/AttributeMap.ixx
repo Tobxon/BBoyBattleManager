@@ -22,6 +22,7 @@ module;
 #include <optional>
 #include <initializer_list>
 #include <ranges>
+#include <concepts>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -75,11 +76,17 @@ public:
 	//set attribute with single value
 	template< typename input_data_t >
 		requires std::convertible_to< input_data_t, attribute_element_t >
-	bool setAttribute(const attribute_name_t& i_attribute, const input_data_t& i_data, bool i_append = false)
+	bool setAttribute(const attribute_name_t& i_attribute, const input_data_t& i_data, 
+		bool i_append = false)
 	{
 		if(i_append && m_data.contains(i_attribute))
 		{
 			auto& dataEntry = m_data.at(i_attribute);
+			if (m_data.contains(i_data))
+			{
+				//attribute data already set
+				return true;
+			}
 			dataEntry.emplace_back(i_data);
 		}
 		else
@@ -91,14 +98,28 @@ public:
 	}
 
 	//set attribute with multiple values
-	template< typename input_data_t = std::initializer_list< attribute_element_t >>
-		requires is_range_with_elements_of_type< input_data_t, attribute_element_t >
-	bool setAttribute(const attribute_name_t& i_attribute, const input_data_t& i_data, bool i_append = false)
+	template< typename input_range_t = std::initializer_list< attribute_element_t >>
+		requires is_range_with_elements_of_type< input_range_t, attribute_element_t >
+	bool setAttribute(const attribute_name_t& i_attribute, const input_range_t& i_data,
+		bool i_append = false)	
 	{
 		if (i_append && m_data.contains(i_attribute))
 		{
 			auto& dataEntry = m_data.at(i_attribute);
-			dataEntry.insert(std::end(dataEntry), std::begin(i_data), std::end(i_data));
+
+			auto elementAlreadyEntried = [&dataEntry](const attribute_element_t& i_element)
+			{
+				if (std::ranges::find(dataEntry, i_element) == dataEntry.end())
+				{
+					return true;
+				}
+
+				return false;
+			};
+
+			const attribute_data_t data{ std::begin(i_data), std::end(i_data) };
+			auto newDataEntries = data | std::views::filter(elementAlreadyEntried);
+			dataEntry.insert(std::end(dataEntry), std::begin(newDataEntries), std::end(newDataEntries));
 		}
 		else
 		{

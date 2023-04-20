@@ -136,7 +136,7 @@ TEST_CASE("AttributeMap set attributes from different source types")
 	}
 }
 
-TEST_CASE("append attributes")
+TEST_CASE("set attributes")
 {
 	AttributeMap< attribute_t, data_t > dut;
 
@@ -182,9 +182,97 @@ TEST_CASE("append attributes")
 		}
 		CHECK(checkProperAttributes(dut, { attribute }));
 	}
+
+	SECTION("set different attributes")
+	{
+		//data
+		const std::map< attribute_t, data_t > toSetData{
+			{ "shoe size", { "39" }},
+			{ "colours", {"cyan", "ultramarine blue", "y"} },
+			{ "enemies", {} }
+		};
+
+		REQUIRE(dut.getAttributes().empty());
+		std::vector< std::string > setAttributes;
+		for (const auto& [attribute, data] : toSetData)
+		{
+			REQUIRE(!dut.getAttributeData(attribute));
+			if (!data.empty())
+			{
+				REQUIRE(dut.setAttribute(attribute, data.front()));
+				REQUIRE(dut.getAttributeData(attribute) == data_t{ data.front() });
+			}
+			else
+			{
+				REQUIRE(dut.setAttribute(attribute, data));
+				REQUIRE(dut.getAttributeData(attribute) == data);
+			}
+			setAttributes.push_back(attribute);
+			REQUIRE(dut.getAttributes() == setAttributes);
+		}
+
+		auto toSetDataAttributes = std::views::keys(toSetData);
+		REQUIRE(dut.getAttributes() == 
+			std::vector< attribute_t >{ toSetDataAttributes.begin(), toSetDataAttributes.end()});
+		for (const auto& [attribute, data] : toSetData)
+		{
+			REQUIRE(dut.setAttribute(attribute, data, true));
+			REQUIRE(dut.getAttributeData(attribute) == data);
+		}
+	}
+
+	dut.setAttribute("test", std::vector< std::string >{}, true);
 }
 
-//TODO set multiple different attributes on one dut
+TEST_CASE("replace attribute data")
+{
+	AttributeMap< attribute_t, data_t > dut;
+
+	const std::map< attribute_t, data_t > initData
+	{
+		{ "color", { "black", "green", "blue" }},
+		{ "world formula", {} },
+		{ "cards", {"credit card"} }
+	};
+	
+	REQUIRE(dut.getAttributes().empty());
+	for (const auto [attribute, data] : initData)
+	{
+		REQUIRE(!dut.getAttributeData(attribute));
+		REQUIRE(dut.setAttribute(attribute, data));
+		REQUIRE(dut.getAttributeData(attribute) == data);
+	}
+	auto setDataAttributes = std::views::keys(initData);
+	REQUIRE(dut.getAttributes() == 
+		std::vector< attribute_t >{ setDataAttributes.begin(), setDataAttributes.end() });
+
+	const std::map< attribute_t, data_t > finalDataToSet
+	{
+		{ "shape", { }},
+		{ "world formula", { "42" }},
+		{ "cards", {"credit card", "glurak", "id", "gf number" }}
+	};
+
+	
+	for (const auto [attribute, data] : finalDataToSet)
+	{
+		REQUIRE(dut.setAttribute(attribute, data));
+		REQUIRE(dut.getAttributeData(attribute) == data);
+	}
+
+	const std::string keptAttribute{ "color" };
+	const auto keptAttributeData = initData.at(keptAttribute);
+
+	auto setFinalDataAttributes = std::views::keys(finalDataToSet);
+	std::vector< attribute_t > finalDataAttributes{ 
+		setFinalDataAttributes.begin(), setFinalDataAttributes.end() };
+	finalDataAttributes.push_back(keptAttribute);
+	std::ranges::sort(finalDataAttributes);
+	REQUIRE(dut.getAttributes() == finalDataAttributes);
+	
+
+	REQUIRE(dut.getAttributeData(keptAttribute) == keptAttributeData);
+}
 
 
 //--------------------------------------------------------------------------------------------------

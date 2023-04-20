@@ -55,7 +55,8 @@ TEST_CASE("AttributeMap set attributes from different source types")
 
 	SECTION("set from 2 temporary strings")
 	{
-		REQUIRE(dut.setAttribute(attribute_t("Date"), AttributeMap<>::attribute_element_t{ "27.03.2023" }));
+		REQUIRE(dut.setAttribute(attribute_t("Date"), 
+			AttributeMap<>::attribute_element_t{ "27.03.2023" }));
 		REQUIRE(dut.getAttributeData(attribute_t("Date")) == data_t{ "27.03.2023" });
 		CHECK(checkProperAttributes(dut, { "Date" }));
 	}
@@ -96,14 +97,17 @@ TEST_CASE("AttributeMap set attributes from different source types")
 
 	SECTION("set from temporary string and temporary array of string")
 	{
-		REQUIRE(dut.setAttribute(std::string("other Friends"), std::array<std::string, 4>{ "Milo of Croton", "Cleopatra", "300", "..." }));
-		CHECK(dut.getAttributeData("other Friends") == data_t{ "Milo of Croton", "Cleopatra", "300", "..." });
+		REQUIRE(dut.setAttribute(std::string("other Friends"), 
+			std::array<std::string, 4>{ "Milo of Croton", "Cleopatra", "300", "..." }));
+		CHECK(dut.getAttributeData("other Friends") == 
+			data_t{ "Milo of Croton", "Cleopatra", "300", "..." });
 		CHECK(checkProperAttributes(dut, { "other Friends" }));
 	}
 
 	SECTION("set from temporary string and vector of const char*")
 	{
-		REQUIRE(dut.setAttribute(std::string("even more Friends"), std::vector<const char*>{ "Karl", "Gilgamesh" }));
+		REQUIRE(dut.setAttribute(std::string("even more Friends"), 
+			std::vector<const char*>{ "Karl", "Gilgamesh" }));
 		CHECK(dut.getAttributeData("even more Friends") == data_t{ "Karl", "Gilgamesh" });
 		CHECK(checkProperAttributes(dut, { "even more Friends" }));
 	}
@@ -120,7 +124,8 @@ TEST_CASE("AttributeMap set attributes from different source types")
 	SECTION("set from const string and const array of string")
 	{
 		const std::string attribute{ "Cloths" };
-		const std::array< std::string, 5 > attributeData{ "Shirt", "Pullover", "Jeans", "Cap", "Sneaker" };
+		const std::array< std::string, 5 > attributeData{ 
+			"Shirt", "Pullover", "Jeans", "Cap", "Sneaker" };
 		REQUIRE(dut.setAttribute(attribute, attributeData));
 		CHECK(dut.getAttributeData(attribute) == data_t{ attributeData.cbegin(), attributeData.cend() });
 		CHECK(checkProperAttributes(dut, { attribute }));
@@ -129,7 +134,8 @@ TEST_CASE("AttributeMap set attributes from different source types")
 	SECTION("set from const string and static constexpr array of string_view")
 	{
 		const std::string attribute{ "Comments" };
-		static constexpr std::array< std::string_view, 3 > attributeData{ "great", "rofl u said lol", " . " };
+		static constexpr std::array< std::string_view, 3 > attributeData{ 
+			"great", "rofl u said lol", " . " };
 		REQUIRE(dut.setAttribute(attribute, attributeData));
 		CHECK(dut.getAttributeData(attribute) == data_t{ attributeData.cbegin(), attributeData.cend() });
 		CHECK(checkProperAttributes(dut, { attribute }));
@@ -173,7 +179,8 @@ TEST_CASE("set attributes")
 		const auto firstElements = std::ranges::take_view(data, index);
 
 		REQUIRE(dut.setAttribute(attribute, firstElements));
-		REQUIRE(dut.getAttributeData(attribute) == data_t{ firstElements.begin(), firstElements.begin() + index });
+		REQUIRE(dut.getAttributeData(attribute) == 
+			data_t{ firstElements.begin(), firstElements.begin() + index });
 		for (; index < data.size(); ++index)
 		{
 			REQUIRE(dut.setAttribute(attribute, data.at(index), true));

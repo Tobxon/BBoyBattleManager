@@ -31,7 +31,7 @@ export module b3m.common:participant;
 //import <string>;
 
 //b3m
-import :attributemap;
+import :attribute_map;
 
 
 //--------------------------------------------------------------------------------------------------

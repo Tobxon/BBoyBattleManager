@@ -42,8 +42,8 @@ auto b3m::common::Participant::getAttributes() const -> std::vector<attribute_na
 	return m_attributes.getAttributes();
 }
 
-auto b3m::common::Participant::getAttributeData(const attribute_name_t& i_attribute) -> 
-std::optional< attribute_data_t >
+auto b3m::common::Participant::getAttributeData(const attribute_name_t& i_attribute) 
+-> std::optional< attribute_data_t >
 {
 	return m_attributes.getAttributeData(i_attribute);
 }

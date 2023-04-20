@@ -81,11 +81,13 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		{
 			REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 		}
-		REQUIRE(checkProperAttributes(participant, { b3m::common::IParticipant::nameAttribute, *itCrew }));
+		REQUIRE(checkProperAttributes(participant, 
+			{ b3m::common::IParticipant::nameAttribute, *itCrew }));
 	}
 
 	const auto itCity = std::find(attributes.cbegin(), attributes.cend(), "City");
-	static constexpr std::array< std::string_view, 3 > citiesOfParticipant{ "Tokyo-Yokohama", "Hum", "New York City" }; //TODO
+	static constexpr std::array< std::string_view, 3 > citiesOfParticipant{ 
+		"Tokyo-Yokohama", "Hum", "New York City" };
 	REQUIRE(participant.setAttribute("City", citiesOfParticipant));
 	for (const auto& attribute : attributes)
 	{
@@ -110,7 +112,8 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 		{
 			REQUIRE(participant.getAttributeData(attribute) == std::nullopt);
 		}
-		REQUIRE(checkProperAttributes(participant, { b3m::common::IParticipant::nameAttribute, *itCrew, *itCity }));
+		REQUIRE(checkProperAttributes(participant, 
+			{ b3m::common::IParticipant::nameAttribute, *itCrew, *itCity }));
 	}
 }
 
@@ -120,7 +123,8 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 //--------------------------------------------------------------------------------------------------
 
 template< std::ranges::input_range AttributeRange >
-bool checkProperAttributes(const b3m::common::IParticipant& i_participant, const AttributeRange& i_attributes)
+bool checkProperAttributes(const b3m::common::IParticipant& i_participant, 
+	const AttributeRange& i_attributes)
 {
 	const auto attributesOfDut = i_participant.getAttributes();
 

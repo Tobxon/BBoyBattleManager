@@ -49,10 +49,7 @@ TEST_CASE("b3m Participant - creating a participant and check for valid state")
 	REQUIRE_NOTHROW(firstParticipant.getName() == std::string(firstName));
 	
 	REQUIRE(firstParticipant.getAttributes() == anotherSameParticipant.getAttributes());
-	REQUIRE(checkProperAttributes(firstParticipant, { b3m::common::IParticipant::nameAttribute  }));
-	//auto attributes = firstParticipant.getAttributes();
-	//REQUIRE(attributes.size() == 1);
-	//REQUIRE(attributes.front() == b3m::common::IParticipant::nameAttribute);
+	REQUIRE(checkProperAttributes(firstParticipant, { b3m::common::IParticipant::nameAttribute }));
 }
 
 TEST_CASE("b3m Participant - create participants and set and check basic data")
@@ -69,7 +66,7 @@ TEST_CASE("b3m Participant - create participants and set and check basic data")
 
 	const auto itCrew = std::find(attributes.cbegin(), attributes.cend(), "Crew");
 	static constexpr std::string_view crewOfParticipant{ "Powerheadz" };
-	REQUIRE(participant.setAttribute(*itCrew, std::string(crewOfParticipant))); //TODO
+	REQUIRE(participant.setAttribute(*itCrew, std::string(crewOfParticipant)));
 	for (const auto& attribute : attributes)
 	{
 		if (attribute == *itCrew)

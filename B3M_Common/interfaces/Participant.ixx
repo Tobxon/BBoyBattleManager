@@ -16,6 +16,7 @@ module;
 #include <ranges>
 #include <concepts>
 #include <any>
+#include <initializer_list>
 
 
 //--------------------------------------------------------------------------------------------------

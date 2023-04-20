@@ -1,7 +1,7 @@
 #QT
 set(Qt_Version_used 6)
 
-find_package(Qt${Qt_Version_used} REQUIRED 
+find_package(Qt${Qt_Version_used} REQUIRED
 	COMPONENTS Widgets Gui Core
 )
 
@@ -19,12 +19,12 @@ target_sources(B3M_GUI
 		"src/ParticipantsDialog.ui"
 )
 
-set_target_properties(B3M_GUI PROPERTIES  
-	AUTOMOC TRUE 
-	AUTOUIC TRUE 
-) 
+set_target_properties(B3M_GUI PROPERTIES
+	AUTOMOC TRUE
+	AUTOUIC TRUE
+)
 
-target_link_libraries(B3M_GUI 
+target_link_libraries(B3M_GUI
 	PRIVATE
 		Qt::Widgets Qt::Gui Qt::Core
 		B3M_Database

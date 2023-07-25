@@ -39,3 +39,7 @@
 
 #CMake
 CMakeUserPresets.json
+
+
+#Clion
+.idea/

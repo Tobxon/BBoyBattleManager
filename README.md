@@ -18,7 +18,8 @@ For example I try to get used with C++20 modules using cmake and a gui framework
 
 ## Environment Variables needed
 
-Set "QTDIR" to the "msvc2019_64" folder insider your Qt6 installation folder. (example: E:\Dev\3rdParty\Qt\Qt6.4.2\6.4.2\msvc2019_64)
-Add "%QTDIR%\bin" to "PATH" variable.
+Add the path to your Qt installation and Catch2 (for Unit Tests) to CMAKE_PREFIX_PATH.
 
-Set"Catch2_DIR" to get Unit Tests of the project.
+To run the program add the path to your Qt binaries to your PATH variables.
+
+These configurations are exemplary shown in cmake/CmakePresets.json

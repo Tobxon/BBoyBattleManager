@@ -1,13 +1,18 @@
 {
-	"version": 5,
+	"version": 3,
 	"configurePresets": [
 		{
-			"name": "windows-base",
-			"description": "Target Windows with the Visual Studio development environment.",
+			"name": "base",
 			"hidden": true,
+			"description": "Target Windows with the Visual Studio development environment.",
 			"generator": "Ninja",
-			"binaryDir": "${sourceDir}/../../Builds/${sourceDirName}",
-			"installDir": "${sourceDir}/../../Installs/${sourceDirName}",
+			"binaryDir": "$env{Dev_DIR}/Builds/${sourceDirName}/${presetName}",
+			"installDir": "$env{Dev_DIR}/Installs/${sourceDirName}/${presetName}",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "cl.exe",
+				"CMAKE_CXX_COMPILER": "cl.exe",
+				"CMAKE_PREFIX_PATH": "$env{Dev_DIR}/3rdParty/Qt/6.5.0/msvc2019_64/lib/cmake;$env{Dev_DIR}/3rdParty/Catch2/lib/cmake/Catch2"
+			},
 			"condition": {
 				"type": "equals",
 				"lhs": "${hostSystemName}",
@@ -15,39 +20,49 @@
 			}
 		},
 		{
-			"name": "x64-debug",
-			"displayName": "Win x64 Debug",
-			"description": "Target Windows (64-bit) with the Visual Studio development environment. (Debug)",
-			"inherits": "windows-base",
+			"name": "x64-base",
+			"inherits": "base",
+			"hidden": true,
 			"architecture": {
 				"value": "x64",
 				"strategy": "external"
-			},
+			}
+		},
+		{
+			"name": "x64-debug",
+			"displayName": "Win x64 Debug",
+			"description": "Target Windows (64-bit) with the Visual Studio development environment. (Debug)",
+			"inherits": "x64-base",
 			"cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
 		},
 		{
 			"name": "x64-release",
 			"displayName": "Win x64 Release",
 			"description": "Target Windows (64-bit) with the Visual Studio development environment. (RelWithDebInfo)",
-			"inherits": "x64-debug",
+			"inherits": "x64-base",
 			"cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+		},
+		{
+			"name": "x86-base",
+			"inherits": "base",
+			"hidden": true,
+			"architecture": {
+				"value": "x86",
+				"strategy": "external"
+			}
 		},
 		{
 			"name": "x86-debug",
 			"displayName": "Win x86 Debug",
 			"description": "Target Windows (32-bit) with the Visual Studio development environment. (Debug)",
-			"inherits": "windows-base",
-			"architecture": {
-				"value": "x86",
-				"strategy": "external"
-			},
+			"inherits": "x86-base",
 			"cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
 		},
 		{
 			"name": "x86-release",
 			"displayName": "Win x86 Release",
 			"description": "Target Windows (32-bit) with the Visual Studio development environment. (RelWithDebInfo)",
-			"inherits": "x86-debug",
+			"inherits": "x86-base",
 			"cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
 		}
 	]

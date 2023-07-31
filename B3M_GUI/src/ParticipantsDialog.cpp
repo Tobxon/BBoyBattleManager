@@ -48,7 +48,28 @@ QVariant b3m::gui::ParticipantsDialogModel::data(const QModelIndex& i_index, int
 		//TODO connection to actual data
 		return QString("row%1, col%2").arg(i_index.row() + 1).arg(i_index.column() + 1);
 	}
-	return QVariant();
+	return {};
+}
+
+bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role == Qt::EditRole)
+    {
+        if (!checkIndex(index))
+        {
+            return false;
+        }
+        //TODO save value
+
+
+        return true;
+    }
+    return false;
+}
+
+Qt::ItemFlags b3m::gui::ParticipantsDialogModel::flags(const QModelIndex &index) const
+{
+    return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
 
 

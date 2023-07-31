@@ -33,35 +33,36 @@ b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
 
 int b3m::gui::ParticipantsDialogModel::rowCount(const QModelIndex& i_parent) const
 {
-	return 2;
+	return 10;
 }
 
 int b3m::gui::ParticipantsDialogModel::columnCount(const QModelIndex& i_parent) const
 {
-	return 3;
+	return 4;
 }
 
 QVariant b3m::gui::ParticipantsDialogModel::data(const QModelIndex& i_index, int i_role) const
 {
 	if (i_role == Qt::DisplayRole)
 	{
-		if(i_index.row() < m_participantsData.size() && i_index.column() < m_participantsData[i_index.row()].size())
+        if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column()))
         {
-            return m_participantsData[i_index.row()].at(i_index.column());
+            return m_participantsData.at(i_index.row()).at(i_index.column());
         }
 	}
 	return {};
 }
 
-bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, const QVariant& i_value, int i_role)
 {
-    if (role == Qt::EditRole)
+    if (i_role == Qt::EditRole)
     {
-        if (!checkIndex(index))
+        if (!checkIndex(i_index))
         {
             return false;
         }
-        //TODO save value
+
+        m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 
 
         return true;

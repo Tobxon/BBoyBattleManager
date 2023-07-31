@@ -57,8 +57,11 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 private:
-    std::map< std::size_t, std::string > m_participantAttributeTitles;
-    std::vector< std::map< std::size_t, QString >> m_participantsData;
+    using participantIndex = std::size_t;
+    using attributeIndex = std::size_t;
+
+    std::map< attributeIndex, std::string > m_participantAttributeTitles;
+    std::map< participantIndex, std::map< attributeIndex, QString >> m_participantsData;
 };
 
 

@@ -9,9 +9,8 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import b3m_common;
+import b3m.common;
 import B3M_MainWindow;
-import b3m_common;
 
 //std
 #include <iostream>

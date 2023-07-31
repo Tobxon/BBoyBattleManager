@@ -45,13 +45,15 @@ QVariant b3m::gui::ParticipantsDialogModel::data(const QModelIndex& i_index, int
 {
 	if (i_role == Qt::DisplayRole)
 	{
-		//TODO connection to actual data
-		return QString("row%1, col%2").arg(i_index.row() + 1).arg(i_index.column() + 1);
+		if(i_index.row() < m_participantsData.size() && i_index.column() < m_participantsData[i_index.row()].size())
+        {
+            return m_participantsData[i_index.row()].at(i_index.column());
+        }
 	}
 	return {};
 }
 
-bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     if (role == Qt::EditRole)
     {
@@ -67,7 +69,7 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex &index, const 
     return false;
 }
 
-Qt::ItemFlags b3m::gui::ParticipantsDialogModel::flags(const QModelIndex &index) const
+Qt::ItemFlags b3m::gui::ParticipantsDialogModel::flags(const QModelIndex& index) const
 {
     return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }

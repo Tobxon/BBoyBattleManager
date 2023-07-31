@@ -4,9 +4,6 @@ project(BBoyBattleManager VERSION 0.1.0 LANGUAGES CXX)
 
 #C++20 as base language version for this project
 set(CMAKE_CXX_STANDARD 20)
-#C++20 Modules
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1) #request experimental C++20 modules support
-set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "2182bf5c-ef0d-489a-91da-49dbc3090d2a")
 
 
 #to get a more clean solution overview (e.g. CMakePredefinedTargets as a folder)

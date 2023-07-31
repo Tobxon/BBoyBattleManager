@@ -11,7 +11,9 @@
 			"cacheVariables": {
 				"CMAKE_C_COMPILER": "cl.exe",
 				"CMAKE_CXX_COMPILER": "cl.exe",
-				"CMAKE_PREFIX_PATH": "$env{Dev_DIR}/3rdParty/Qt/6.5.0/msvc2019_64/lib/cmake;$env{Dev_DIR}/3rdParty/Catch2/lib/cmake/Catch2"
+				"CMAKE_PREFIX_PATH": "$env{Dev_DIR}/3rdParty/Qt/6.5.0/msvc2019_64/lib/cmake;$env{Dev_DIR}/3rdParty/Catch2/lib/cmake/Catch2",
+				"CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP": "1",
+				"CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API": "aa1f7df0-828a-4fcd-9afc-2dc80491aca7"
 			},
 			"condition": {
 				"type": "equals",

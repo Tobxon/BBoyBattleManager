@@ -27,7 +27,7 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 }
 
 b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
-	: QAbstractTableModel(i_parent)
+	: QAbstractTableModel(i_parent), m_participantAttributeTitles({{0, "name"},{1, "crew"},{2,"city"}})
 {
 }
 
@@ -73,6 +73,18 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
 Qt::ItemFlags b3m::gui::ParticipantsDialogModel::flags(const QModelIndex& index) const
 {
     return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
+}
+
+QVariant b3m::gui::ParticipantsDialogModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+    {
+        if(m_participantAttributeTitles.contains(section))
+        {
+            return m_participantAttributeTitles.at(section);
+        }
+    }
+    return {};
 }
 
 

@@ -6,8 +6,8 @@
  */
 
 
-#ifndef B3M_GUI__PARTICIPANTS_DIGALOG_HPP__
-#define B3M_GUI__PARTICIPANTS_DIGALOG_HPP__
+#ifndef B3M_GUI__PARTICIPANTS_DIALOG_HPP__
+#define B3M_GUI__PARTICIPANTS_DIALOG_HPP__
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
@@ -30,6 +30,7 @@ namespace gui
 
 
 
+//ParticipantsDialog -------------------------------------------------------------------------------
 class ParticipantsDialog : public QWidget
 {
 	Q_OBJECT;
@@ -43,6 +44,8 @@ private:
 	QAbstractTableModel* m_model;
 };
 
+
+//ParticipantsDialogModel --------------------------------------------------------------------------
 class ParticipantsDialogModel : public QAbstractTableModel
 {
 	Q_OBJECT;
@@ -71,5 +74,5 @@ private:
 } //b3m
 
 
-#endif //B3M_GUI__PARTICIPANTS_DIGALOG_HPP__
+#endif //B3M_GUI__PARTICIPANTS_DIALOG_HPP__
  //END OF FILE --------------------------------------------------------------------------------------

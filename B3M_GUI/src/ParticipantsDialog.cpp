@@ -12,13 +12,14 @@
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
+//ParticipantsDialog -------------------------------------------------------------------------------
 b3m::gui::ParticipantsDialog::ParticipantsDialog(QWidget* const i_parent)
-	: QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()), 
-	m_model(new ParticipantsDialogModel(this))
+        : QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
+          m_model(new ParticipantsDialogModel(this))
 {
-	m_ui->setupUi(this);
+    m_ui->setupUi(this);
 
-	m_ui->participantsTable->setModel(m_model);
+    m_ui->participantsTable->setModel(m_model);
 }
 
 b3m::gui::ParticipantsDialog::~ParticipantsDialog()
@@ -26,8 +27,10 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 	delete m_ui;
 }
 
+//ParticipantsDialogModel --------------------------------------------------------------------------
 b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
-	: QAbstractTableModel(i_parent), m_participantAttributeTitles({{0, "name"},{1, "crew"},{2,"city"}})
+	: QAbstractTableModel(i_parent)
+    , m_participantAttributeTitles({{0, "name"},{1, "crew"},{2,"city"}})
 {
 }
 
@@ -38,7 +41,7 @@ int b3m::gui::ParticipantsDialogModel::rowCount(const QModelIndex& i_parent) con
 
 int b3m::gui::ParticipantsDialogModel::columnCount(const QModelIndex& i_parent) const
 {
-	return 4;
+	return static_cast<int>(m_participantAttributeTitles.size());
 }
 
 QVariant b3m::gui::ParticipantsDialogModel::data(const QModelIndex& i_index, int i_role) const
@@ -64,6 +67,7 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
 
         m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 
+        //TODO inform participants database about the change made to participant or the introduction of a new
 
         return true;
     }

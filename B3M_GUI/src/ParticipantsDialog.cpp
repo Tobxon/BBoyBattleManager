@@ -13,9 +13,9 @@
 //--------------------------------------------------------------------------------------------------
 
 //ParticipantsDialog -------------------------------------------------------------------------------
-b3m::gui::ParticipantsDialog::ParticipantsDialog(QWidget* const i_parent)
+b3m::gui::ParticipantsDialog::ParticipantsDialog(ParticipantsContainer& i_partContainer, QWidget* const i_parent)
         : QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
-          m_model(new ParticipantsDialogModel(this))
+          m_model(new ParticipantsDialogModel(i_partContainer, this))
 {
     m_ui->setupUi(this);
 
@@ -28,10 +28,12 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 }
 
 //ParticipantsDialogModel --------------------------------------------------------------------------
-b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
+b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(ParticipantsContainer& i_partContainer, QObject* i_parent)
 	: QAbstractTableModel(i_parent)
     , m_participantAttributeTitles({{0, "name"},{1, "crew"},{2,"city"}})
+    , m_participantContainer(i_partContainer)
 {
+    //TODO initialize gui data with data from i_partContainer
 }
 
 int b3m::gui::ParticipantsDialogModel::rowCount(const QModelIndex& i_parent) const

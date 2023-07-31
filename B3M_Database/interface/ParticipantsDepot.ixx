@@ -23,19 +23,40 @@ export module b3m.database:ParticipantsDepot;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+//std
+import <optional>;
+import <map>;
+import <string>;
+
+//b3m
+import b3m.common;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m::database
+export namespace b3m::database
 {
 
 
 
-class ParticipantsDepot
-{
+using ParticipantName = std::string;
+using Attribute = std::string;
+using ParticipantsDepot = std::map< ParticipantName, std::map< Attribute, std::string >>;
 
-};
+//class ParticipantsDepot
+//{
+//public:
+//    using participant_t = b3m::common::Participant;
+//
+//    void addParticipant(const participant_t::name_t&);
+//    void addParticipant(const participant_t&);
+//
+//    [[nodiscard]] std::optional< participant_t > getParticipantByName(const participant_t::name_t&) const;
+//    [[nodiscard]] bool isParticipantExisting(const participant_t::name_t&) const;
+//
+//    [[nodiscard]] std::size_t numOfParticipants() const;
+//};
 
 
 

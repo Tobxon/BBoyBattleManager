@@ -28,4 +28,5 @@ target_link_libraries(B3M_GUI
 	PRIVATE
 		Qt::Widgets Qt::Gui Qt::Core
 		B3M_Common
+		B3M_Database
 )

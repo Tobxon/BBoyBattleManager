@@ -19,6 +19,9 @@
 
 #include <ui_ParticipantsDialog.h>
 
+//b3m
+import b3m.database;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
@@ -30,13 +33,15 @@ namespace gui
 
 
 
+using ParticipantsContainer = b3m::database::ParticipantsDepot;
+
 //ParticipantsDialog -------------------------------------------------------------------------------
 class ParticipantsDialog : public QWidget
 {
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialog(QWidget* const = nullptr);
+	explicit ParticipantsDialog(ParticipantsContainer&, QWidget* const = nullptr);
 	~ParticipantsDialog();
 
 private:
@@ -51,7 +56,7 @@ class ParticipantsDialogModel : public QAbstractTableModel
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialogModel(QObject* parent = nullptr);
+	explicit ParticipantsDialogModel(ParticipantsContainer&, QObject* parent = nullptr);
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -66,6 +71,8 @@ private:
 
     std::map< attributeIndex, QString > m_participantAttributeTitles;
     std::map< participantIndex, std::map< attributeIndex, QString >> m_participantsData;
+
+    ParticipantsContainer* m_participantContainer{nullptr};
 };
 
 

@@ -7,15 +7,18 @@
 //--------------------------------------------------------------------------------------------------
 #include "ParticipantsDialog.hpp"
 
+//std
+#include <algorithm>
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
 //ParticipantsDialog -------------------------------------------------------------------------------
-b3m::gui::ParticipantsDialog::ParticipantsDialog(ParticipantsContainer& i_partContainer, QWidget* const i_parent)
+b3m::gui::ParticipantsDialog::ParticipantsDialog(QWidget* const i_parent)
         : QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
-          m_model(new ParticipantsDialogModel(i_partContainer, this))
+          m_model(new ParticipantsDialogModel(this))
 {
     m_ui->setupUi(this);
 
@@ -28,10 +31,9 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 }
 
 //ParticipantsDialogModel --------------------------------------------------------------------------
-b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(ParticipantsContainer& i_partContainer, QObject* i_parent)
+b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
 	: QAbstractTableModel(i_parent)
     , m_participantAttributeTitles({{0, "name"},{1, "crew"},{2,"city"}})
-    , m_participantContainer(i_partContainer)
 {
     //TODO initialize gui data with data from i_partContainer
 }
@@ -67,11 +69,32 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
             return false;
         }
 
-        m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
+        const auto value = i_value.toString();
+        if(!value.isEmpty()) {
+            auto mapResult = m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 
-        //TODO inform participants database about the change made to participant or the introduction of a new
+            //TODO inform participants database about the change made to participant or the introduction of a new
+            const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
+                                                                   [this](const auto &element) {
+                                                                       return element.second == nameAttribute;
+                                                                   })->first;
 
-        return true;
+            if (i_index.column() == indexOfNameAttribute && mapResult.second) //new participant
+            {
+                const auto newPart = i_value.toString().toStdString();
+                emit newParticipant(newPart);
+                //TODO report already registered attributes
+            } else {
+                if (m_participantsData.at(i_index.row()).contains(indexOfNameAttribute)) {
+                    const auto &name = m_participantsData.at(i_index.row()).at(indexOfNameAttribute).toStdString();
+                    const auto &attribute = m_participantAttributeTitles.at(i_index.column()).toStdString();
+                    const auto &attributeVal = i_value.toString().toStdString();
+                    emit participantUpdated(name, attribute, attributeVal);
+                }
+            }
+
+            return true;
+        }
     }
     return false;
 }

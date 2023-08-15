@@ -20,7 +20,7 @@
 #include <ui_ParticipantsDialog.h>
 
 //b3m
-import b3m.database;
+import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -33,7 +33,6 @@ namespace gui
 
 
 
-using ParticipantsContainer = b3m::database::ParticipantsDepot;
 
 //ParticipantsDialog -------------------------------------------------------------------------------
 class ParticipantsDialog : public QWidget
@@ -41,7 +40,7 @@ class ParticipantsDialog : public QWidget
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialog(ParticipantsContainer&, QWidget* const = nullptr);
+	explicit ParticipantsDialog(QWidget* const = nullptr);
 	~ParticipantsDialog();
 
 private:
@@ -56,7 +55,7 @@ class ParticipantsDialogModel : public QAbstractTableModel
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialogModel(ParticipantsContainer&, QObject* parent = nullptr);
+	explicit ParticipantsDialogModel(QObject* parent = nullptr);
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -65,14 +64,16 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
+signals:
+    void newParticipant(const b3m::common::Participant&, const b3m::common::ParticipantAttributes&);
+    void participantUpdated(const b3m::common::Participant&, const b3m::common::Attribute&, const std::string&);
+
 private:
     using participantIndex = std::size_t;
     using attributeIndex = std::size_t;
 
     std::map< attributeIndex, QString > m_participantAttributeTitles;
     std::map< participantIndex, std::map< attributeIndex, QString >> m_participantsData;
-
-    ParticipantsContainer* m_participantContainer{nullptr};
 };
 
 

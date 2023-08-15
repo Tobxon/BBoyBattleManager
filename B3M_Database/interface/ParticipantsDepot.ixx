@@ -40,9 +40,9 @@ export namespace b3m::database
 
 
 
-using ParticipantName = std::string;
-using Attribute = std::string;
-using ParticipantsDepot = std::map< ParticipantName, std::map< Attribute, std::string >>;
+using participant_t = b3m::common::Participant;
+using participantAttributes_t = b3m::common::ParticipantAttributes;
+using ParticipantsDepot = std::map< participant_t, participantAttributes_t>;
 
 //class ParticipantsDepot
 //{

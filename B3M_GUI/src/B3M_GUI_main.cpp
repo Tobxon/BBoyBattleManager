@@ -9,7 +9,7 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import b3m.common;
+import b3m.database;
 
 //std
 #include <iostream>
@@ -30,6 +30,9 @@ import b3m.common;
 int main(int argc, char** argv)
 {    
 	QApplication app(argc, argv);
+
+    //database elements
+    b3m::database::ParticipantsDepot allParticipants;
 
 	//main window
 	b3m::gui::ParticipantsDialog* participantsDialog{ new b3m::gui::ParticipantsDialog() };

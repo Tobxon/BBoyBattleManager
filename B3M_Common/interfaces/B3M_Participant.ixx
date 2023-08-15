@@ -21,14 +21,13 @@ export module b3m.common:participant;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 import <string>;
+import <map>;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m
-{
-namespace common
+namespace b3m::common
 {
 
 
@@ -46,10 +45,13 @@ private:
 	name_t m_name;
 };
 
+export using ParticipantName = std::string;
+export using Attribute = std::string;
+export using ParticipantAttributes = std::map< Attribute, std::string >;
 
 
-} //namespace common
-} //namespace b3m
+
+} //namespace b3m::common
 
 
 //END OF FILE --------------------------------------------------------------------------------------

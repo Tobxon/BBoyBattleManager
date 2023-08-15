@@ -6,8 +6,8 @@
  */
 
 
-#ifndef B3M_GUI__PARTICIPANTS_DIALOG_HPP__
-#define B3M_GUI__PARTICIPANTS_DIALOG_HPP__
+#ifndef B3M_GUI_PARTICIPANTS_DIALOG_HPP_
+#define B3M_GUI_PARTICIPANTS_DIALOG_HPP_
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
@@ -26,11 +26,8 @@ import b3m.common;
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m
+namespace b3m::gui
 {
-namespace gui
-{
-
 
 
 
@@ -40,8 +37,8 @@ class ParticipantsDialog : public QWidget
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialog(QWidget* const = nullptr);
-	~ParticipantsDialog();
+	explicit ParticipantsDialog(QWidget* = nullptr);
+	~ParticipantsDialog() override;
 
 private:
 	Ui::ParticipantsDialog* m_ui;
@@ -53,6 +50,8 @@ private:
 class ParticipantsDialogModel : public QAbstractTableModel
 {
 	Q_OBJECT;
+
+    static const inline QString nameAttribute{ "name "};
 
 public:
 	explicit ParticipantsDialogModel(QObject* parent = nullptr);
@@ -78,9 +77,8 @@ private:
 
 
 
-} //gui
-} //b3m
+} //namespace b3m::gui
 
 
-#endif //B3M_GUI__PARTICIPANTS_DIALOG_HPP__
+#endif //B3M_GUI_PARTICIPANTS_DIALOG_HPP_
  //END OF FILE --------------------------------------------------------------------------------------

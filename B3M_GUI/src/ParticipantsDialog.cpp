@@ -33,14 +33,14 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 //ParticipantsDialogModel --------------------------------------------------------------------------
 b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
 	: QAbstractTableModel(i_parent)
-    , m_participantAttributeTitles({{0, "name"},{1, "crew"},{2,"city"}})
+    , m_participantAttributeTitles({{0, nameAttribute},{1, "crew"},{2,"city"}})
 {
     //TODO initialize gui data with data from i_partContainer
 }
 
 int b3m::gui::ParticipantsDialogModel::rowCount(const QModelIndex& i_parent) const
 {
-	return 10;
+	return 100;
 }
 
 int b3m::gui::ParticipantsDialogModel::columnCount(const QModelIndex& i_parent) const
@@ -75,20 +75,20 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
 
             //TODO inform participants database about the change made to participant or the introduction of a new
             const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
-                                                                   [this](const auto &element) {
+                                                                   [](const auto &element) {
                                                                        return element.second == nameAttribute;
                                                                    })->first;
 
             if (i_index.column() == indexOfNameAttribute && mapResult.second) //new participant
             {
-                const auto newPart = i_value.toString().toStdString();
+                const auto& newPart = i_value.toString().toStdString();
                 emit newParticipant(newPart);
                 //TODO report already registered attributes
             } else {
                 if (m_participantsData.at(i_index.row()).contains(indexOfNameAttribute)) {
-                    const auto &name = m_participantsData.at(i_index.row()).at(indexOfNameAttribute).toStdString();
-                    const auto &attribute = m_participantAttributeTitles.at(i_index.column()).toStdString();
-                    const auto &attributeVal = i_value.toString().toStdString();
+                    const auto& name = m_participantsData.at(i_index.row()).at(indexOfNameAttribute).toStdString();
+                    const auto& attribute = m_participantAttributeTitles.at(i_index.column()).toStdString();
+                    const auto& attributeVal = i_value.toString().toStdString();
                     emit participantUpdated(name, attribute, attributeVal);
                 }
             }

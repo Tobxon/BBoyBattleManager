@@ -6,8 +6,8 @@
  */
 
 
-#ifndef B3M_GUI__MAIN_WINDOW_HPP__
-#define B3M_GUI__MAIN_WINDOW_HPP__
+#ifndef B3M_GUI_MAIN_WINDOW_HPP_
+#define B3M_GUI_MAIN_WINDOW_HPP_
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
@@ -24,9 +24,7 @@
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m
-{
-namespace gui
+namespace b3m::gui
 {
 
 
@@ -37,14 +35,14 @@ class MainWindow : public QMainWindow
 
 public:
 	explicit MainWindow(b3m::gui::ParticipantsDialog&, QMainWindow* parent = nullptr);
-	virtual ~MainWindow();
+	~MainWindow() override;
 	MainWindow(const MainWindow&) = delete;
 	MainWindow& operator=(const MainWindow&) = delete;
 	MainWindow(MainWindow&&) = delete;
 	MainWindow& operator=(MainWindow&&) = delete;
 
 private:
-	void connectSignalToSubWindow(QPushButton* const, QWidget* const);
+	void connectSignalToSubWindow(QPushButton*, QWidget*);
 
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
 	b3m::gui::ParticipantsDialog* m_participantDialog;
@@ -54,9 +52,8 @@ private:
 
 
 
-} //namespace gui
-} //namespace b3m
+} //namespace b3m::gui
 
 
-#endif //B3M_GUI__MAIN_WINDOW_HPP__
+#endif //B3M_GUI_MAIN_WINDOW_HPP_
 //END OF FILE --------------------------------------------------------------------------------------

@@ -10,9 +10,11 @@
 //--------------------------------------------------------------------------------------------------
 
 //std
-//import <memory>;
 #include <memory>
 #include <array>
+#include <map>
+#include <algorithm>
+#include <vector>
 
 //Catch2 - Test Framework
 #include <catch2/catch_test_macros.hpp>
@@ -149,6 +151,40 @@ TEST_CASE("modifying attributes of participants")
 		CHECK(updatedParticipantData.value().size() == 1);
 		CHECK(updatedParticipantData.value().at(attribute) == attributeData);
 	}
+
+	//TODO try to set attribute without name -> shouldn't work
+
+	SECTION("set multi attributes on a single participant and rename afterwards")
+	{
+		const participant_name_t contestantName{ "Christian" };
+		const std::vector< std::pair< attribute_t, std::string > > attributesToSet {{"gender", "any"}, {"village", "Springfield"}, {"favorite Color", "Eburnean"}, {"language","Ostdeutsch"}};
+		const participant_name_t newContestantName{ "Jesus" };
+
+		const std::map< attribute_t, std::string > firstAttribute{ attributesToSet.back() };
+		REQUIRE(dut->newParticipant(contestantName, firstAttribute));
+
+		const auto firstReadAttribute = dut->getParticipantsAttributes(contestantName);
+		REQUIRE(firstReadAttribute);
+		CHECK(firstReadAttribute.value().size() == 1);
+		CHECK(firstReadAttribute.value() == firstAttribute);
+
+		for(const auto& [attr, attrData] : attributesToSet)
+		{
+			REQUIRE(dut->updateParticipantsAttributes(contestantName, attr, attrData));
+		}
+
+		const auto& allReadAttributes = dut->getParticipantsAttributes(contestantName);
+		REQUIRE(allReadAttributes);
+		CHECK(allReadAttributes.value().size() == attributesToSet.size());
+		for(const auto& attributePair : allReadAttributes.value())
+		{
+			CHECK(std::ranges::find(attributesToSet, attributePair) != attributesToSet.cend());
+		}
+	}
+
+	//TODO set attribute with the same value multiple times -> decide behaviour
+
+	//TODO set multiple values on multiple attributes on multiple participants (not all with the same data on everyone of course)
 }
 
 

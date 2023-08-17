@@ -72,5 +72,16 @@ auto b3m::database::ParticipantsDepot::getParticipant(const participant_t& i_par
 	return std::nullopt;
 }
 
+auto b3m::database::ParticipantsDepot::getParticipantsAttributes(const participant_t& i_participant) const
+-> std::optional< participantAttributes_t >
+{
+	if(m_participants.contains(i_participant))
+	{
+		return m_participants.at(i_participant);
+	}
+
+	return std::nullopt;
+}
+
 
 //END OF FILE --------------------------------------------------------------------------------------

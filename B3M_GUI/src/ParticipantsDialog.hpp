@@ -21,6 +21,7 @@
 
 //b3m
 import b3m.common;
+import b3m.database;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -37,7 +38,7 @@ class ParticipantsDialog : public QWidget
 	Q_OBJECT;
 
 public:
-	explicit ParticipantsDialog(QWidget* = nullptr);
+	explicit ParticipantsDialog(b3m::database::ParticipantsDepot&, QWidget* = nullptr);
 	~ParticipantsDialog() override;
 
 private:
@@ -51,10 +52,10 @@ class ParticipantsDialogModel : public QAbstractTableModel
 {
 	Q_OBJECT;
 
-    static const inline QString nameAttribute{ "name "};
+    static const inline QString nameAttribute{"name"};
 
 public:
-	explicit ParticipantsDialogModel(QObject* parent = nullptr);
+	explicit ParticipantsDialogModel(b3m::database::ParticipantsDepot&, QObject* parent = nullptr);
 
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
@@ -64,7 +65,7 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
 signals:
-    void newParticipant(const b3m::common::Participant&, const b3m::common::ParticipantAttributes&);
+    void newParticipant(const b3m::common::Participant&, const b3m::common::ParticipantAttributes& = {});
     void participantUpdated(const b3m::common::Participant&, const b3m::common::Attribute&, const std::string&);
 
 private:
@@ -73,6 +74,8 @@ private:
 
     std::map< attributeIndex, QString > m_participantAttributeTitles;
     std::map< participantIndex, std::map< attributeIndex, QString >> m_participantsData;
+
+    b3m::database::ParticipantsDepot* m_participantsStorage{ nullptr };
 };
 
 

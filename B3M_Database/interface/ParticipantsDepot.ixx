@@ -24,7 +24,6 @@ export module b3m.database:ParticipantsDepot;
 //--------------------------------------------------------------------------------------------------
 
 //std
-import <optional>;
 import <map>;
 import <string>;
 
@@ -42,21 +41,18 @@ export namespace b3m::database
 
 using participant_t = b3m::common::Participant;
 using participantAttributes_t = b3m::common::ParticipantAttributes;
-using ParticipantsDepot = std::map< participant_t, participantAttributes_t>;
+using attribute_t = b3m::common::Attribute;
 
-//class ParticipantsDepot
-//{
-//public:
-//    using participant_t = b3m::common::Participant;
-//
-//    void addParticipant(const participant_t::name_t&);
-//    void addParticipant(const participant_t&);
-//
-//    [[nodiscard]] std::optional< participant_t > getParticipantByName(const participant_t::name_t&) const;
-//    [[nodiscard]] bool isParticipantExisting(const participant_t::name_t&) const;
-//
-//    [[nodiscard]] std::size_t numOfParticipants() const;
-//};
+class ParticipantsDepot
+{
+public:
+
+    void newParticipant(const participant_t&, const participantAttributes_t& = {});
+    bool updateParticipantsAttributes(const participant_t&, const attribute_t&, const std::string&);
+
+private:
+        std::map< participant_t, participantAttributes_t> m_participants{};
+};
 
 
 

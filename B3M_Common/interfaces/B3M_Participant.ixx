@@ -32,18 +32,7 @@ namespace b3m::common
 
 
 
-export class Participant
-{
-public:
-	using name_t = std::string;
-
-	virtual ~Participant() = default;
-	Participant(const name_t&);
-
-	name_t getName() const { return m_name; }
-private:
-	name_t m_name;
-};
+export using Participant = std::string;
 
 export using ParticipantName = std::string;
 export using Attribute = std::string;

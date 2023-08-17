@@ -35,7 +35,7 @@ int main(int argc, char** argv)
     b3m::database::ParticipantsDepot allParticipants;
 
 	//main window
-	b3m::gui::ParticipantsDialog* participantsDialog{ new b3m::gui::ParticipantsDialog() };
+	b3m::gui::ParticipantsDialog* participantsDialog{ new b3m::gui::ParticipantsDialog(allParticipants) };
 	b3m::gui::MainWindow b3mMainWin(*participantsDialog);
 	
 	////presentation window

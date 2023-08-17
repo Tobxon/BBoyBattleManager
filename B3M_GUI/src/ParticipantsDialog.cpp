@@ -9,6 +9,9 @@
 
 //std
 #include <algorithm>
+#include <ranges>
+
+import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -16,9 +19,9 @@
 //--------------------------------------------------------------------------------------------------
 
 //ParticipantsDialog -------------------------------------------------------------------------------
-b3m::gui::ParticipantsDialog::ParticipantsDialog(QWidget* const i_parent)
+b3m::gui::ParticipantsDialog::ParticipantsDialog(b3m::database::ParticipantsDepot& i_participantsStorage, QWidget* const i_parent)
         : QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
-          m_model(new ParticipantsDialogModel(this))
+          m_model(new ParticipantsDialogModel(i_participantsStorage, this))
 {
     m_ui->setupUi(this);
 
@@ -31,9 +34,10 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 }
 
 //ParticipantsDialogModel --------------------------------------------------------------------------
-b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(QObject* i_parent)
+b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::ParticipantsDepot& i_participantsStorage, QObject* i_parent)
 	: QAbstractTableModel(i_parent)
     , m_participantAttributeTitles({{0, nameAttribute},{1, "crew"},{2,"city"}})
+    , m_participantsStorage(&i_participantsStorage)
 {
     //TODO initialize gui data with data from i_partContainer
 }
@@ -73,7 +77,6 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
         if(!value.isEmpty()) {
             auto mapResult = m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 
-            //TODO inform participants database about the change made to participant or the introduction of a new
             const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
                                                                    [](const auto &element) {
                                                                        return element.second == nameAttribute;
@@ -82,19 +85,35 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
             if (i_index.column() == indexOfNameAttribute && mapResult.second) //new participant
             {
                 const auto& newPart = i_value.toString().toStdString();
-                emit newParticipant(newPart);
-                //TODO report already registered attributes
+
+                //filter name attribute
+                std::map< std::string, std::string > newPartAttributes;
+                for(const auto& [attributeIndex, attributeData] : m_participantsData.at(i_index.row()))
+                {
+                    const auto& curAttribute = m_participantAttributeTitles.at(attributeIndex);
+                    if(curAttribute != nameAttribute)
+                    {
+                        newPartAttributes.try_emplace(curAttribute.toStdString(), attributeData.toStdString());
+                    }
+                }
+
+                //report new participant
+                m_participantsStorage->newParticipant(newPart, newPartAttributes);
             } else {
+				//TODO implement changing of name
                 if (m_participantsData.at(i_index.row()).contains(indexOfNameAttribute)) {
                     const auto& name = m_participantsData.at(i_index.row()).at(indexOfNameAttribute).toStdString();
                     const auto& attribute = m_participantAttributeTitles.at(i_index.column()).toStdString();
                     const auto& attributeVal = i_value.toString().toStdString();
-                    emit participantUpdated(name, attribute, attributeVal);
+
+                    //update participant
+                    m_participantsStorage->updateParticipantsAttributes(name, attribute, attributeVal);
                 }
             }
 
             return true;
         }
+        //TODO implement removing of participants
     }
     return false;
 }

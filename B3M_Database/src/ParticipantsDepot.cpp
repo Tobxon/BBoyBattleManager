@@ -38,24 +38,39 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
     return false;
 }
 
-bool b3m::database::ParticipantsDepot::removeParticipant(const participant_t&)
+bool b3m::database::ParticipantsDepot::removeParticipant(const participant_t& i_participant)
 {
-	//TODO
-    return false;
+	if(m_participants.contains(i_participant))
+	{
+		return m_participants.erase(i_participant);
+	}
+
+	return false; //
 }
 
 bool b3m::database::ParticipantsDepot::removeParticipantsAttribute(const participant_t&, const attribute_t&)
 {
 	//TODO
-    return false;
+	return false;
 }
 
 std::size_t b3m::database::ParticipantsDepot::numOfParticipants() const
 {
-    //TODO
-    return m_participants.size();
+	//TODO
+	return m_participants.size();
 }
 
+auto b3m::database::ParticipantsDepot::getParticipant(const participant_t& i_participant) const
+-> std::optional<std::pair<participant_t, participantAttributes_t>>
+{
+	if(m_participants.contains(i_participant))
+	{
+		const auto& participantsAttributes = m_participants.at(i_participant);
+		return std::make_pair(i_participant, participantsAttributes);
+	}
+
+	return std::nullopt;
+}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

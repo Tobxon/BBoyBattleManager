@@ -26,6 +26,7 @@ export module b3m.database:ParticipantsDepot;
 //std
 import <map>;
 import <string>;
+import <optional>;
 
 //b3m
 import b3m.common;
@@ -53,6 +54,8 @@ public:
 	bool removeParticipantsAttribute(const participant_t&, const attribute_t&);
 
     [[nodiscard]] std::size_t numOfParticipants() const;
+
+    [[nodiscard]] std::optional<std::pair<participant_t, participantAttributes_t>> getParticipant(const participant_t&) const;
 
 private:
         std::map< participant_t, participantAttributes_t> m_participants{};

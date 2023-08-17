@@ -9,8 +9,6 @@ target_sources(B3M_Common
 		"interfaces/B3M_Participant.ixx"
 )
 
-target_compile_features(B3M_Common PUBLIC cxx_std_20)
-
 
 # Unit Tests ---------------------------------------------------------------------------------------
 find_package(Catch2)

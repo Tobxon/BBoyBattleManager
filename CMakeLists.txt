@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.26)
 project(BBoyBattleManager VERSION 0.1.0 LANGUAGES CXX)
 
 #C++20 as base language version for this project
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 
 #to get a more clean solution overview (e.g. CMakePredefinedTargets as a folder)

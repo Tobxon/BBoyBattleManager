@@ -30,9 +30,16 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
 {
     if(m_participants.contains(i_participant))
     {
-        auto& curAttributes = m_participants.at(i_participant);
-        curAttributes[i_attribute] = i_attributeData;
-        return true;
+		if(i_attribute == nameAttribute)
+		{
+			auto participantElement = m_participants.extract(i_participant);
+			participantElement.key() = i_attributeData;
+			m_participants.insert(std::move(participantElement));
+		} else {
+			m_participants.at(i_participant).insert_or_assign(i_attribute, i_attributeData);
+		}
+
+		return true;
     }
 
     return false;

@@ -12,6 +12,7 @@
 #include <ranges>
 
 import b3m.common;
+import b3m.database; //currently only needed for b3m::database::ParticipantsDepot::nameAttribute
 
 
 //--------------------------------------------------------------------------------------------------
@@ -79,40 +80,55 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
                                                                })->first;
 
         const auto value = i_value.toString();
-        if(!value.isEmpty()) {
-            auto mapInsertResult = m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
+        if(!value.isEmpty()) //something is set
+		{
+			if(i_index.column() == indexOfNameAttribute) //name is set
+			{
+				const auto& newPartName = i_value.toString().toStdString();
 
-            if (i_index.column() == indexOfNameAttribute && mapInsertResult.second) //new participant
-            {
-                const auto& newPartName = i_value.toString().toStdString();
+				if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column())) //renaming
+				{
+					const auto& prevName = m_participantsData.at(i_index.row()).at(i_index.column()).toStdString();
 
-                //filter name attribute
-                std::map< std::string, std::string > newPartAttributes;
-                for(const auto& [attributeIndex, attributeData] : m_participantsData.at(i_index.row()))
-                {
-                    const auto& curAttribute = m_participantAttributeTitles.at(attributeIndex);
-                    if(curAttribute != nameAttribute)
-                    {
-                        newPartAttributes.try_emplace(curAttribute.toStdString(), attributeData.toStdString());
-                    }
-                }
+					m_participantsData.at(i_index.row()).insert_or_assign(i_index.column(), i_value.toString());
 
-                //report new participant
-                m_participantsStorage->newParticipant(newPartName, newPartAttributes);
-            } else {
-				//TODO implement changing of name
-                if (m_participantsData.at(i_index.row()).contains(indexOfNameAttribute)) {
-                    const auto& name = m_participantsData.at(i_index.row()).at(indexOfNameAttribute).toStdString();
-                    const auto& attribute = m_participantAttributeTitles.at(i_index.column()).toStdString();
-                    const auto& attributeVal = i_value.toString().toStdString();
+					//report updated participants name
+					m_participantsStorage->updateParticipantsAttributes(prevName, b3m::database::ParticipantsDepot::nameAttribute, newPartName);
+				} else { //new participant
+					m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 
-                    //update participant
-                    m_participantsStorage->updateParticipantsAttributes(name, attribute, attributeVal);
-                }
-            }
+					//get already registered attributes
+					std::map< std::string, std::string > newPartAttributes;
+					for(const auto& [attributeIndex, attributeData] : m_participantsData.at(i_index.row()))
+					{
+						const auto& curAttribute = m_participantAttributeTitles.at(attributeIndex);
+						if(curAttribute != nameAttribute)
+						{
+							newPartAttributes.try_emplace(curAttribute.toStdString(), attributeData.toStdString());
+						}
+					}
+
+					//report new participant
+					m_participantsStorage->newParticipant(newPartName, newPartAttributes);
+				}
+			} else {
+				m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
+
+				if (m_participantsData.at(i_index.row()).contains(indexOfNameAttribute))
+				{
+					const auto& name = m_participantsData.at(i_index.row()).at(indexOfNameAttribute).toStdString();
+					const auto& attribute = m_participantAttributeTitles.at(i_index.column()).toStdString();
+					const auto& attributeVal = i_value.toString().toStdString();
+
+					//update participant
+					m_participantsStorage->updateParticipantsAttributes(name, attribute, attributeVal);
+				}
+			}
 
             return true;
-        } else {
+        }
+		else
+		{
 			if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column())) //something was removed
 			{
 				auto& curParticipantsAttributes = m_participantsData.at(i_index.row());

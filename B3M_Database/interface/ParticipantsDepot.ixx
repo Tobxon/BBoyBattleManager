@@ -47,6 +47,8 @@ using attribute_t = b3m::common::Attribute;
 class ParticipantsDepot
 {
 public:
+	static constexpr attribute_t nameAttribute{"name"};
+
     bool newParticipant(const participant_t&, const participantAttributes_t& = {});
     bool updateParticipantsAttributes(const participant_t&, const attribute_t&, const std::string&);
 

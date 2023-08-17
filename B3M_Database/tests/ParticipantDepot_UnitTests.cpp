@@ -128,6 +128,11 @@ TEST_CASE("modifying attributes of participants")
 {
 	auto dut = std::make_unique< b3m::database::ParticipantsDepot >();
 
+	SECTION("try to read attribute of a non existing participant")
+	{
+		CHECK(!dut->getParticipantsAttributes("NoName"));
+	}
+
 	SECTION("add participant without attribute and add attribute later")
 	{
 		static const participant_name_t contestantName{ "Tyra" };
@@ -152,13 +157,39 @@ TEST_CASE("modifying attributes of participants")
 		CHECK(updatedParticipantData.value().at(attribute) == attributeData);
 	}
 
+	SECTION("rename a participant")
+	{
+		static const participant_name_t wrongName{"sopiha"};
+		static const participant_name_t correctedName{"Sophia"};
+
+		//create participant
+		REQUIRE(dut->newParticipant(wrongName));
+		const auto curParticipantData = dut->getParticipantsAttributes(wrongName);
+		REQUIRE(curParticipantData);
+		REQUIRE(curParticipantData.value().empty());
+
+		//rename participant
+		REQUIRE(dut->updateParticipantsAttributes(wrongName, b3m::database::ParticipantsDepot::nameAttribute,
+												  correctedName));
+
+		const auto correctedParticipantData = dut->getParticipantsAttributes(correctedName);
+		REQUIRE(correctedParticipantData);
+		REQUIRE(correctedParticipantData.value().empty());
+
+		const auto wrongParticipantData = dut->getParticipantsAttributes(wrongName);
+		REQUIRE(!wrongParticipantData);
+	}
+
 	//TODO try to set attribute without name -> shouldn't work
 
 	SECTION("set multi attributes on a single participant and rename afterwards")
 	{
-		const participant_name_t contestantName{ "Christian" };
-		const std::vector< std::pair< attribute_t, std::string > > attributesToSet {{"gender", "any"}, {"village", "Springfield"}, {"favorite Color", "Eburnean"}, {"language","Ostdeutsch"}};
-		const participant_name_t newContestantName{ "Jesus" };
+		const participant_name_t contestantName{"Christian"};
+		const std::vector<std::pair<attribute_t, std::string> > attributesToSet{{"gender",         "any"},
+																				{"village",        "Springfield"},
+																				{"favorite Color", "Eburnean"},
+																				{"language",       "Ostdeutsch"}};
+		const participant_name_t newContestantName{"Jesus"};
 
 		const std::map< attribute_t, std::string > firstAttribute{ attributesToSet.back() };
 		REQUIRE(dut->newParticipant(contestantName, firstAttribute));

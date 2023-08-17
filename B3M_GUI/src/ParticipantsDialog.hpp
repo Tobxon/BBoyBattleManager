@@ -52,7 +52,7 @@ class ParticipantsDialogModel : public QAbstractTableModel
 {
 	Q_OBJECT;
 
-    static const inline QString nameAttribute{"name"};
+    static const inline QString nameAttribute{ QString::fromStdString(b3m::database::ParticipantsDepot::nameAttribute) };
 
 public:
 	explicit ParticipantsDialogModel(b3m::database::ParticipantsDepot&, QObject* parent = nullptr);

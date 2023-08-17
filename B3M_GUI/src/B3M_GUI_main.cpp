@@ -34,9 +34,15 @@ int main(int argc, char** argv)
     //database elements
     b3m::database::ParticipantsDepot allParticipants;
 
+	//TEST initial data for ParticipantsDialog
+	allParticipants.newParticipant("David");
+	allParticipants.newParticipant("Georok", {{"city", "Vertania"}, {"favColor", "grey"}});
+	allParticipants.newParticipant("Liss");
+	allParticipants.updateParticipantsAttributes("Liss", "crew", "PVCrew");
+
+
 	//main window
-	b3m::gui::ParticipantsDialog* participantsDialog{ new b3m::gui::ParticipantsDialog(allParticipants) };
-	b3m::gui::MainWindow b3mMainWin(*participantsDialog);
+	b3m::gui::MainWindow b3mMainWin(allParticipants);
 	
 	////presentation window
 	//QWidget showWin;

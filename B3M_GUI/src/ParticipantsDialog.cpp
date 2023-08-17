@@ -11,9 +11,6 @@
 #include <algorithm>
 #include <ranges>
 
-import b3m.common;
-import b3m.database; //currently only needed for b3m::database::ParticipantsDepot::nameAttribute
-
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
@@ -37,10 +34,40 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 //ParticipantsDialogModel --------------------------------------------------------------------------
 b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::ParticipantsDepot& i_participantsStorage, QObject* i_parent)
 	: QAbstractTableModel(i_parent)
-    , m_participantAttributeTitles({{0, nameAttribute},{1, "crew"},{2,"city"}})
+    , m_participantAttributeTitles({{0, QString::fromStdString(b3m::common::nameAttribute)},{1, "crew"},{2,"city"}})
     , m_participantsStorage(&i_participantsStorage)
 {
     //TODO initialize gui data with data from i_partContainer
+	std::size_t partIndex{0};
+	for(const auto& [participant, partAttributes] : i_participantsStorage)
+	{
+		const auto partQt = QString::fromStdString(participant);
+
+		//TODO check if participant is created already and get index from this
+
+		const auto nameAttrIndex = std::ranges::find_if(m_participantAttributeTitles, [attrQt = b3m::common::nameAttribute](const auto& mapEle) { return mapEle.second == attrQt; })->first; //TODO to b3m::util
+
+		m_participantsData[partIndex].insert_or_assign(nameAttrIndex, partQt);
+
+		for(const auto& [attribute, attrData] : partAttributes)
+		{
+			const auto attrQt = QString::fromStdString(attribute);
+			const auto attrDataQt = QString::fromStdString(attrData);
+
+			const auto searchAttrResult = std::ranges::find_if(m_participantAttributeTitles, [attrQt](const auto& mapEle){ return mapEle.second == attrQt; }); //TODO to b3m::util
+
+			if(searchAttrResult != m_participantAttributeTitles.end())
+			{
+				const auto attrIndex = searchAttrResult->first;
+				m_participantsData[partIndex].insert_or_assign(attrIndex, attrDataQt);
+			} else{
+				const auto newAttributeIndex = m_participantAttributeTitles.rbegin()->first+1;
+				m_participantAttributeTitles.insert_or_assign(newAttributeIndex, attrQt);
+				m_participantsData[partIndex].insert_or_assign(newAttributeIndex, attrDataQt);
+			}
+		}
+		++partIndex;
+	}
 }
 
 int b3m::gui::ParticipantsDialogModel::rowCount(const QModelIndex& i_parent) const
@@ -93,7 +120,7 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
 					m_participantsData.at(i_index.row()).insert_or_assign(i_index.column(), i_value.toString());
 
 					//report updated participants name
-					m_participantsStorage->updateParticipantsAttributes(prevName, b3m::database::ParticipantsDepot::nameAttribute, newPartName);
+					m_participantsStorage->updateParticipantsAttributes(prevName, b3m::common::nameAttribute, newPartName);
 				} else { //new participant
 					m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 

@@ -47,8 +47,6 @@ using attribute_t = b3m::common::Attribute;
 class ParticipantsDepot
 {
 public:
-	static constexpr attribute_t nameAttribute{"name"};
-
     bool newParticipant(const participant_t&, const participantAttributes_t& = {});
     bool updateParticipantsAttributes(const participant_t&, const attribute_t&, const std::string&);
 
@@ -61,7 +59,13 @@ public:
 	[[nodiscard]] std::optional< participantAttributes_t > getParticipantsAttributes(const participant_t&) const;
 
 private:
-        std::map< participant_t, participantAttributes_t> m_participants{};
+	std::map< participant_t, participantAttributes_t> m_participants{};
+
+public:
+	decltype(m_participants)::const_iterator begin() const noexcept;
+	decltype(m_participants)::const_iterator cbegin() const noexcept;
+	decltype(m_participants)::const_iterator end() const noexcept;
+	decltype(m_participants)::const_iterator cend() const noexcept;
 };
 
 

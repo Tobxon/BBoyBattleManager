@@ -38,6 +38,8 @@ export using ParticipantName = std::string;
 export using Attribute = std::string;
 export using ParticipantAttributes = std::map< Attribute, std::string >;
 
+export constexpr const char* nameAttribute{ "name" };
+
 
 
 } //namespace b3m::common

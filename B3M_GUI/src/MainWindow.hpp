@@ -20,6 +20,9 @@
 
 #include "ParticipantsDialog.hpp"
 
+//b3m
+import b3m.database;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
@@ -34,7 +37,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT;
 
 public:
-	explicit MainWindow(b3m::gui::ParticipantsDialog&, QMainWindow* parent = nullptr);
+	explicit MainWindow(b3m::database::ParticipantsDepot&, QMainWindow* parent = nullptr);
 	~MainWindow() override;
 	MainWindow(const MainWindow&) = delete;
 	MainWindow& operator=(const MainWindow&) = delete;
@@ -45,7 +48,7 @@ private:
 	void connectSignalToSubWindow(QPushButton*, QWidget*);
 
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
-	b3m::gui::ParticipantsDialog* m_participantDialog;
+	b3m::gui::ParticipantsDialog* m_participantDialog{ nullptr };
 
 	//void slot_setCentralWidget(QWidget* const);
 };

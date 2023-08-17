@@ -30,7 +30,7 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
 {
     if(m_participants.contains(i_participant))
     {
-		if(i_attribute == nameAttribute)
+		if(i_attribute == b3m::common::nameAttribute)
 		{
 			auto participantElement = m_participants.extract(i_participant);
 			participantElement.key() = i_attributeData;
@@ -88,6 +88,26 @@ auto b3m::database::ParticipantsDepot::getParticipantsAttributes(const participa
 	}
 
 	return std::nullopt;
+}
+
+auto b3m::database::ParticipantsDepot::begin() const noexcept -> decltype(m_participants)::const_iterator
+{
+	return m_participants.cbegin();
+}
+
+auto b3m::database::ParticipantsDepot::cbegin() const noexcept -> decltype(m_participants)::const_iterator
+{
+	return m_participants.cbegin();
+}
+
+auto b3m::database::ParticipantsDepot::end() const noexcept -> decltype(m_participants)::const_iterator
+{
+	return m_participants.cend();
+}
+
+auto b3m::database::ParticipantsDepot::cend() const noexcept -> decltype(m_participants)::const_iterator
+{
+	return m_participants.cend();
 }
 
 

@@ -21,6 +21,7 @@
 
 //b3m
 import b3m.database;
+import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -169,8 +170,7 @@ TEST_CASE("modifying attributes of participants")
 		REQUIRE(curParticipantData.value().empty());
 
 		//rename participant
-		REQUIRE(dut->updateParticipantsAttributes(wrongName, b3m::database::ParticipantsDepot::nameAttribute,
-												  correctedName));
+		REQUIRE(dut->updateParticipantsAttributes(wrongName, b3m::common::nameAttribute, correctedName));
 
 		const auto correctedParticipantData = dut->getParticipantsAttributes(correctedName);
 		REQUIRE(correctedParticipantData);

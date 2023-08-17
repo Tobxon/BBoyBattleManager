@@ -19,13 +19,15 @@
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-b3m::gui::MainWindow::MainWindow(b3m::gui::ParticipantsDialog& i_participantDialog, 
+b3m::gui::MainWindow::MainWindow(b3m::database::ParticipantsDepot& i_participantStorage,
 	QMainWindow* parent)
-	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow), m_participantDialog(&i_participantDialog)
+	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow), m_participantDialog(new b3m::gui::ParticipantsDialog(i_participantStorage))
 {
 	m_ui->setupUi(this);
 
-	connectSignalToSubWindow(m_ui->upLeftButton, m_participantDialog);
+	connect(m_ui->upLeftButton, &QPushButton::clicked, [this](){
+		m_participantDialog->show();
+	});
 }
 
 b3m::gui::MainWindow::~MainWindow()

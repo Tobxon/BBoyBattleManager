@@ -73,18 +73,18 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
             return false;
         }
 
+        const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
+                                                               [](const auto &element) {
+                                                                   return element.second == nameAttribute;
+                                                               })->first;
+
         const auto value = i_value.toString();
         if(!value.isEmpty()) {
-            auto mapResult = m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
+            auto mapInsertResult = m_participantsData[i_index.row()].insert_or_assign(i_index.column(), i_value.toString());
 
-            const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
-                                                                   [](const auto &element) {
-                                                                       return element.second == nameAttribute;
-                                                                   })->first;
-
-            if (i_index.column() == indexOfNameAttribute && mapResult.second) //new participant
+            if (i_index.column() == indexOfNameAttribute && mapInsertResult.second) //new participant
             {
-                const auto& newPart = i_value.toString().toStdString();
+                const auto& newPartName = i_value.toString().toStdString();
 
                 //filter name attribute
                 std::map< std::string, std::string > newPartAttributes;
@@ -98,7 +98,7 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
                 }
 
                 //report new participant
-                m_participantsStorage->newParticipant(newPart, newPartAttributes);
+                m_participantsStorage->newParticipant(newPartName, newPartAttributes);
             } else {
 				//TODO implement changing of name
                 if (m_participantsData.at(i_index.row()).contains(indexOfNameAttribute)) {
@@ -112,8 +112,31 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
             }
 
             return true;
+        } else {
+			if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column())) //something was removed
+			{
+				auto& curParticipantsAttributes = m_participantsData.at(i_index.row());
+
+				if (i_index.column() == indexOfNameAttribute) //remove participant
+				{
+					const auto& oldParticipantsName = curParticipantsAttributes.at(indexOfNameAttribute).toStdString();
+					curParticipantsAttributes.at(indexOfNameAttribute).clear();
+
+					m_participantsStorage->removeParticipant(oldParticipantsName);
+				} else { //remove attribute
+					curParticipantsAttributes.at(i_index.column()).clear();
+					if(curParticipantsAttributes.contains(indexOfNameAttribute))
+					{
+						const auto& participantsName = curParticipantsAttributes.at(indexOfNameAttribute).toStdString();
+						const auto& attributeToRemove = m_participantAttributeTitles.at(i_index.column()).toStdString();
+
+						m_participantsStorage->removeParticipantsAttribute(participantsName, attributeToRemove);
+					}
+				}
+
+				return true;
+			}
         }
-        //TODO implement removing of participants
     }
     return false;
 }

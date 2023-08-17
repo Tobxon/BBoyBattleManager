@@ -50,6 +50,9 @@ public:
     void newParticipant(const participant_t&, const participantAttributes_t& = {});
     bool updateParticipantsAttributes(const participant_t&, const attribute_t&, const std::string&);
 
+	void removeParticipant(const participant_t&);
+	void removeParticipantsAttribute(const participant_t&, const attribute_t&);
+
 private:
         std::map< participant_t, participantAttributes_t> m_participants{};
 };

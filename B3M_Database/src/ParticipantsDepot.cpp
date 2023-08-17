@@ -33,6 +33,16 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
     }
 }
 
+void b3m::database::ParticipantsDepot::removeParticipant(const participant_t&)
+{
+	//TODO
+}
+
+void b3m::database::ParticipantsDepot::removeParticipantsAttribute(const participant_t&, const attribute_t&)
+{
+	//TODO
+}
+
 
 
 //END OF FILE --------------------------------------------------------------------------------------

@@ -8,8 +8,6 @@
 //module;
 #include "MainWindow.hpp"
 
-//#include "ui_MainWindow.h"
-
 //Qt
 #include <QPushButton>
 
@@ -33,13 +31,6 @@ b3m::gui::MainWindow::MainWindow(b3m::database::ParticipantsDepot& i_participant
 b3m::gui::MainWindow::~MainWindow()
 {
 	delete m_ui;
-}
-
-void b3m::gui::MainWindow::connectSignalToSubWindow(QPushButton* const i_btn,
-	QWidget* const i_newCentralWidget)
-{
-	connect(i_btn, &QPushButton::clicked, m_ui->verticalLayout,
-		[i_newCentralWidget, this]() { setCentralWidget(i_newCentralWidget); });
 }
 
 

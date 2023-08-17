@@ -9,8 +9,6 @@ target_sources(B3M_Database
         "interface/ParticipantsDepot.ixx"
 )
 
-target_compile_features(B3M_Database PUBLIC cxx_std_20)
-
 target_link_libraries(B3M_Database
     PRIVATE
         B3M_Common

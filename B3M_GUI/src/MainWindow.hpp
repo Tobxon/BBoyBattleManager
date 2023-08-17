@@ -16,8 +16,8 @@
 //Qt
 #include <QMainWindow>
 
+//GUI elements
 #include "ui_MainWindow.h"
-
 #include "ParticipantsDialog.hpp"
 
 //b3m
@@ -45,8 +45,6 @@ public:
 	MainWindow& operator=(MainWindow&&) = delete;
 
 private:
-	void connectSignalToSubWindow(QPushButton*, QWidget*);
-
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
 	b3m::gui::ParticipantsDialog* m_participantDialog{ nullptr };
 

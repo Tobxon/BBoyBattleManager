@@ -55,7 +55,8 @@ public:
 
     [[nodiscard]] std::size_t numOfParticipants() const;
 
-    [[nodiscard]] std::optional<std::pair<participant_t, participantAttributes_t>> getParticipant(const participant_t&) const;
+    [[nodiscard]] std::optional< std::pair< participant_t, participantAttributes_t >> getParticipant(const participant_t&) const;
+	[[nodiscard]] std::optional< participantAttributes_t > getParticipantsAttributes(const participant_t&) const;
 
 private:
         std::map< participant_t, participantAttributes_t> m_participants{};

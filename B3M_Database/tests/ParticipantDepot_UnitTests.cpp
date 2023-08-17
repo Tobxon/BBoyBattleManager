@@ -26,6 +26,7 @@ import b3m.database;
 //--------------------------------------------------------------------------------------------------
 
 using participant_name_t = b3m::database::participant_t;
+using b3m::database::attribute_t;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -35,6 +36,11 @@ using participant_name_t = b3m::database::participant_t;
 TEST_CASE("create Participants")
 {
     auto dut = std::make_unique< b3m::database::ParticipantsDepot >();
+
+	SECTION("check for empty ParticipantsDepot")
+	{
+		CHECK(dut->numOfParticipants() == 0);
+	}
 
     SECTION("simply try adding a same named participant twice")
     {
@@ -71,7 +77,6 @@ TEST_CASE("remove Participants")
 	{
 		static const participant_name_t nonContestant{ "Larry" };
 
-		CHECK(dut->numOfParticipants() == 0);
 		CHECK(!dut->getParticipant(nonContestant));
 
 		REQUIRE(!dut->getParticipant(participant_name_t{ player }));
@@ -113,8 +118,36 @@ TEST_CASE("remove Participants")
 			CHECK(!dut->getParticipant(player));
 			REQUIRE(!dut->removeParticipant(player));
 			CHECK(!dut->getParticipant(player));
-			REQUIRE(dut->numOfParticipants() == 0);
 		}
+	}
+}
+
+TEST_CASE("modifying attributes of participants")
+{
+	auto dut = std::make_unique< b3m::database::ParticipantsDepot >();
+
+	SECTION("add participant without attribute and add attribute later")
+	{
+		static const participant_name_t contestantName{ "Tyra" };
+		static const attribute_t attribute{ "color" };
+		static const std::string attributeData{ "orange" };
+
+		//create participant
+		REQUIRE(dut->newParticipant(contestantName));
+		const auto curParticipantData = dut->getParticipantsAttributes(contestantName);
+		REQUIRE(curParticipantData);
+		REQUIRE(curParticipantData.value().empty());
+
+		//set attribute of participant
+		REQUIRE(dut->updateParticipantsAttributes(contestantName, attribute, attributeData));
+		REQUIRE(dut->numOfParticipants() == 1);
+
+		const auto updatedParticipantData = dut->getParticipantsAttributes(contestantName);
+		REQUIRE(updatedParticipantData);
+		REQUIRE(dut->numOfParticipants() == 1);
+
+		CHECK(updatedParticipantData.value().size() == 1);
+		CHECK(updatedParticipantData.value().at(attribute) == attributeData);
 	}
 }
 

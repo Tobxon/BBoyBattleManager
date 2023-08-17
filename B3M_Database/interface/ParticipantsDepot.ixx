@@ -46,12 +46,13 @@ using attribute_t = b3m::common::Attribute;
 class ParticipantsDepot
 {
 public:
-
-    void newParticipant(const participant_t&, const participantAttributes_t& = {});
+    bool newParticipant(const participant_t&, const participantAttributes_t& = {});
     bool updateParticipantsAttributes(const participant_t&, const attribute_t&, const std::string&);
 
-	void removeParticipant(const participant_t&);
-	void removeParticipantsAttribute(const participant_t&, const attribute_t&);
+	bool removeParticipant(const participant_t&);
+	bool removeParticipantsAttribute(const participant_t&, const attribute_t&);
+
+    [[nodiscard]] std::size_t numOfParticipants() const;
 
 private:
         std::map< participant_t, participantAttributes_t> m_participants{};

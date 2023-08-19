@@ -23,6 +23,8 @@ bool b3m::database::ParticipantsDepot::newParticipant(const participant_t& i_par
 
 	auto emplaceResult = m_participants.try_emplace(i_participant, i_attributes);
 
+	updateObservers();
+
 	return emplaceResult.second;
 }
 
@@ -39,6 +41,8 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
 			m_participants.at(i_participant).insert_or_assign(i_attribute, i_attributeData);
 		}
 
+		updateObservers();
+
 		return true;
 	}
 
@@ -49,7 +53,9 @@ bool b3m::database::ParticipantsDepot::removeParticipant(const participant_t& i_
 {
 	if(m_participants.contains(i_participant))
 	{
-		return m_participants.erase(i_participant);
+		const auto eraseResult = m_participants.erase(i_participant);
+		updateObservers();
+		return eraseResult;
 	}
 
 	return false; //
@@ -108,6 +114,20 @@ auto b3m::database::ParticipantsDepot::end() const noexcept -> decltype(m_partic
 auto b3m::database::ParticipantsDepot::cend() const noexcept -> decltype(m_participants)::const_iterator
 {
 	return m_participants.cend();
+}
+
+//TODO to use of boost
+void b3m::database::ParticipantsDepot::registerCallback(const std::function<void (const ParticipantsDepot&)>& i_callback)
+{
+	m_reportChangesSignal = i_callback;
+}
+
+void b3m::database::ParticipantsDepot::updateObservers() const
+{
+	if(m_reportChangesSignal)
+	{
+		m_reportChangesSignal(*this);
+	}
 }
 
 

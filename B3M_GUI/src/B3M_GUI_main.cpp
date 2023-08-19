@@ -33,6 +33,7 @@ int main(int argc, char** argv)
 
 	//database elements
 	b3m::database::ParticipantsDepot allParticipants;
+	b3m::database::TeamsCollector allTeams{allParticipants};
 
 	//main window
 	b3m::gui::MainWindow b3mMainWin(allParticipants);

@@ -52,7 +52,7 @@ class ParticipantsDialogModel : public QAbstractTableModel
 {
 	Q_OBJECT;
 
-    static const inline QString nameAttribute{ QString::fromStdString(b3m::common::nameAttribute) };
+	static const inline QString nameAttribute{ QString::fromStdString(b3m::common::nameAttribute) };
 
 public:
 	explicit ParticipantsDialogModel(b3m::database::ParticipantsDepot&, QObject* parent = nullptr);
@@ -60,22 +60,22 @@ public:
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
-    Qt::ItemFlags flags(const QModelIndex& index) const override;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+	Qt::ItemFlags flags(const QModelIndex& index) const override;
+	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
 signals:
-    void newParticipant(const b3m::common::Participant&, const b3m::common::ParticipantAttributes& = {});
-    void participantUpdated(const b3m::common::Participant&, const b3m::common::Attribute&, const std::string&);
+	void newParticipant(const b3m::common::Participant&, const b3m::common::ParticipantAttributes& = {});
+	void participantUpdated(const b3m::common::Participant&, const b3m::common::Attribute&, const std::string&);
 
 private:
-    using participantIndex = std::size_t;
-    using attributeIndex = std::size_t;
+	using participantIndex = std::size_t;
+	using attributeIndex = std::size_t;
 
-    std::map< attributeIndex, QString > m_participantAttributeTitles;
-    std::map< participantIndex, std::map< attributeIndex, QString >> m_participantsData;
+	std::map< attributeIndex, QString > m_participantAttributeTitles;
+	std::map< participantIndex, std::map< attributeIndex, QString >> m_participantsData;
 
-    b3m::database::ParticipantsDepot* m_participantsStorage{ nullptr };
+	b3m::database::ParticipantsDepot* m_participantsStorage{ nullptr };
 };
 
 
@@ -84,4 +84,4 @@ private:
 
 
 #endif //B3M_GUI_PARTICIPANTS_DIALOG_HPP_
- //END OF FILE --------------------------------------------------------------------------------------
+//END OF FILE --------------------------------------------------------------------------------------

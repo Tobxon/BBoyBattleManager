@@ -38,35 +38,35 @@ using b3m::database::attribute_t;
 
 TEST_CASE("create Participants")
 {
-    auto dut = std::make_unique< b3m::database::ParticipantsDepot >();
+	auto dut = std::make_unique< b3m::database::ParticipantsDepot >();
 
 	SECTION("check for empty ParticipantsDepot")
 	{
 		CHECK(dut->numOfParticipants() == 0);
 	}
 
-    SECTION("simply try adding a same named participant twice")
-    {
-        static const participant_name_t player1{ "Storm" };
-        REQUIRE(dut->newParticipant(player1));
-        CHECK(dut->numOfParticipants() == 1);
-        CHECK(!dut->newParticipant(player1));
-        CHECK(dut->numOfParticipants() == 1);
-    }
+	SECTION("simply try adding a same named participant twice")
+	{
+		static const participant_name_t player1{ "Storm" };
+		REQUIRE(dut->newParticipant(player1));
+		CHECK(dut->numOfParticipants() == 1);
+		CHECK(!dut->newParticipant(player1));
+		CHECK(dut->numOfParticipants() == 1);
+	}
 
-    SECTION("adding multiple participants")
-    {
-        static const std::array< participant_name_t, 4 > players{
-                "Storm", "Hong10", "Lil Kev", "Tynee" };
+	SECTION("adding multiple participants")
+	{
+		static const std::array< participant_name_t, 4 > players{
+			"Storm", "Hong10", "Lil Kev", "Tynee" };
 
-        std::size_t curSize = 0;
-        for (const auto& player : players)
-        {
-            REQUIRE(dut->numOfParticipants() == curSize);
-            REQUIRE(dut->newParticipant(player));
-            CHECK(dut->numOfParticipants() == ++curSize);
-        }
-    }
+		std::size_t curSize = 0;
+		for (const auto& player : players)
+		{
+			REQUIRE(dut->numOfParticipants() == curSize);
+			REQUIRE(dut->newParticipant(player));
+			CHECK(dut->numOfParticipants() == ++curSize);
+		}
+	}
 }
 
 TEST_CASE("remove Participants")
@@ -185,10 +185,11 @@ TEST_CASE("modifying attributes of participants")
 	SECTION("set multi attributes on a single participant and rename afterwards")
 	{
 		const participant_name_t contestantName{"Christian"};
-		const std::vector<std::pair<attribute_t, std::string> > attributesToSet{{"gender",         "any"},
-																				{"village",        "Springfield"},
-																				{"favorite Color", "Eburnean"},
-																				{"language",       "Ostdeutsch"}};
+		const std::vector< std::pair< attribute_t, std::string >> attributesToSet{
+			{"gender",         "any"},
+			{"village",        "Springfield"},
+			{"favorite Color", "Eburnean"},
+			{"language",       "Ostdeutsch"}};
 		const participant_name_t newContestantName{"Jesus"};
 
 		const std::map< attribute_t, std::string > firstAttribute{ attributesToSet.back() };

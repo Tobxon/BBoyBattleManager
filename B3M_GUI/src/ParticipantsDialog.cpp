@@ -18,12 +18,12 @@
 
 //ParticipantsDialog -------------------------------------------------------------------------------
 b3m::gui::ParticipantsDialog::ParticipantsDialog(b3m::database::ParticipantsDepot& i_participantsStorage, QWidget* const i_parent)
-        : QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
-          m_model(new ParticipantsDialogModel(i_participantsStorage, this))
+		: QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
+			m_model(new ParticipantsDialogModel(i_participantsStorage, this))
 {
-    m_ui->setupUi(this);
+	m_ui->setupUi(this);
 
-    m_ui->participantsTable->setModel(m_model);
+	m_ui->participantsTable->setModel(m_model);
 }
 
 b3m::gui::ParticipantsDialog::~ParticipantsDialog()
@@ -34,10 +34,9 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 //ParticipantsDialogModel --------------------------------------------------------------------------
 b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::ParticipantsDepot& i_participantsStorage, QObject* i_parent)
 	: QAbstractTableModel(i_parent)
-    , m_participantAttributeTitles({{0, QString::fromStdString(b3m::common::nameAttribute)},{1, "crew"},{2,"city"}})
-    , m_participantsStorage(&i_participantsStorage)
+	, m_participantAttributeTitles({{0, QString::fromStdString(b3m::common::nameAttribute)},{1, "crew"},{2,"city"}})
+	, m_participantsStorage(&i_participantsStorage)
 {
-    //TODO initialize gui data with data from i_partContainer
 	std::size_t partIndex{0};
 	for(const auto& [participant, partAttributes] : i_participantsStorage)
 	{
@@ -45,7 +44,10 @@ b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::Partic
 
 		//TODO check if participant is created already and get index from this
 
-		const auto nameAttrIndex = std::ranges::find_if(m_participantAttributeTitles, [attrQt = b3m::common::nameAttribute](const auto& mapEle) { return mapEle.second == attrQt; })->first; //TODO to b3m::util
+		const auto nameAttrIndex =
+				std::ranges::find_if(m_participantAttributeTitles,
+									 [attrQt = b3m::common::nameAttribute](const auto& mapEle)
+									 { return mapEle.second == attrQt; })->first; //TODO to b3m::util
 
 		m_participantsData[partIndex].insert_or_assign(nameAttrIndex, partQt);
 
@@ -54,7 +56,10 @@ b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::Partic
 			const auto attrQt = QString::fromStdString(attribute);
 			const auto attrDataQt = QString::fromStdString(attrData);
 
-			const auto searchAttrResult = std::ranges::find_if(m_participantAttributeTitles, [attrQt](const auto& mapEle){ return mapEle.second == attrQt; }); //TODO to b3m::util
+			const auto searchAttrResult =
+					std::ranges::find_if(m_participantAttributeTitles,
+										 [attrQt](const auto& mapEle)
+										 { return mapEle.second == attrQt; }); //TODO to b3m::util
 
 			if(searchAttrResult != m_participantAttributeTitles.end())
 			{
@@ -84,30 +89,30 @@ QVariant b3m::gui::ParticipantsDialogModel::data(const QModelIndex& i_index, int
 {
 	if (i_role == Qt::DisplayRole)
 	{
-        if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column()))
-        {
-            return m_participantsData.at(i_index.row()).at(i_index.column());
-        }
+		if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column()))
+		{
+			return m_participantsData.at(i_index.row()).at(i_index.column());
+		}
 	}
 	return {};
 }
 
 bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, const QVariant& i_value, int i_role)
 {
-    if (i_role == Qt::EditRole)
-    {
-        if (!checkIndex(i_index))
-        {
-            return false;
-        }
+	if (i_role == Qt::EditRole)
+	{
+		if (!checkIndex(i_index))
+		{
+			return false;
+		}
 
-        const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
-                                                               [](const auto &element) {
-                                                                   return element.second == nameAttribute;
-                                                               })->first;
+		const auto indexOfNameAttribute = std::ranges::find_if(m_participantAttributeTitles,
+																[](const auto &element) {
+																	return element.second == nameAttribute;
+																})->first;
 
-        const auto value = i_value.toString();
-        if(!value.isEmpty()) //something is set
+		const auto value = i_value.toString();
+		if(!value.isEmpty()) //something is set
 		{
 			if(i_index.column() == indexOfNameAttribute) //name is set
 			{
@@ -152,8 +157,8 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
 				}
 			}
 
-            return true;
-        }
+			return true;
+		}
 		else
 		{
 			if(m_participantsData.contains(i_index.row()) && m_participantsData.at(i_index.row()).contains(i_index.column())) //something was removed
@@ -179,26 +184,26 @@ bool b3m::gui::ParticipantsDialogModel::setData(const QModelIndex& i_index, cons
 
 				return true;
 			}
-        }
-    }
-    return false;
+		}
+	}
+	return false;
 }
 
 Qt::ItemFlags b3m::gui::ParticipantsDialogModel::flags(const QModelIndex& index) const
 {
-    return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
+	return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
 
 QVariant b3m::gui::ParticipantsDialogModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
-    {
-        if(m_participantAttributeTitles.contains(section))
-        {
-            return m_participantAttributeTitles.at(section);
-        }
-    }
-    return {};
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+	{
+		if(m_participantAttributeTitles.contains(section))
+		{
+			return m_participantAttributeTitles.at(section);
+		}
+	}
+	return {};
 }
 
 

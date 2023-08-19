@@ -28,11 +28,11 @@ import b3m.database;
 //--------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv)
-{    
+{
 	QApplication app(argc, argv);
 
-    //database elements
-    b3m::database::ParticipantsDepot allParticipants;
+	//database elements
+	b3m::database::ParticipantsDepot allParticipants;
 
 	//main window
 	b3m::gui::MainWindow b3mMainWin(allParticipants);

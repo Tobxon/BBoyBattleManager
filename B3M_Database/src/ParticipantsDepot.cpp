@@ -16,20 +16,20 @@ import :ParticipantsDepot;
 
 bool b3m::database::ParticipantsDepot::newParticipant(const participant_t& i_participant, const participantAttributes_t& i_attributes)
 {
-    if(m_participants.contains(i_participant))
-    {
-        return false;
-    }
+	if(m_participants.contains(i_participant))
+	{
+		return false;
+	}
 
-    auto emplaceResult = m_participants.try_emplace(i_participant, i_attributes);
+	auto emplaceResult = m_participants.try_emplace(i_participant, i_attributes);
 
-    return emplaceResult.second;
+	return emplaceResult.second;
 }
 
 bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const participant_t& i_participant, const attribute_t& i_attribute, const std::string& i_attributeData)
 {
-    if(m_participants.contains(i_participant))
-    {
+	if(m_participants.contains(i_participant))
+	{
 		if(i_attribute == b3m::common::nameAttribute)
 		{
 			auto participantElement = m_participants.extract(i_participant);
@@ -40,9 +40,9 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
 		}
 
 		return true;
-    }
+	}
 
-    return false;
+	return false;
 }
 
 bool b3m::database::ParticipantsDepot::removeParticipant(const participant_t& i_participant)

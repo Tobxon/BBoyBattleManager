@@ -1,0 +1,80 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "common",
+			"hidden": true,
+			"binaryDir": "$env{Dev_DIR}/Builds/${sourceDirName}/${presetName}",
+			"installDir": "$env{Dev_DIR}/Installs/${sourceDirName}/${presetName}",
+			"cacheVariables": {
+				"CMAKE_PREFIX_PATH": "$env{Dev_DIR}/3rdParty/Qt/6.5.0/msvc2019_64/lib/cmake;$env{Dev_DIR}/3rdParty/Catch2/lib/cmake/Catch2"
+			}
+		},
+		{
+			"name": "ninja",
+			"hidden": true,
+			"generator": "Ninja"
+		},
+		{
+			"name": "vs2022",
+			"hidden": true,
+			"generator": "Visual Studio 17 2022"
+		},
+		{
+			"name": "cmake_with_modules",
+			"displayName": "experimental cmake for c++20 modules",
+			"hidden": true,
+			"cmakeExecutable": "$env{Dev_DIR}/Installs/CMake/bin/cmake.exe",
+			"cacheVariables": {
+				"CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API": "aa1f7df0-828a-4fcd-9afc-2dc80491aca7"
+			},
+			"warnings": {
+				"dev": false
+			}
+		},
+		{
+			"name": "x64-base",
+			"hidden": true,
+			"architecture": {
+				"value": "x64",
+				"strategy": "external"
+			}
+		},
+		{
+			"name": "debug",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "release",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "win64-debug-exp_cmake-ninja",
+			"displayName": "Win64 Development",
+			"inherits": [
+				"debug",
+				"x64-base",
+				"cmake_with_modules",
+				"ninja",
+				"common"
+			]
+		},
+		{
+			"name": "win64-debug-exp_cmake-vs2022",
+			"displayName": "Win64 Development",
+			"inherits": [
+				"debug",
+				"x64-base",
+				"cmake_with_modules",
+				"vs2022",
+				"common"
+			]
+		}
+	]
+}

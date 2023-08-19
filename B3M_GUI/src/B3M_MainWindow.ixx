@@ -15,39 +15,40 @@ module;
 
 //Qt
 #include <QMainWindow>
-
-//Qt custom
 #include "ui_B3M_MainWindow.h"
 
 
-//--------------------------------------------------------------------------------------------------
-//------ MODULE DECLARATIONS                                                                  ------
-//--------------------------------------------------------------------------------------------------
 export module B3M_MainWindow;
-
-export namespace b3m
+//--------------------------------------------------------------------------------------------------
+//------ Declarations                                                                         ------
+//--------------------------------------------------------------------------------------------------
+namespace b3m
 {
 namespace gui
 {
+
 
 
 export class MainWindow : public QMainWindow
 {
 
 public:
-	MainWindow(QMainWindow* parent = nullptr);
+	explicit MainWindow(QMainWindow* parent = nullptr);
 	virtual ~MainWindow();
-	//TODO rule of 5
-
-protected:
+	MainWindow(const MainWindow&) = delete;
+	MainWindow& operator=(const MainWindow&) = delete;
+	MainWindow(MainWindow&&) = delete;
+	MainWindow& operator=(MainWindow&&) = delete;
 
 private:
 	Ui::B3M_MainWindow* m_ui;
 };
 
 
+
 } //namespace gui
 } //namespace b3m
+
 
 //--------------------------------------------------------------------------------------------------
 //------ PRIVATE MODULE FRAGMENT                                                              ------

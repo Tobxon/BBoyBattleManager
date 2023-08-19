@@ -34,7 +34,12 @@
 
 # Visual Studio
 .vs/
+*.pdb
 
 
 #CMake
 CMakeUserPresets.json
+
+
+#Clion
+.idea/

@@ -7,23 +7,16 @@
 //--------------------------------------------------------------------------------------------------
 module;
 
-#include "ui_B3M_MainWindow.h"
 
-
-module B3M_MainWindow;
+module b3m.common;
+import :participant;
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-b3m::gui::MainWindow::MainWindow(QMainWindow* parent)
-	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow)
+b3m::common::Participant::Participant(const name_t& i_name) 
+	: m_name(i_name)
 {
-	m_ui->setupUi(this);
-}
-
-b3m::gui::MainWindow::~MainWindow()
-{
-	delete m_ui;
 }
 
 

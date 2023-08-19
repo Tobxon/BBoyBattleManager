@@ -209,7 +209,8 @@ TEST_CASE("modifying attributes of participants")
 		CHECK(allReadAttributes.value().size() == attributesToSet.size());
 		for(const auto& attributePair : allReadAttributes.value())
 		{
-			CHECK(std::ranges::find(attributesToSet, attributePair) != attributesToSet.cend());
+			const auto findResult = std::find(attributesToSet.cbegin(), attributesToSet.cend(), attributePair); //TODO to std::ranges::find
+			CHECK(findResult != attributesToSet.cend());
 		}
 	}
 

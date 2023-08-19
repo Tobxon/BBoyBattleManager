@@ -89,6 +89,13 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="upRightButton">
+        <property name="text">
+         <string>Prepare Battles</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -99,7 +106,7 @@
      <x>0</x>
      <y>0</y>
      <width>556</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

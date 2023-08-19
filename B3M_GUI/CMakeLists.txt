@@ -17,6 +17,8 @@ target_sources(B3M_GUI
 		"src/ParticipantsDialog.hpp"
 		"src/ParticipantsDialog.cpp"
 		"src/ParticipantsDialog.ui"
+		"src/PrepareTournamentDialog.hpp"
+		"src/PrepareTournamentDialog.cpp"
 )
 
 set_target_properties(B3M_GUI PROPERTIES  

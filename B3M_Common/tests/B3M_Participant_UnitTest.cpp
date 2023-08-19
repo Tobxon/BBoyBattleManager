@@ -32,7 +32,7 @@ TEST_CASE("b3m Participant - creating a participant and check for valid state")
 	static constexpr std::string_view firstName{ "npc1" };
 	b3m::common::Participant firstParticipant{ std::string(firstName) };
 
-	REQUIRE_NOTHROW(firstParticipant.getName() == std::string(firstName));
+	REQUIRE_NOTHROW(firstParticipant == std::string(firstName));
 }
 
 

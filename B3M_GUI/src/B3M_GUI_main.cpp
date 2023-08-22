@@ -33,16 +33,12 @@ int main(int argc, char** argv)
 
 	//database elements
 	b3m::database::ParticipantsDepot allParticipants;
-	b3m::database::TeamsCollector allTeams{allParticipants};
 
 	//main window
 	b3m::gui::MainWindow b3mMainWin(allParticipants);
-	
-	////presentation window
-	//QWidget showWin;
 
+	//create startup window
 	b3mMainWin.show();
-	//showWin.show();
 
 	const int result = app.exec();
 	return result;

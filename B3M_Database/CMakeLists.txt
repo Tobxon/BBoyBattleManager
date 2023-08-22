@@ -2,7 +2,6 @@ add_library(B3M_Database)
 target_sources(B3M_Database
     PRIVATE
         "src/ParticipantsDepot.cpp"
-        "src/TeamsCollector.cpp"
         #C++20 Modules
     PUBLIC
         FILE_SET cxx_modules TYPE CXX_MODULES FILES

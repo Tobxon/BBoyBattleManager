@@ -116,7 +116,7 @@ auto b3m::database::ParticipantsDepot::cend() const noexcept -> decltype(m_parti
 	return m_participants.cend();
 }
 
-//TODO to use of boost
+//TODO to use of boost.signals2 / proper observer pattern implementation
 void b3m::database::ParticipantsDepot::registerCallback(const std::function<void (const ParticipantsDepot&)>& i_callback)
 {
 	m_reportChangesSignal = i_callback;

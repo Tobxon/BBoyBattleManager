@@ -11,21 +11,24 @@ qt_add_executable(B3M_GUI MACOSX_BUNDLE WIN32
 )
 target_sources(B3M_GUI
 	PRIVATE
-		"src/B3M_MainWindow.cpp"
-		"src/B3M_MainWindow.ui"
-	#C++20 Modules
-	PRIVATE
-		FILE_SET cxx_modules TYPE CXX_MODULES FILES
-		"src/B3M_MainWindow.ixx"
+		"src/MainWindow.hpp"
+		"src/MainWindow.cpp"
+		"src/MainWindow.ui"
+		"src/ParticipantsDialog.hpp"
+		"src/ParticipantsDialog.cpp"
+		"src/ParticipantsDialog.ui"
+		"src/TeamsView.hpp"
+		"src/TeamsView.cpp"
 )
 
 set_target_properties(B3M_GUI PROPERTIES  
-	AUTOMOC TRUE 
-	AUTOUIC TRUE 
+    AUTOMOC TRUE
+    AUTOUIC TRUE
 ) 
 
 target_link_libraries(B3M_GUI 
 	PRIVATE
 		Qt::Widgets Qt::Gui Qt::Core
 		B3M_Common
+		B3M_Database
 )

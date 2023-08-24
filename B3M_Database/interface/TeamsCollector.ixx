@@ -25,6 +25,7 @@ export module b3m.database:TeamsCollector;
 
 //std
 import <vector>;
+import <functional>;
 
 //b3m
 import :ParticipantsDepot;
@@ -42,11 +43,14 @@ export namespace b3m::database
 using b3m::database::ParticipantsDepot;
 using b3m::common::Team;
 
+template< typename container_t >
+using container_value_t = container_t::value_type;
+
 template< typename teamsContainer_t >
 class TeamsCollector
 {
 public:
-	explicit TeamsCollector(ParticipantsDepot&, teamsContainer_t* = nullptr);
+	explicit TeamsCollector(ParticipantsDepot&, teamsContainer_t* = nullptr, std::function<container_value_t<teamsContainer_t>(std::string)> = {});
 
 private:
 	teamsContainer_t* m_teams{ nullptr };
@@ -56,7 +60,7 @@ private:
 
 
 template< typename teamsContainer_t >
-teamsContainer_t readCrewsFromParticipantDepot(const ParticipantsDepot&);
+teamsContainer_t readCrewsFromParticipantDepot(const ParticipantsDepot&, std::function<container_value_t<teamsContainer_t>(std::string)> = {});
 
 
 
@@ -69,16 +73,16 @@ teamsContainer_t readCrewsFromParticipantDepot(const ParticipantsDepot&);
 
 //TeamsCollector -----------------------------------------------------------------------------------
 template< typename teamsContainer_t >
-b3m::database::TeamsCollector<teamsContainer_t>::TeamsCollector(ParticipantsDepot& i_participants, teamsContainer_t* i_teamsSink)
+b3m::database::TeamsCollector<teamsContainer_t>::TeamsCollector(ParticipantsDepot& i_participants, teamsContainer_t* i_teamsSink, std::function<container_value_t<teamsContainer_t>(std::string)> i_conversion)
 		: m_participants(&i_participants), m_teams((i_teamsSink) ? i_teamsSink: new teamsContainer_t(readCrewsFromParticipantDepot<teamsContainer_t>(i_participants))) //TODO memory leak when creating container here
 {
 	if(i_teamsSink)
 	{
-		*m_teams = readCrewsFromParticipantDepot<teamsContainer_t>(i_participants);
+		*m_teams = readCrewsFromParticipantDepot<teamsContainer_t>(i_participants, i_conversion);
 	}
 
-	m_participants->registerCallback([this](const ParticipantsDepot& i_participants){
-		*m_teams = readCrewsFromParticipantDepot<teamsContainer_t>(i_participants);
+	m_participants->registerCallback([this, i_conversion](const ParticipantsDepot& i_participants){
+		*m_teams = readCrewsFromParticipantDepot<teamsContainer_t>(i_participants, i_conversion);
 	});
 
 	//TEST - remove in next commit
@@ -90,10 +94,24 @@ b3m::database::TeamsCollector<teamsContainer_t>::TeamsCollector(ParticipantsDepo
 
 //free functions -----------------------------------------------------------------------------------
 template< typename teamsContainer_t >
-auto b3m::database::readCrewsFromParticipantDepot(const ParticipantsDepot&) -> teamsContainer_t
+auto b3m::database::readCrewsFromParticipantDepot(const ParticipantsDepot& i_participants, std::function<container_value_t<teamsContainer_t>(std::string)> i_conversion) -> teamsContainer_t
 {
-	//TODO
-	return {};
+	teamsContainer_t teams;
+
+	for(const auto& participantWithAttributes : i_participants)
+	{
+		if(participantWithAttributes.second.contains(b3m::common::teamAttribute))
+		{
+			const auto teamOfParticipant = /*(i_conversion) ?*/ i_conversion(participantWithAttributes.second.at(b3m::common::teamAttribute)) /*: participantWithAttributes.second.at(b3m::common::teamAttribute)*/; //TODO
+
+			if (!teams.contains(teamOfParticipant))
+			{
+				teams.append(teamsContainer_t::value_type(teamOfParticipant));
+			}
+		}
+	}
+
+	return teams;
 }
 
 

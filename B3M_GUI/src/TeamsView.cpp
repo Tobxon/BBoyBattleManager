@@ -22,7 +22,7 @@ b3m::gui::TeamsView::TeamsView(ParticipantsDepot& i_participants, QWidget* paren
 
 //TeamsViewModel -----------------------------------------------------------------------------------
 b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* parent)
-	: m_teams(), m_teamsSource(i_participants, &m_teams)
+	: m_teams(), m_teamsSource(i_participants, &m_teams, [](const std::string& i_string){ return QString::fromStdString(i_string);})
 {
 }
 

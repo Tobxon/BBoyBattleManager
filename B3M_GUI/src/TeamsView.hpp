@@ -44,8 +44,11 @@ private:
 	QAbstractListModel* m_model;
 };
 
+
 class TeamsModel : public QAbstractListModel
 {
+	Q_OBJECT;
+
 public:
 	explicit TeamsModel(ParticipantsDepot&, QObject* = nullptr);
 

@@ -34,7 +34,7 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 //ParticipantsDialogModel --------------------------------------------------------------------------
 b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::ParticipantsDepot& i_participantsStorage, QObject* i_parent)
 	: QAbstractTableModel(i_parent)
-	, m_participantAttributeTitles({{0, QString::fromStdString(b3m::common::nameAttribute)},{1, "crew"},{2,"city"}})
+	, m_participantAttributeTitles({{0, QString::fromStdString(b3m::common::nameAttribute)},{1, b3m::common::teamAttribute},{2,"city"}})
 	, m_participantsStorage(&i_participantsStorage)
 {
 	std::size_t partIndex{0};

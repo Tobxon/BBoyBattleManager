@@ -22,6 +22,7 @@ import b3m.common;
 //------ Tests                                                                                ------
 //--------------------------------------------------------------------------------------------------
 
+//Participant --------------------------------------------------------------------------------------
 TEST_CASE("b3m Participant - simple constructor test", "[B3M, Participant, Constructor]")
 {
 	REQUIRE_NOTHROW(b3m::common::Participant{ "AnyBot" });

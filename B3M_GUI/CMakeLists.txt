@@ -17,11 +17,13 @@ target_sources(B3M_GUI
 		"src/ParticipantsDialog.hpp"
 		"src/ParticipantsDialog.cpp"
 		"src/ParticipantsDialog.ui"
+		"src/TeamsView.hpp"
+		"src/TeamsView.cpp"
 )
 
 set_target_properties(B3M_GUI PROPERTIES  
-	AUTOMOC TRUE 
-	AUTOUIC TRUE 
+	AUTOMOC TRUE
+	AUTOUIC TRUE
 ) 
 
 target_link_libraries(B3M_GUI 

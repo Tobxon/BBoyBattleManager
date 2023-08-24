@@ -36,12 +36,9 @@ int main(int argc, char** argv)
 
 	//main window
 	b3m::gui::MainWindow b3mMainWin(allParticipants);
-	
-	////presentation window
-	//QWidget showWin;
 
+	//create startup window
 	b3mMainWin.show();
-	//showWin.show();
 
 	const int result = app.exec();
 	return result;

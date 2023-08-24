@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief Module Interface Unit for the Participant class.
+ * \brief Module Interface Unit for basic types used across the whole program.
  *
  */
 
@@ -22,23 +22,26 @@ export module b3m.common:participant;
 //--------------------------------------------------------------------------------------------------
 import <string>;
 import <map>;
+import <vector>;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m::common
+export namespace b3m::common
 {
 
 
 
-export using Participant = std::string;
+using Participant = std::string;
 
-export using ParticipantName = std::string;
-export using Attribute = std::string;
-export using ParticipantAttributes = std::map< Attribute, std::string >;
+using ParticipantName = std::string;
+using Attribute = std::string;
+using ParticipantAttributes = std::map< Attribute, std::string >;
 
-export constexpr const char* nameAttribute{ "name" };
+constexpr const char* nameAttribute{ "name" };
+constexpr const char* teamAttribute{ "crew" };
+constexpr const char* rankingPointsAttribute{ "ranking points" };
 
 
 

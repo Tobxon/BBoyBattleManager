@@ -36,8 +36,5 @@ TEST_CASE("b3m Participant - creating a participant and check for valid state")
 	REQUIRE_NOTHROW(firstParticipant == std::string(firstName));
 }
 
-//Team ---------------------------------------------------------------------------------------------
-//TODO add unit tests for Team type
-
 
 //END OF FILE --------------------------------------------------------------------------------------

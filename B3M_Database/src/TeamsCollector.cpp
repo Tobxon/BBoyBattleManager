@@ -14,9 +14,37 @@ import :TeamsCollector;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-auto b3m::database::readTeams(const ParticipantsDepot&) -> TeamsWithMemberList
+auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> TeamsWithMemberList
 {
-	TeamsWithMemberList o_teams{{"team2",{{"t2m1",0},{"t2m5", 2}}},{"team4",{{"m2",1},{"m7",2},{"m0",1}}}};
+	TeamsWithMemberList o_teams;
+
+	for(const auto& [participant, participantsAttributes] : i_participantsSource)
+	{
+		if(participantsAttributes.contains(b3m::common::teamAttribute))
+		{
+			const auto& team = participantsAttributes.at(b3m::common::teamAttribute);
+
+			const auto ranking = [](const auto& i_participantsAttributes){
+				if(i_participantsAttributes.contains(b3m::common::rankingPointsAttribute))
+				{
+					return std::stoi(i_participantsAttributes.at(b3m::common::rankingPointsAttribute));
+				}
+
+				return 0;
+			}(participantsAttributes);
+
+			if(o_teams.contains(team))
+			{
+				o_teams.at(team).emplace_back(participant, ranking);
+			}
+			else
+			{
+
+				const b3m::common::memberList members{{participant, ranking}};
+				o_teams.try_emplace(team, members);
+			}
+		}
+	}
 
 	return o_teams;
 }

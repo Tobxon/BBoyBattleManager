@@ -48,6 +48,8 @@ constexpr const char* rankingPointsAttribute{ "ranking points" };
 using TeamName = std::string;
 using memberList = std::vector< std::pair< Participant, Ranking >>;
 
+Ranking calculateTeamRanking(const memberList&);
+
 
 
 } //namespace b3m::common

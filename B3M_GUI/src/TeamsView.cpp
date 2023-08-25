@@ -7,6 +7,12 @@
 //--------------------------------------------------------------------------------------------------
 #include "TeamsView.hpp"
 
+//std
+//import <algorithm>;
+#include <algorithm>
+#include <vector>
+#include <utility>
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
@@ -22,7 +28,7 @@ b3m::gui::TeamsView::TeamsView(ParticipantsDepot& i_participants, QWidget* paren
 
 //TeamsViewModel -----------------------------------------------------------------------------------
 b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* parent)
-	: m_teams(/*readTeamsByRanking(i_participants)*/)
+	: m_teams(readTeamsByRanking(i_participants))
 {
 	i_participants.registerCallback([this](const ParticipantsDepot& i_participantsSource){
 		m_teams = readTeamsByRanking(i_participantsSource);
@@ -35,8 +41,6 @@ b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* par
 
 int b3m::gui::TeamsModel::rowCount(const QModelIndex& parent) const
 {
-//	const auto returnVal = m_teams.empty() ? 1 : m_teams.size();
-//	return returnVal;
 	return m_teams.size();
 }
 
@@ -52,9 +56,20 @@ QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
 	return {};
 }
 
-auto b3m::gui::readTeamsByRanking(const ParticipantsDepot&) -> TeamsByRanking
+auto b3m::gui::readTeamsByRanking(const ParticipantsDepot& i_participantsSource) -> TeamsByRanking //TODO move everything that is possibel to b3m::database
 {
-	TeamsByRanking o_teams{"testTeam1", "testTeam2", "testTeam3"};
+	TeamsByRanking o_teams;
+
+	auto teamsWithRanking = b3m::database::readTeamsWithRanking(i_participantsSource);
+
+	std::ranges::sort(teamsWithRanking, [](auto &left, auto &right) {
+		return left.second > right.second;
+	});
+
+	for(const auto& [teamName, teamRanking] : teamsWithRanking)
+	{
+		o_teams.emplace_back(QString::fromStdString(teamName));
+	}
 
 	return o_teams;
 }

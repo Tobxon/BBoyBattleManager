@@ -46,13 +46,15 @@ template< typename container_t >
 using container_value_t = container_t::value_type;
 
 
-template< typename teamsContainer_t >
-teamsContainer_t readCrewsFromParticipantDepot(const ParticipantsDepot&,
-	std::function<container_value_t<teamsContainer_t>(std::string)>);
+//template< typename teamsContainer_t >
+//teamsContainer_t readCrewsFromParticipantDepot(const ParticipantsDepot&,
+//	std::function<container_value_t<teamsContainer_t>(std::string)>);
 
-using teamList = std::vector< b3m::common::TeamName, b3m::common::memberList >;
+using TeamsWithMemberList = std::map< b3m::common::TeamName, b3m::common::memberList >;
+using TeamsWithRanking = std::vector<std::pair< b3m::common::TeamName, b3m::common::Ranking >>;
 
-teamList readTeamsFromParticipantDepot(const ParticipantsDepot&);
+TeamsWithMemberList readTeams(const ParticipantsDepot&);
+TeamsWithRanking readTeamsWithRanking(const ParticipantsDepot&);
 
 
 } //namespace b3m::database
@@ -66,29 +68,29 @@ teamList readTeamsFromParticipantDepot(const ParticipantsDepot&);
 
 
 //free functions -----------------------------------------------------------------------------------
-template< typename teamsContainer_t >
-auto b3m::database::readCrewsFromParticipantDepot(const ParticipantsDepot& i_participants,
-	std::function<container_value_t<teamsContainer_t>(std::string)> i_conversion)
--> teamsContainer_t
-{
-	teamsContainer_t teams;
-
-	for(const auto& participantWithAttributes : i_participants)
-	{
-		if(participantWithAttributes.second.contains(b3m::common::teamAttribute))
-		{
-			const auto teamOfParticipant =
-					i_conversion(participantWithAttributes.second.at(b3m::common::teamAttribute));
-
-			if (!teams.contains(teamOfParticipant))
-			{
-				teams.append(teamOfParticipant);
-			}
-		}
-	}
-
-	return teams;
-}
+//template< typename teamsContainer_t >
+//auto b3m::database::readCrewsFromParticipantDepot(const ParticipantsDepot& i_participants,
+//	std::function<container_value_t<teamsContainer_t>(std::string)> i_conversion)
+//-> teamsContainer_t
+//{
+//	teamsContainer_t teams;
+//
+//	for(const auto& participantWithAttributes : i_participants)
+//	{
+//		if(participantWithAttributes.second.contains(b3m::common::teamAttribute))
+//		{
+//			const auto teamOfParticipant =
+//					i_conversion(participantWithAttributes.second.at(b3m::common::teamAttribute));
+//
+//			if (!teams.contains(teamOfParticipant))
+//			{
+//				teams.append(teamOfParticipant);
+//			}
+//		}
+//	}
+//
+//	return teams;
+//}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

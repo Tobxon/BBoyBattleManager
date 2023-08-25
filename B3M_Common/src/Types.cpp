@@ -14,6 +14,14 @@ import :participant;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
+auto b3m::common::calculateTeamRanking(const memberList& i_members) -> Ranking {
+	Ranking o_teamRanking = 0;
+
+	for (const auto &[participant, ranking]: i_members) {
+		o_teamRanking += ranking;
+	}
+	return o_teamRanking;
+}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

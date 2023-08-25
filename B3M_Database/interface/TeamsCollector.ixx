@@ -40,7 +40,7 @@ export namespace b3m::database
 
 
 using b3m::database::ParticipantsDepot;
-using b3m::common::Team;
+//using b3m::common::Team;
 
 template< typename container_t >
 using container_value_t = container_t::value_type;

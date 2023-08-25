@@ -30,14 +30,14 @@ b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* par
 
 int b3m::gui::TeamsModel::rowCount(const QModelIndex& parent) const
 {
-	return m_teams.size();
+	return m_teams.empty() ? 1 : m_teams.size();
 }
 
 QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
 {
 	if (role == Qt::DisplayRole)
 	{
-		if(index.column() == 0)
+		if(index.column() == 0 && index.row() < m_teams.size())
 		{
 			return m_teams.at(index.row());
 		}

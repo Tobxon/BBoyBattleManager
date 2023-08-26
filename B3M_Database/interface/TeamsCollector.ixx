@@ -21,10 +21,13 @@ export module b3m.database:TeamsCollector;
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
-//--------------------------------------------------------------------------------------------------;
+//--------------------------------------------------------------------------------------------------
 
 //std
 import <functional>;
+import <map>;
+import <vector>;
+import <utility>;
 
 //b3m
 import :ParticipantsDepot;
@@ -34,85 +37,29 @@ import b3m.common;
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export namespace b3m::database
+namespace b3m::database
 {
 
 
 
+//external Types
 using b3m::database::ParticipantsDepot;
-using b3m::common::Team;
-
-template< typename container_t >
-using container_value_t = container_t::value_type;
-
-
-template< typename teamsContainer_t >
-class TeamsCollector
-{
-public:
-	explicit TeamsCollector(ParticipantsDepot&, teamsContainer_t&,
-		std::function<container_value_t<teamsContainer_t>(std::string)>);
-
-private:
-	teamsContainer_t* m_teams{ nullptr };
-
-	ParticipantsDepot* m_participants{ nullptr };
-};
+using b3m::common::TeamName;
+using b3m::common::MemberList;
+using b3m::common::Ranking;
 
 
-template< typename teamsContainer_t >
-teamsContainer_t readCrewsFromParticipantDepot(const ParticipantsDepot&,
-	std::function<container_value_t<teamsContainer_t>(std::string)>);
+//Types
+export using TeamsWithMemberList = std::map< TeamName, MemberList >;
+export using TeamsWithRanking = std::vector<std::pair< TeamName, Ranking >>;
+
+//free Functions
+export TeamsWithMemberList readTeams(const ParticipantsDepot&);
+export TeamsWithRanking readTeamsWithRanking(const ParticipantsDepot&);
 
 
 
 } //namespace b3m::database
-
-
-//--------------------------------------------------------------------------------------------------
-//------ Implementations                                                                      ------
-//--------------------------------------------------------------------------------------------------
-
-//TeamsCollector -----------------------------------------------------------------------------------
-template< typename teamsContainer_t >
-b3m::database::TeamsCollector<teamsContainer_t>::TeamsCollector(ParticipantsDepot& i_participants
-	, teamsContainer_t& i_teamsSink
-	, std::function<container_value_t<teamsContainer_t>(std::string)> i_conversion)
-	: m_participants(&i_participants), m_teams(&i_teamsSink)
-{
-	//get initial values
-	*m_teams = readCrewsFromParticipantDepot<teamsContainer_t>(i_participants, i_conversion);
-
-	m_participants->registerCallback([this, i_conversion](const ParticipantsDepot& i_participants){
-		*m_teams = readCrewsFromParticipantDepot<teamsContainer_t>(i_participants, i_conversion);
-	});
-}
-
-
-//free functions -----------------------------------------------------------------------------------
-template< typename teamsContainer_t >
-auto b3m::database::readCrewsFromParticipantDepot(const ParticipantsDepot& i_participants,
-	std::function<container_value_t<teamsContainer_t>(std::string)> i_conversion)
--> teamsContainer_t
-{
-	teamsContainer_t teams;
-
-	for(const auto& participantWithAttributes : i_participants)
-	{
-		if(participantWithAttributes.second.contains(b3m::common::teamAttribute))
-		{
-			const auto teamOfParticipant =
-					i_conversion(participantWithAttributes.second.at(b3m::common::teamAttribute));
-
-			if (!teams.contains(teamOfParticipant))
-			{
-				teams.append(teamOfParticipant);
-			}
-		}
-	}
-
-	return teams;
-}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

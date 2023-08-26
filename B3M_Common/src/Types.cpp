@@ -9,15 +9,17 @@ module;
 
 
 module b3m.common;
-import :participant;
+import :types;
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-auto b3m::common::calculateTeamRanking(const memberList& i_members) -> Ranking {
+auto b3m::common::calculateTeamRanking(const MemberList& i_members) -> Ranking
+{
 	Ranking o_teamRanking = 0;
 
-	for (const auto &[participant, ranking]: i_members) {
+	for (const auto &[participant, ranking]: i_members)
+	{
 		o_teamRanking += ranking;
 	}
 	return o_teamRanking;

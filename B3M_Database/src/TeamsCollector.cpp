@@ -10,10 +10,20 @@ module;
 
 module b3m.database;
 import :TeamsCollector;
+
+//--------------------------------------------------------------------------------------------------
+//------ Dependencies                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+//b3m
+import b3m.common;
+
+
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
+//free Functions
 auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> TeamsWithMemberList
 {
 	TeamsWithMemberList o_teams;
@@ -22,6 +32,7 @@ auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> 
 	{
 		if(participantsAttributes.contains(b3m::common::teamAttribute))
 		{
+			//TODO introduce Participant as class and make these operations into calls of getters
 			const auto& team = participantsAttributes.at(b3m::common::teamAttribute);
 
 			const auto ranking = [](const auto& i_participantsAttributes){
@@ -40,7 +51,7 @@ auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> 
 			else
 			{
 
-				const b3m::common::memberList members{{participant, ranking}};
+				const b3m::common::MemberList members{{participant, ranking}};
 				o_teams.try_emplace(team, members);
 			}
 		}

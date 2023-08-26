@@ -10,8 +10,6 @@
 //std
 //import <algorithm>;
 #include <algorithm>
-#include <vector>
-#include <utility>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -28,20 +26,20 @@ b3m::gui::TeamsView::TeamsView(ParticipantsDepot& i_participants, QWidget* paren
 
 //TeamsViewModel -----------------------------------------------------------------------------------
 b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* parent)
-	: m_teams(readTeamsByRanking(i_participants))
+	: QAbstractListModel(parent), m_teams(readTeamsByRanking(i_participants))
 {
 	i_participants.registerCallback([this](const ParticipantsDepot& i_participantsSource){
 		m_teams = readTeamsByRanking(i_participantsSource);
 
 		const QModelIndex topLeft = createIndex(0,0);
-		const QModelIndex bottomRight = createIndex(m_teams.size(),0);
+		const QModelIndex bottomRight = createIndex(static_cast<int>(m_teams.size()),0);
 		emit dataChanged(topLeft,bottomRight);
 	});
 }
 
 int b3m::gui::TeamsModel::rowCount(const QModelIndex& parent) const
 {
-	return m_teams.size();
+	return static_cast<int>(m_teams.size());
 }
 
 QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
@@ -56,7 +54,7 @@ QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
 	return {};
 }
 
-auto b3m::gui::readTeamsByRanking(const ParticipantsDepot& i_participantsSource) -> TeamsByRanking //TODO move everything that is possibel to b3m::database
+auto b3m::gui::readTeamsByRanking(const ParticipantsDepot& i_participantsSource) -> TeamsByRanking //TODO move everything that is possible to b3m::database
 {
 	TeamsByRanking o_teams;
 
@@ -65,6 +63,7 @@ auto b3m::gui::readTeamsByRanking(const ParticipantsDepot& i_participantsSource)
 	std::ranges::sort(teamsWithRanking, [](auto &left, auto &right) {
 		return left.second > right.second;
 	});
+	//TODO sort by indices without copying - preferably as a template to create any kind of new container from it
 
 	for(const auto& [teamName, teamRanking] : teamsWithRanking)
 	{

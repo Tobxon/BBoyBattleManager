@@ -8,8 +8,8 @@
 #include "ParticipantsDialog.hpp"
 
 //std
-#include <algorithm>
-#include <ranges>
+import <algorithm>;
+import <ranges>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -17,9 +17,10 @@
 //--------------------------------------------------------------------------------------------------
 
 //ParticipantsDialog -------------------------------------------------------------------------------
-b3m::gui::ParticipantsDialog::ParticipantsDialog(b3m::database::ParticipantsDepot& i_participantsStorage, QWidget* const i_parent)
-		: QWidget(i_parent), m_ui(new Ui::ParticipantsDialog()),
-			m_model(new ParticipantsDialogModel(i_participantsStorage, this))
+b3m::gui::ParticipantsDialog::ParticipantsDialog(
+	b3m::database::ParticipantsDepot& i_participantsStorage, QWidget* const i_parent)
+	: QWidget(i_parent), m_ui(new Ui::ParticipantsDialog())
+	, m_model(new ParticipantsDialogModel(i_participantsStorage, this))
 {
 	m_ui->setupUi(this);
 
@@ -31,10 +32,13 @@ b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 	delete m_ui;
 }
 
+
 //ParticipantsDialogModel --------------------------------------------------------------------------
-b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(b3m::database::ParticipantsDepot& i_participantsStorage, QObject* i_parent)
+b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(
+	b3m::database::ParticipantsDepot& i_participantsStorage, QObject* i_parent)
 	: QAbstractTableModel(i_parent)
-	, m_participantAttributeTitles({{0, b3m::common::nameAttribute},{1, b3m::common::teamAttribute},{2,"city"},{3,b3m::common::rankingPointsAttribute}})
+	, m_participantAttributeTitles({{0, b3m::common::nameAttribute},
+		{1, b3m::common::teamAttribute},{2,"city"},{3,b3m::common::ratingAttribute}})
 	, m_participantsStorage(&i_participantsStorage)
 {
 	std::size_t partIndex{0};

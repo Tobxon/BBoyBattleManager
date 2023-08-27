@@ -30,8 +30,10 @@ namespace b3m::gui
 {
 
 
+
 //View ---------------------------------------------------------------------------------------------
 using b3m::database::ParticipantsDepot;
+
 
 class TeamsView : public QListView
 {
@@ -48,6 +50,7 @@ private:
 //Model --------------------------------------------------------------------------------------------
 using TeamsByRanking = QList<QString>;
 
+
 class TeamsModel : public QAbstractListModel
 {
 	Q_OBJECT;
@@ -63,7 +66,9 @@ private:
 	TeamsByRanking m_teams;
 };
 
-TeamsByRanking readTeamsByRanking(const ParticipantsDepot&);
+
+//free functions -----------------------------------------------------------------------------------
+TeamsByRanking getTeamNamesSortedByRating(const ParticipantsDepot&);
 
 
 

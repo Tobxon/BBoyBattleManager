@@ -10,7 +10,6 @@ module;
 
 module b3m.database;
 import :TeamsCollector;
-
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
@@ -23,53 +22,41 @@ import b3m.common;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-//free Functions
-auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> TeamsWithMemberList
+//free Functions -----------------------------------------------------------------------------------
+auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> std::vector< Team >
 {
-	TeamsWithMemberList o_teams;
+	//TODO to ParticipantsDepot method getTeams()
+	std::vector< Team > o_teams;
 
-	for(const auto& [participant, participantsAttributes] : i_participantsSource)
+	for(const auto& [participantName, participantsAttributes] : i_participantsSource)
 	{
 		if(participantsAttributes.contains(b3m::common::teamAttribute))
 		{
-			//TODO introduce Participant as class and make these operations into calls of getters
-			const auto& team = participantsAttributes.at(b3m::common::teamAttribute);
+			const auto& teamName = participantsAttributes.at(b3m::common::teamAttribute);
 
-			const auto ranking = [](const auto& i_participantsAttributes){
-				if(i_participantsAttributes.contains(b3m::common::rankingPointsAttribute))
+			const auto rating = [](const auto& i_participantsAttributes) -> b3m::common::Rating {
+				if(i_participantsAttributes.contains(b3m::common::ratingAttribute))
 				{
-					return std::stoi(i_participantsAttributes.at(b3m::common::rankingPointsAttribute));
+					return std::stoi(i_participantsAttributes.at(b3m::common::ratingAttribute));
 				}
 
-				return 0;
+				return {};
 			}(participantsAttributes);
 
-			if(o_teams.contains(team))
+			b3m::common::Participant curParticipant(participantName, rating);
+
+			auto teamIt = std::ranges::find_if(o_teams,
+				[teamName](const Team& i_team){ return i_team.getName() == teamName; });
+			if(teamIt == o_teams.cend())
 			{
-				o_teams.at(team).emplace_back(participant, ranking);
+				o_teams.push_back(Team(teamName,{curParticipant}));
+//				o_teams.emplace_back(teamName,{curParticipant}); //TODO use emplace_back
 			}
 			else
 			{
-
-				const b3m::common::MemberList members{{participant, ranking}};
-				o_teams.try_emplace(team, members);
+				teamIt->addMember(curParticipant);
 			}
 		}
-	}
-
-	return o_teams;
-}
-
-auto b3m::database::readTeamsWithRanking(const ParticipantsDepot& i_participantsSource) -> TeamsWithRanking
-{
-	const auto& teamsWithMembers = readTeams(i_participantsSource);
-
-	TeamsWithRanking o_teams;
-	for(const auto& [teamName, memberList] : teamsWithMembers)
-	{
-		const auto& teamRanking = b3m::common::calculateTeamRanking(memberList);
-
-		o_teams.emplace_back(teamName, teamRanking);
 	}
 
 	return o_teams;

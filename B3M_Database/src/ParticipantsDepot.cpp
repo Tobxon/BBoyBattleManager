@@ -11,10 +11,19 @@ module;
 module b3m.database;
 import :ParticipantsDepot;
 //--------------------------------------------------------------------------------------------------
+//------ Dependencies                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+//std
+import <string>;
+
+
+//--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-bool b3m::database::ParticipantsDepot::newParticipant(const participant_t& i_participant, const participantAttributes_t& i_attributes)
+bool b3m::database::ParticipantsDepot::newParticipant(const ParticipantName& i_participant,
+													  const ParticipantAttributes& i_attributes)
 {
 	if(m_participants.contains(i_participant))
 	{
@@ -24,11 +33,10 @@ bool b3m::database::ParticipantsDepot::newParticipant(const participant_t& i_par
 	auto emplaceResult = m_participants.try_emplace(i_participant, i_attributes);
 
 	updateObservers();
-
 	return emplaceResult.second;
 }
 
-bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const participant_t& i_participant, const attribute_t& i_attribute, const std::string& i_attributeData)
+bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const ParticipantName& i_participant, const Attribute& i_attribute, const std::string& i_attributeData)
 {
 	if(m_participants.contains(i_participant))
 	{
@@ -42,14 +50,13 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const partic
 		}
 
 		updateObservers();
-
 		return true;
 	}
 
 	return false;
 }
 
-bool b3m::database::ParticipantsDepot::removeParticipant(const participant_t& i_participant)
+bool b3m::database::ParticipantsDepot::removeParticipant(const ParticipantName& i_participant)
 {
 	if(m_participants.contains(i_participant))
 	{
@@ -58,10 +65,10 @@ bool b3m::database::ParticipantsDepot::removeParticipant(const participant_t& i_
 		return eraseResult;
 	}
 
-	return false; //
+	return false;
 }
 
-bool b3m::database::ParticipantsDepot::removeParticipantsAttribute(const participant_t&, const attribute_t&)
+bool b3m::database::ParticipantsDepot::removeParticipantsAttribute(const ParticipantName&, const Attribute&)
 {
 	//TODO
 	return false;
@@ -73,8 +80,8 @@ std::size_t b3m::database::ParticipantsDepot::numOfParticipants() const
 	return m_participants.size();
 }
 
-auto b3m::database::ParticipantsDepot::getParticipant(const participant_t& i_participant) const
--> std::optional<std::pair<participant_t, participantAttributes_t>>
+auto b3m::database::ParticipantsDepot::getParticipant(const ParticipantName& i_participant) const
+-> std::optional<std::pair<ParticipantName, ParticipantAttributes>>
 {
 	if(m_participants.contains(i_participant))
 	{
@@ -85,8 +92,8 @@ auto b3m::database::ParticipantsDepot::getParticipant(const participant_t& i_par
 	return std::nullopt;
 }
 
-auto b3m::database::ParticipantsDepot::getParticipantsAttributes(const participant_t& i_participant) const
--> std::optional< participantAttributes_t >
+auto b3m::database::ParticipantsDepot::getParticipantsAttributes(const ParticipantName& i_participant) const
+-> std::optional< ParticipantAttributes >
 {
 	if(m_participants.contains(i_participant))
 	{

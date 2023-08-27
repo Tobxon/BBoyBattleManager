@@ -37,11 +37,11 @@ b3m::common::Participant::Participant(const Name_t& i_name, const Rating& i_rati
 		: Participant(i_name, {}, i_rating)
 {}
 
-auto b3m::common::Participant::getTeam() const -> std::optional< Team_t >
+auto b3m::common::Participant::getTeam() const -> std::optional< Team::Name_t >
 {
-	if(!m_team.empty())
+	if(m_team)
 	{
-		return m_team;
+		return m_team->getName();
 	}
 
 	return std::nullopt;
@@ -70,7 +70,7 @@ auto b3m::common::Team::getRating() const -> Rating
 
 bool b3m::common::Team::addMember(Participant& i_newMember)
 {
-	if(i_newMember.setTeam(m_name))
+	if(i_newMember.setTeam(this))
 	{
 		m_members.push_back(i_newMember);
 		return true;

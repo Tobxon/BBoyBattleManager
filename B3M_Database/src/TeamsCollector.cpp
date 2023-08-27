@@ -32,28 +32,28 @@ auto b3m::database::readTeams(const ParticipantsDepot& i_participantsSource) -> 
 	{
 		if(participantsAttributes.contains(b3m::common::teamAttribute))
 		{
-			//TODO introduce Participant as class and make these operations into calls of getters
 			const auto& teamName = participantsAttributes.at(b3m::common::teamAttribute);
 
-			const auto rating = [](const auto& i_participantsAttributes){
+			const auto rating = [](const auto& i_participantsAttributes) -> b3m::common::Rating {
 				if(i_participantsAttributes.contains(b3m::common::ratingAttribute))
 				{
 					return std::stoi(i_participantsAttributes.at(b3m::common::ratingAttribute));
 				}
 
-				return 0;
+				return {};
 			}(participantsAttributes);
+
+			b3m::common::Participant curParticipant(participantName, rating);
 
 			auto teamIt = std::ranges::find_if(o_teams,[teamName](const Team& i_team){ return i_team.getName() == teamName; });
 			if(teamIt == o_teams.cend())
 			{
-				Team curTeam{teamName,{{participantName, rating}}};
+				Team curTeam{teamName,{curParticipant}};
 				o_teams.push_back(curTeam);
 //				o_teams.emplace_back(teamName,{{participantName, rating}}); //TODO use emplace_back
 			}
 			else
 			{
-				b3m::common::Participant curParticipant(participantName, rating);
 				teamIt->addMember(curParticipant);
 			}
 		}

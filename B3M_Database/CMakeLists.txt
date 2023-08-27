@@ -19,20 +19,20 @@ target_link_libraries(B3M_Database
 find_package(Catch2)
 
 if(Catch2_FOUND)
-add_executable(B3M_Database_UnitTests)
-target_sources(B3M_Database_UnitTests
-	PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
-		"tests/ParticipantDepot_UnitTests.cpp"
-		"tests/TeamsCollector_UnitTests.cpp"
-)
+	add_executable(B3M_Database_UnitTests)
+	target_sources(B3M_Database_UnitTests
+		PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
+			"tests/ParticipantDepot_UnitTests.cpp"
+			"tests/TeamsCollector_UnitTests.cpp"
+	)
 
-target_link_libraries(B3M_Database_UnitTests
-	PRIVATE
-		Catch2::Catch2WithMain
-		B3M_Database
-)
-
-include(CTest)
-include(Catch)
-catch_discover_tests(B3M_Database_UnitTests)
+	target_link_libraries(B3M_Database_UnitTests
+		PRIVATE
+			Catch2::Catch2WithMain
+			B3M_Database
+	)
+	
+	include(CTest)
+	include(Catch)
+	catch_discover_tests(B3M_Database_UnitTests)
 endif()

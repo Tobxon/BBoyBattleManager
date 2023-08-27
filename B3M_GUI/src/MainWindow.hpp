@@ -16,13 +16,13 @@
 //Qt
 #include <QMainWindow>
 
+//b3m
+import b3m.database;
+
 //GUI elements
 #include "ui_MainWindow.h"
 #include "ParticipantsDialog.hpp"
 #include "TeamsView.hpp"
-
-//b3m
-import b3m.database;
 
 
 //--------------------------------------------------------------------------------------------------

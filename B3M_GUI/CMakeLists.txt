@@ -1,9 +1,7 @@
 #QT
 set(Qt_Version_used 6)
 
-find_package(Qt${Qt_Version_used} REQUIRED 
-	COMPONENTS Widgets Gui Core
-)
+find_package(Qt${Qt_Version_used} REQUIRED COMPONENTS Widgets Gui Core)
 
 
 qt_add_executable(B3M_GUI MACOSX_BUNDLE WIN32

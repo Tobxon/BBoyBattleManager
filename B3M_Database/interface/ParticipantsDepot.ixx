@@ -25,7 +25,6 @@ export module b3m.database:ParticipantsDepot;
 
 //std
 import <map>;
-import <string>;
 import <optional>;
 import <functional>;
 
@@ -44,6 +43,7 @@ export namespace b3m::database
 using ParticipantName = b3m::common::Participant::Name_t;
 using b3m::common::Attribute;
 using b3m::common::ParticipantAttributes;
+
 
 class ParticipantsDepot
 {
@@ -67,10 +67,10 @@ private:
 	void updateObservers() const;
 
 public:
-	decltype(m_participants)::const_iterator begin() const noexcept;
-	decltype(m_participants)::const_iterator cbegin() const noexcept;
-	decltype(m_participants)::const_iterator end() const noexcept;
-	decltype(m_participants)::const_iterator cend() const noexcept;
+	decltype(m_participants)::const_iterator begin() const noexcept; //TODO remove
+	decltype(m_participants)::const_iterator cbegin() const noexcept; //TODO remove
+	decltype(m_participants)::const_iterator end() const noexcept; //TODO remove
+	decltype(m_participants)::const_iterator cend() const noexcept; //TODO remove
 };
 
 

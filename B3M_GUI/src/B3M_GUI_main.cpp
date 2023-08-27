@@ -9,18 +9,14 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import b3m.database;
-
 //std
-#include <iostream>
 
 //Qt
 #include <QApplication>
-#include <QWidget>
 
-//B3M GUI
+//b3m
+import b3m.database;
 #include "MainWindow.hpp"
-#include "ParticipantsDialog.hpp"
 
 
 //--------------------------------------------------------------------------------------------------

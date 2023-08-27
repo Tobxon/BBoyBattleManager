@@ -24,10 +24,7 @@ export module b3m.database:TeamsCollector;
 //--------------------------------------------------------------------------------------------------
 
 //std
-import <functional>;
-import <map>;
 import <vector>;
-import <utility>;
 
 //b3m
 import :ParticipantsDepot;

@@ -36,17 +36,15 @@ export namespace b3m::common
 
 
 
-using Rating = int;
-class Participant;
-
-
 constexpr const char* nameAttribute{ "name" };
 constexpr const char* teamAttribute{ "crew" };
 constexpr const char* ratingAttribute{ "ranking points" };
 
 
+using Rating = int;
 using Attribute = std::string;
 using ParticipantAttributes = std::map< Attribute, std::string >;
+class Participant;
 
 
 //Team
@@ -80,11 +78,11 @@ public:
 	Participant(const Name_t&, const Rating& = {});
 
 	[[nodiscard]] Name_t getName() const{ return m_name; }
-	[[nodiscard]] std::optional< Team::Name_t > getTeam() const; //TODO use actual type of Team Name
+	[[nodiscard]] std::optional< Team::Name_t > getTeam() const;
 	[[nodiscard]] Rating getRating() const{ return m_rating; }
 
 	bool setTeam(const Team_t&);
-	bool setTeam(const Team::Name_t&);
+//	bool setTeam(const Team::Name_t&);
 private:
 	Name_t m_name{"unknown Breaker"};
 	Team_t m_team{};

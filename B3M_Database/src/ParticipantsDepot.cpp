@@ -11,10 +11,19 @@ module;
 module b3m.database;
 import :ParticipantsDepot;
 //--------------------------------------------------------------------------------------------------
+//------ Dependencies                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+//std
+import <string>;
+
+
+//--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-bool b3m::database::ParticipantsDepot::newParticipant(const ParticipantName& i_participant, const ParticipantAttributes& i_attributes)
+bool b3m::database::ParticipantsDepot::newParticipant(const ParticipantName& i_participant,
+													  const ParticipantAttributes& i_attributes)
 {
 	if(m_participants.contains(i_participant))
 	{
@@ -24,7 +33,6 @@ bool b3m::database::ParticipantsDepot::newParticipant(const ParticipantName& i_p
 	auto emplaceResult = m_participants.try_emplace(i_participant, i_attributes);
 
 	updateObservers();
-
 	return emplaceResult.second;
 }
 
@@ -42,7 +50,6 @@ bool b3m::database::ParticipantsDepot::updateParticipantsAttributes(const Partic
 		}
 
 		updateObservers();
-
 		return true;
 	}
 
@@ -58,7 +65,7 @@ bool b3m::database::ParticipantsDepot::removeParticipant(const ParticipantName& 
 		return eraseResult;
 	}
 
-	return false; //
+	return false;
 }
 
 bool b3m::database::ParticipantsDepot::removeParticipantsAttribute(const ParticipantName&, const Attribute&)

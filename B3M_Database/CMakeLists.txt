@@ -23,6 +23,7 @@ add_executable(B3M_Database_UnitTests)
 target_sources(B3M_Database_UnitTests
 	PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
 		"tests/ParticipantDepot_UnitTests.cpp"
+		"tests/TeamsCollector_UnitTests.cpp"
 )
 
 target_link_libraries(B3M_Database_UnitTests

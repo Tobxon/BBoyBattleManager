@@ -14,7 +14,7 @@ find_package(Catch2)
 if(Catch2_FOUND)
 	add_executable(B3M_Common_UnitTests)
 	target_sources(B3M_Common_UnitTests
-		PRIVATE
+		PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
 			"tests/Types_UnitTest.cpp"
 	)
 

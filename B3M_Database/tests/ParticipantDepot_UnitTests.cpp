@@ -28,7 +28,7 @@ import b3m.common;
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-using participant_name_t = b3m::database::participant_t;
+using participant_name_t = b3m::common::Participant::Name;
 using b3m::database::attribute_t;
 
 

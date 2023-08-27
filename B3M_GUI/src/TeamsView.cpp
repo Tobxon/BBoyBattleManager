@@ -8,8 +8,8 @@
 #include "TeamsView.hpp"
 
 //std
-//import <algorithm>;
-#include <algorithm>
+import <algorithm>;
+import <ranges>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -26,10 +26,11 @@ b3m::gui::TeamsView::TeamsView(ParticipantsDepot& i_participants, QWidget* paren
 
 //TeamsViewModel -----------------------------------------------------------------------------------
 b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* parent)
-	: QAbstractListModel(parent), m_teams(readTeamsByRanking(i_participants))
+	: QAbstractListModel(parent)
+	, m_teams(getTeamNamesSortedByRating(i_participants))
 {
 	i_participants.registerCallback([this](const ParticipantsDepot& i_participantsSource){
-		m_teams = readTeamsByRanking(i_participantsSource);
+		m_teams = getTeamNamesSortedByRating(i_participantsSource);
 
 		const QModelIndex topLeft = createIndex(0,0);
 		const QModelIndex bottomRight = createIndex(static_cast<int>(m_teams.size()),0);
@@ -54,23 +55,29 @@ QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
 	return {};
 }
 
-auto b3m::gui::readTeamsByRanking(const ParticipantsDepot& i_participantsSource) -> TeamsByRanking //TODO move everything that is possible to b3m::database
+auto b3m::gui::getTeamNamesSortedByRating(const ParticipantsDepot& i_participantsSource) -> TeamsByRanking
 {
-	TeamsByRanking o_teams;
+	TeamsByRanking o_sortedTeamNames;
 
-	auto teamsWithRanking = b3m::database::readTeamsWithRanking(i_participantsSource);
+	const auto teams = b3m::database::readTeams(i_participantsSource);
 
-	std::ranges::sort(teamsWithRanking, [](auto &left, auto &right) {
-		return left.second > right.second;
-	});
-	//TODO sort by indices without copying - preferably as a template to create any kind of new container from it
-
-	for(const auto& [teamName, teamRanking] : teamsWithRanking)
 	{
-		o_teams.emplace_back(QString::fromStdString(teamName));
+		std::vector<std::size_t> indexes(teams.size());
+		std::iota(indexes.begin(), indexes.end(), std::size_t{ 0 }); // 0z in C++23
+
+		auto proj = [&teams](std::size_t i) -> const b3m::common::Team& { return teams[i]; };
+
+//		std::ranges::sort(indexes, std::less<>{}, proj); //TODO
+
+		auto sortedView = std::ranges::views::transform(indexes, proj);
+
+		for(const auto& team : sortedView)
+		{
+			o_sortedTeamNames.emplace_back(QString::fromStdString(team.getName()));
+		}
 	}
 
-	return o_teams;
+	return o_sortedTeamNames;
 }
 
 

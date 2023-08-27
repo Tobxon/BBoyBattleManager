@@ -63,7 +63,7 @@ private:
 	TeamsByRanking m_teams;
 };
 
-TeamsByRanking readTeamsByRanking(const ParticipantsDepot&);
+TeamsByRanking getTeamNamesSortedByRating(const ParticipantsDepot&);
 
 
 

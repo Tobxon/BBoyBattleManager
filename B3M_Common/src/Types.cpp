@@ -10,20 +10,51 @@ module;
 
 module b3m.common;
 import :types;
+
+
+//--------------------------------------------------------------------------------------------------
+//------ Dependencies                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+//std
+import <numeric>;
+
+
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-auto b3m::common::calculateTeamRanking(const MemberList& i_members) -> Ranking
+//Participant --------------------------------------------------------------------------------------
+b3m::common::Participant::Participant(const Name_t& i_name)
+	: m_name(i_name)
 {
-	Ranking o_teamRanking = 0;
-
-	for (const auto &[participant, ranking]: i_members)
-	{
-		o_teamRanking += ranking;
-	}
-	return o_teamRanking;
 }
+
+auto b3m::common::Participant::getTeam() const -> std::optional< Team_t >
+{
+	if(!m_team.empty())
+	{
+		return m_team;
+	}
+
+	return std::nullopt;
+}
+
+
+//Team ---------------------------------------------------------------------------------------------
+b3m::common::Team::Team(const Name_t& i_name)
+	: m_name(i_name)
+{
+}
+
+auto b3m::common::Team::getRating() const -> Rating
+{
+	return std::accumulate(m_members.cbegin(), m_members.cend(), 0,
+		[](Rating i_curSum, const Participant& i_participant){
+			return i_curSum + i_participant.getRating();
+	});
+}
+
 
 
 //END OF FILE --------------------------------------------------------------------------------------

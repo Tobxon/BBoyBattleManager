@@ -1,10 +1,8 @@
 add_library(B3M_Common)
 target_sources(B3M_Common
-	PRIVATE
+	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/Types.cpp"
-	#C++20 Modules
-	PUBLIC
-		FILE_SET cxx_modules TYPE CXX_MODULES FILES
+	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
 		"interfaces/B3M_Common.ixx"
 		"interfaces/Types.ixx"
 )

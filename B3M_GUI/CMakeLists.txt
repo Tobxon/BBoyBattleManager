@@ -10,14 +10,15 @@ qt_add_executable(B3M_GUI MACOSX_BUNDLE WIN32
 	"src/B3M_GUI_main.cpp"
 )
 target_sources(B3M_GUI
-	PRIVATE
+	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/MainWindow.hpp"
+		"src/ParticipantsDialog.hpp"
+		"src/TeamsView.hpp"
+	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/MainWindow.cpp"
 		"src/MainWindow.ui"
-		"src/ParticipantsDialog.hpp"
 		"src/ParticipantsDialog.cpp"
 		"src/ParticipantsDialog.ui"
-		"src/TeamsView.hpp"
 		"src/TeamsView.cpp"
 )
 

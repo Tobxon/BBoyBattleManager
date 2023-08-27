@@ -25,10 +25,17 @@ import <numeric>;
 //--------------------------------------------------------------------------------------------------
 
 //Participant --------------------------------------------------------------------------------------
-b3m::common::Participant::Participant(const Name_t& i_name)
-	: m_name(i_name)
-{
-}
+b3m::common::Participant::Participant(const Name_t& i_name, const Team_t& i_team, const Rating& i_rating)
+	: m_name(i_name), m_team(i_team), m_rating(i_rating)
+{}
+
+b3m::common::Participant::Participant(const Name_t& i_name, const Team_t& i_team)
+	: Participant(i_name, i_team, {})
+{}
+
+b3m::common::Participant::Participant(const Name_t& i_name, const Rating& i_rating)
+		: Participant(i_name, {}, i_rating)
+{}
 
 auto b3m::common::Participant::getTeam() const -> std::optional< Team_t >
 {
@@ -42,8 +49,8 @@ auto b3m::common::Participant::getTeam() const -> std::optional< Team_t >
 
 
 //Team ---------------------------------------------------------------------------------------------
-b3m::common::Team::Team(const Name_t& i_name)
-	: m_name(i_name)
+b3m::common::Team::Team(const Name_t& i_name, const std::vector< Participant >& i_members)
+	: m_name(i_name), m_members(i_members)
 {
 }
 

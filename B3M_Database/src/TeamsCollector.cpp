@@ -25,7 +25,10 @@ import b3m.common;
 //free Functions -----------------------------------------------------------------------------------
 auto b3m::database::readTeams(const ParticipantsDepot&) -> std::vector< Team >
 {
-	return {{"team2"},{"team1"},{"team3"}}; //TODO
+	Team team1{"Crew#1",{{"guy",3},{"girl",5}}};
+	Team team2{"Kru",{{"guy",2},{"girl",2}}};
+	Team team3{"Family",{{"guy1",1},{"girl3",2},{"guy2",6},{"girl4",10}}};
+	return {team1, team2, team3}; //TODO
 }
 
 

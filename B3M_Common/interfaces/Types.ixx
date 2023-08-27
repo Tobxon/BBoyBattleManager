@@ -51,7 +51,9 @@ public:
 	using Name_t = std::string;
 	using Team_t = std::string;
 
-	Participant(const Name_t&);
+	Participant(const Name_t&, const Team_t&, const Rating&);
+	explicit Participant(const Name_t&, const Team_t& = {});
+	Participant(const Name_t&, const Rating& = {});
 
 	[[nodiscard]] Name_t getName() const{ return m_name; }
 	[[nodiscard]] std::optional< Team_t > getTeam() const;
@@ -72,7 +74,7 @@ class Team
 public:
 	using Name_t = std::string;
 
-	Team(const Name_t&);
+	explicit Team(const Name_t&, const std::vector< Participant >& = {});
 	//TODO range constructor to set members initially
 
 	[[nodiscard]] Name_t getName() const{ return m_name; }

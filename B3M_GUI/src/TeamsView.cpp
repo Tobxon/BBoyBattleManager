@@ -10,6 +10,11 @@
 //std
 import <algorithm>;
 import <ranges>;
+import <vector>;
+import <functional>;
+
+//b3m
+import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -62,16 +67,13 @@ auto b3m::gui::getTeamNamesSortedByRating(const ParticipantsDepot& i_participant
 	const auto teams = b3m::database::readTeams(i_participantsSource);
 
 	{
-		std::vector<std::size_t> indexes(teams.size());
-		std::iota(indexes.begin(), indexes.end(), std::size_t{ 0 }); // 0z in C++23
+		std::vector< std::reference_wrapper< const decltype(teams)::value_type >> teamsProj( teams.begin(), teams.end() );
 
-		auto proj = [&teams](std::size_t i) -> const b3m::common::Team& { return teams[i]; };
+		std::ranges::sort(teamsProj, [](const b3m::common::Team& i_a, const b3m::common::Team& i_b){
+			return i_a.getRating() > i_b.getRating();
+		});
 
-//		std::ranges::sort(indexes, std::less<>{}, proj); //TODO
-
-		auto sortedView = std::ranges::views::transform(indexes, proj);
-
-		for(const auto& team : sortedView)
+		for(const b3m::common::Team& team : teamsProj)
 		{
 			o_sortedTeamNames.emplace_back(QString::fromStdString(team.getName()));
 		}

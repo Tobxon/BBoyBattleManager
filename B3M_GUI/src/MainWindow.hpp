@@ -5,9 +5,9 @@
  *
  */
 
-
 #ifndef B3M_GUI_MAIN_WINDOW_HPP_
 #define B3M_GUI_MAIN_WINDOW_HPP_
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
@@ -23,6 +23,7 @@ import b3m.database;
 #include "ui_MainWindow.h"
 #include "ParticipantsDialog.hpp"
 #include "TeamsView.hpp"
+#include "TournamentManagementWindow.hpp"
 
 
 //--------------------------------------------------------------------------------------------------
@@ -49,6 +50,7 @@ private:
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
 	b3m::gui::ParticipantsDialog* m_participantDialog{ nullptr };
 	b3m::gui::TeamsView* m_teamsOverview{ nullptr };
+	b3m::gui::TournamentManagementWindow* m_tournamentManagementWindow{ nullptr };
 
 	//void slot_setCentralWidget(QWidget* const);
 };

@@ -12,15 +12,15 @@ target_sources(B3M_GUI
 		"src/MainWindow.hpp"
 		"src/ParticipantsDialog.hpp"
 		"src/TeamsView.hpp"
-		"src/TournamentManagementWindow.hpp"
+		"src/TournamentManagement/Window.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/MainWindow.cpp"
 		"src/MainWindow.ui"
 		"src/ParticipantsDialog.cpp"
 		"src/ParticipantsDialog.ui"
 		"src/TeamsView.cpp"
-		"src/TournamentManagementWindow.cpp"
-		"src/TournamentManagementWindow.ui"
+		"src/TournamentManagement/Window.cpp"
+		"src/TournamentManagement/Window.ui"
 )
 
 set_target_properties(B3M_GUI PROPERTIES  

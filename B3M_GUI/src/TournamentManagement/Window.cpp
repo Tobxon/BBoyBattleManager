@@ -5,7 +5,7 @@
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-#include "TournamentManagementWindow.hpp"
+#include "Window.hpp"
 
 
 //--------------------------------------------------------------------------------------------------
@@ -17,11 +17,18 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* const 
 	m_ui->setupUi(this);
 
 	connect(m_ui->lowRightButton, &QPushButton::clicked, this, &QWidget::hide);
+
+	connect(m_ui->upLeftButton, &QPushButton::clicked, this, &TournamentManagementWindow::createRound);
 }
 
 b3m::gui::TournamentManagementWindow::~TournamentManagementWindow()
 {
 	delete m_ui;
+}
+
+auto b3m::gui::TournamentManagementWindow::createRound() const -> std::vector<Match>
+{
+	return {};
 }
 
 

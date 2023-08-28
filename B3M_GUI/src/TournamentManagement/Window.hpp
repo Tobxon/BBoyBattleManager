@@ -13,10 +13,14 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+//std
+import <vector>;
+
 //Qt
 #include <QWidget>
 
 //b3m
+import b3m.common;
 #include <ui_TournamentManagementWindow.h>
 
 
@@ -28,6 +32,9 @@ namespace b3m::gui
 
 
 
+using b3m::common::Match;
+
+
 class TournamentManagementWindow : public QWidget
 {
 	Q_OBJECT;
@@ -36,6 +43,7 @@ public:
 	explicit TournamentManagementWindow(QWidget* = nullptr);
 	~TournamentManagementWindow() override;
 
+	std::vector<Match> createRound() const; //TODO const?
 private:
 	Ui::TournamentManagementWindow* m_ui;
 };

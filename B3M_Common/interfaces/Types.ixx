@@ -90,6 +90,18 @@ private:
 };
 
 
+//Match
+class Match
+{
+public:
+
+private:
+	//TODO contestant as template or polymorphic type?
+	Team contestantA;
+	Team contestantB;
+};
+
+
 
 } //namespace b3m::common
 

@@ -15,6 +15,8 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* const 
 	: QWidget(i_parent), m_ui(new Ui::TournamentManagementWindow())
 {
 	m_ui->setupUi(this);
+
+	connect(m_ui->lowRightButton, &QPushButton::clicked, this, &QWidget::hide);
 }
 
 b3m::gui::TournamentManagementWindow::~TournamentManagementWindow()

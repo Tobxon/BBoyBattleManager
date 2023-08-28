@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TeamMatchResultInput</class>
+ <widget class="QWidget" name="TeamMatchResultInput">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>39</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QLabel" name="teamA">
+     <property name="text">
+      <string>TeamA</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="resultTeamA"/>
+   </item>
+   <item alignment="Qt::AlignHCenter">
+    <widget class="QLabel" name="versus">
+     <property name="text">
+      <string>vs.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="resultTeamB"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="teamB">
+     <property name="text">
+      <string>TeamB</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -22,6 +22,7 @@ import b3m.common;
 //------ Tests                                                                                ------
 //--------------------------------------------------------------------------------------------------
 
+//Participant --------------------------------------------------------------------------------------
 TEST_CASE("b3m Participant - simple constructor test", "[B3M, Participant, Constructor]")
 {
 	REQUIRE_NOTHROW(b3m::common::Participant{ "AnyBot" });
@@ -34,6 +35,10 @@ TEST_CASE("b3m Participant - creating a participant and check for valid state")
 
 	REQUIRE_NOTHROW(firstParticipant.getName() == std::string(firstName));
 }
+
+//TODO add unit tests for Participant
+
+//TODO add unit tests for Team
 
 
 //END OF FILE --------------------------------------------------------------------------------------

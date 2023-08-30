@@ -20,7 +20,7 @@ target_sources(B3M_GUI
 		"src/ParticipantsDialog.ui"
 		"src/TeamsView.cpp"
 		"src/TournamentManagement/Window.cpp"
-		"src/TournamentManagement/Window.ui"
+		"src/TournamentManagement/TournamentManagementWindow.ui"
 )
 
 set_target_properties(B3M_GUI PROPERTIES  

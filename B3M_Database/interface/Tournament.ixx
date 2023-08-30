@@ -1,6 +1,7 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief General Module Interface Unit for bem.database which combines als module partitions.
+ * \brief Module Interface Unit for the Tournament class. Tournament is the main class when
+ *        processing with knowledge of a tournament holding multiple rounds.
  *
  */
 
@@ -14,15 +15,40 @@ module;
 //--------------------------------------------------------------------------------------------------
 //------ MODULE CONTENT                                                                       ------
 //--------------------------------------------------------------------------------------------------
-export module b3m.database;
+export module b3m.database:Tournament;
+
+
+//--------------------------------------------------------------------------------------------------
+//------ Dependencies                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+//std
+import <vector>;
+
+//b3m
+import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export import :ParticipantsDepot;
-export import :TeamsCollector;
-export import :Tournament;
+export namespace b3m::database
+{
+
+
+
+using b3m::common::Match;
+
+
+class Tournament
+{
+public:
+	std::vector<Match> createRound() const;
+};
+
+
+
+} //namespace b3m::database
 
 
 //END OF FILE --------------------------------------------------------------------------------------

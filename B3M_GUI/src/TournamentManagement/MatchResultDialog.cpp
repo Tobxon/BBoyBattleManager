@@ -19,9 +19,9 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 {
 	m_ui->setupUi(this);
 
-	const auto teams = m_match->getContestants();
-	const auto teamAName = QString::fromStdString(teams.at(0).getName());
-	const auto teamBName = QString::fromStdString(teams.at(1).getName());
+	const auto teams = m_match->getContestantNames();
+	const auto teamAName = QString::fromStdString(teams.first);
+	const auto teamBName = QString::fromStdString(teams.second);
 	m_ui->teamA->setText(teamAName);
 	m_ui->teamB->setText(teamBName);
 }

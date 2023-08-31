@@ -26,6 +26,7 @@ import <string>;
 import <map>;
 import <vector>;
 import <optional>;
+import <utility>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -94,16 +95,17 @@ private:
 using Contestant = b3m::common::Team;
 
 
+//TODO enable Matches with 3 contestants
 class Match
 {
 public:
-	explicit Match(const std::vector< Contestant >& = {}); //TODO to ranges
+	Match(const Contestant&, const Contestant&);
 
-	[[nodiscard]] std::vector< Contestant > getContestants() const{ return m_contestants; };
+	[[nodiscard]] std::pair< Contestant::Name_t, Contestant::Name_t > getContestantNames() const;
 
 	//TODO contestant as template or polymorphic type?
 private:
-	std::vector< Contestant > m_contestants;
+	std::pair< Contestant, Contestant > m_contestants;
 };
 
 

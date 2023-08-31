@@ -44,7 +44,7 @@ auto b3m::database::TournamentProxy::startRound() -> std::vector<Match>
 	{
 		//TODO
 //		return m_curTournament->createRound();
-		return {{},{},{},{},{},{},{}};
+		return {Match(),Match(),Match(),Match(),Match()};
 	}
 
 	return {};

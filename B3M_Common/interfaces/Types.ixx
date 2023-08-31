@@ -97,10 +97,13 @@ using Contestant = b3m::common::Team;
 class Match
 {
 public:
-	[[nodiscard]] std::vector< Contestant > getContestants() const;
+	explicit Match(const std::vector< Contestant >& = {}); //TODO to ranges
+
+	[[nodiscard]] std::vector< Contestant > getContestants() const{ return m_contestants; };
 
 	//TODO contestant as template or polymorphic type?
-	std::vector< Contestant > getContestants();
+private:
+	std::vector< Contestant > m_contestants;
 };
 
 

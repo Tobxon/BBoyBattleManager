@@ -77,10 +77,9 @@ bool b3m::common::Team::addMember(Participant& i_newMember)
 }
 
 //Match --------------------------------------------------------------------------------------------
-auto b3m::common::Match::getContestants() -> std::vector< Contestant >
+b3m::common::Match::Match(const std::vector< Contestant >& i_contestants)
+	: m_contestants(i_contestants)
 {
-	//TODO
-	return {Team("Crew1",{}),Team("Crew2",{})};
 }
 
 

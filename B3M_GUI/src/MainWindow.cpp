@@ -33,6 +33,8 @@ b3m::gui::MainWindow::MainWindow(b3m::database::ParticipantsDepot& i_participant
 	m_ui->gridLayout->addWidget(m_teamsOverview, 2, 0, 1, 1);
 
 	connect(m_ui->lowRightButton, &QPushButton::clicked, [this](){
+		const auto teams = m_teamsOverview->getContestants();
+		m_tournamentManagementWindow->startTournament(teams);
 		m_tournamentManagementWindow->show();
 	});
 }

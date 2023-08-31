@@ -36,6 +36,7 @@ namespace b3m::gui
 
 using b3m::common::Match;
 using b3m::database::TournamentProxy;
+using b3m::common::Contestant;
 
 
 class TournamentManagementWindow : public QWidget
@@ -46,7 +47,7 @@ public:
 	explicit TournamentManagementWindow(QWidget* = nullptr);
 	~TournamentManagementWindow() override;
 
-	std::vector<Match> createRound() const; //TODO const?
+	bool startTournament(const std::vector< Contestant >&);
 private:
 	Ui::TournamentManagementWindow* m_ui;
 

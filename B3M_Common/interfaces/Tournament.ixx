@@ -15,7 +15,7 @@ module;
 //--------------------------------------------------------------------------------------------------
 //------ MODULE CONTENT                                                                       ------
 //--------------------------------------------------------------------------------------------------
-export module b3m.database:Tournament;
+export module b3m.common:Tournament;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -26,24 +26,35 @@ export module b3m.database:Tournament;
 import <vector>;
 
 //b3m
-import b3m.common;
+import :types;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export namespace b3m::database
+export namespace b3m::common
 {
 
 
 
 using b3m::common::Match;
+using TournamentRound = std::vector<Match>;
 
 
 class Tournament
 {
+	using Contestant = b3m::common::Team;
+
 public:
-	std::vector<Match> createRound() const;
+	explicit Tournament(const std::vector <Contestant>&); //TODO to ranges?
+
+	[[nodiscard]] bool isRunning() const;
+
+	bool updateContestants(const std::vector <Contestant>&); //TODO to ranges?
+
+	TournamentRound createRound() const;
+private:
+	std::vector <Contestant> m_contestants;
 };
 
 

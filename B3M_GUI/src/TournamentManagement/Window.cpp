@@ -14,7 +14,7 @@
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
-b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* const i_parent)
+b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_parent)
 	: QWidget(i_parent), m_ui(new Ui::TournamentManagementWindow())
 {
 	m_ui->setupUi(this);

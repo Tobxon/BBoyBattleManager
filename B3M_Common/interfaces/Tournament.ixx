@@ -39,12 +39,11 @@ export namespace b3m::common
 
 using b3m::common::Match;
 using TournamentRound = std::vector<Match>;
+using b3m::common::Contestant;
 
 
 class Tournament
 {
-	using Contestant = b3m::common::Team;
-
 public:
 	explicit Tournament(const std::vector <Contestant>&); //TODO to ranges?
 

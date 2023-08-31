@@ -17,9 +17,8 @@
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-b3m::gui::MainWindow::MainWindow(b3m::database::ParticipantsDepot& i_participantStorage,
-	QMainWindow* parent)
-	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow)
+b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainWindow* i_parent)
+	: QMainWindow(i_parent), m_ui(new Ui::B3M_MainWindow)
 	, m_participantDialog(new b3m::gui::ParticipantsDialog(i_participantStorage))
 	, m_teamsOverview(new TeamsView(i_participantStorage))
 	, m_tournamentManagementWindow(new TournamentManagementWindow())

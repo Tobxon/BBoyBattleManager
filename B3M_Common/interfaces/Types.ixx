@@ -93,6 +93,7 @@ private:
 //Match
 using Contestant = b3m::common::Team;
 
+
 class Match
 {
 public:

@@ -26,108 +26,6 @@ import b3m.database;
 #include "TournamentManagement/Window.hpp"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
@@ -136,12 +34,15 @@ namespace b3m::gui
 
 
 
+using b3m::database::ParticipantsDepot;
+
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT;
 
 public:
-	explicit MainWindow(b3m::database::ParticipantsDepot&, QMainWindow* parent = nullptr);
+	explicit MainWindow(ParticipantsDepot&, QMainWindow* parent = nullptr);
 	~MainWindow() override;
 	MainWindow(const MainWindow&) = delete;
 	MainWindow& operator=(const MainWindow&) = delete;
@@ -150,11 +51,10 @@ public:
 
 private:
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
+
 	b3m::gui::ParticipantsDialog* m_participantDialog{ nullptr };
 	b3m::gui::TeamsView* m_teamsOverview{ nullptr };
 	b3m::gui::TournamentManagementWindow* m_tournamentManagementWindow{ nullptr };
-
-	//void slot_setCentralWidget(QWidget* const);
 };
 
 

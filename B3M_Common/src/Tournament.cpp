@@ -25,12 +25,6 @@ b3m::common::Tournament::Tournament(const std::vector <Contestant>& i_contestant
 {
 }
 
-bool b3m::common::Tournament::isRunning() const
-{
-	//TODO
-	return false;
-}
-
 bool b3m::common::Tournament::updateContestants(const std::vector <Contestant>& i_contestants)
 {
 	if(isRunning())
@@ -42,10 +36,21 @@ bool b3m::common::Tournament::updateContestants(const std::vector <Contestant>& 
 	return false;
 }
 
-auto b3m::common::Tournament::createRound() const -> std::vector<Match>
+auto b3m::common::Tournament::createRound() -> TournamentRound*
 {
 	//TODO
-	return {};
+	auto curRound = std::make_unique<TournamentRound, std::initializer_list<Match>>(
+		{ {Contestant("Kru"),Contestant("Squad")}
+		, {Contestant("Team"),Contestant("Kids")}
+		, {Contestant("Horde"),Contestant("Mates")}});
+
+	return m_rounds.emplace_back(std::move(curRound)).get();
+}
+
+bool b3m::common::Tournament::isRunning() const
+{
+	//TODO
+	return false;
 }
 
 

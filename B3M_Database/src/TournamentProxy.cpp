@@ -38,13 +38,11 @@ bool b3m::database::TournamentProxy::startTournament(const std::vector <Contesta
 	return true;
 }
 
-auto b3m::database::TournamentProxy::startRound() -> std::vector<Match>
+auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
 {
 	if(m_curTournament)
 	{
-		//TODO
-//		return m_curTournament->createRound();
-		return {Match(Contestant("Crew left"),Contestant("Crew right"))};
+		return m_curTournament->createRound();
 	}
 
 	return {};

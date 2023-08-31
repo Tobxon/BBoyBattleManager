@@ -24,6 +24,7 @@ export module b3m.common:Tournament;
 
 //std
 import <vector>;
+import <memory>;
 
 //b3m
 import :types;
@@ -47,13 +48,15 @@ class Tournament
 public:
 	explicit Tournament(const std::vector <Contestant>&); //TODO to ranges?
 
-	[[nodiscard]] bool isRunning() const;
-
 	bool updateContestants(const std::vector <Contestant>&); //TODO to ranges?
 
-	TournamentRound createRound() const;
+	TournamentRound* createRound(); //TODO const and list round in other object?
+
+	[[nodiscard]] bool isRunning() const;
 private:
-	std::vector <Contestant> m_contestants;
+	std::vector< Contestant > m_contestants;
+
+	std::vector<std::unique_ptr< TournamentRound >> m_rounds;
 };
 
 

@@ -43,13 +43,14 @@ using b3m::common::Tournament;
 using b3m::common::Team;
 using b3m::common::Match;
 using b3m::common::Contestant;
+using b3m::common::TournamentRound;
 
 
 class TournamentProxy
 {
 public:
 	bool startTournament(const std::vector< Contestant >&);
-	std::vector<Match> startRound();
+	TournamentRound* startRound();
 
 	[[nodiscard]] Tournament* getTournament() const{ return m_curTournament.get(); }
 

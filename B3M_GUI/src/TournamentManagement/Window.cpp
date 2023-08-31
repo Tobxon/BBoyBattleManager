@@ -25,7 +25,7 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_pare
 		auto round = m_tournament.startRound();
 		//TODO get round index
 		static int roundIndex = 0;
-		m_ui->roundTabs->addTab(new TournamentRoundWidget(round), QString("Round ") + QString::number(++roundIndex));
+		m_ui->roundTabs->addTab(new TournamentRoundWidget(*round), QString("Round ") + QString::number(++roundIndex));
 	});
 }
 

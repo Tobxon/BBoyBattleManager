@@ -5,38 +5,29 @@
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-#include "Window.hpp"
-
-//b3m
 #include "TournamentRoundWidget.hpp"
+
+#include "MatchResultDialog.hpp"
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
-b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* const i_parent)
-	: QWidget(i_parent), m_ui(new Ui::TournamentManagementWindow())
+
+b3m::gui::TournamentRoundWidget::TournamentRoundWidget(TournamentRound& i_round, QWidget* i_parent)
+	: QWidget(i_parent), m_ui(new Ui::TournamentRoundWidget()), m_round(&i_round)
 {
 	m_ui->setupUi(this);
 
-	connect(m_ui->lowRightButton, &QPushButton::clicked, this, &QWidget::hide);
-
-	connect(m_ui->upLeftButton, &QPushButton::clicked, [this](){
-		auto round = m_tournament.startRound();
-		//TODO get round index
-		static int roundIndex = 0;
-		m_ui->roundTabs->addTab(new TournamentRoundWidget(round), QString("Round ") + QString::number(++roundIndex));
-	});
+	for(auto& match : *m_round)
+	{
+		m_ui->matchesLayout->addWidget(new MatchResultDialog(match));
+	}
 }
 
-b3m::gui::TournamentManagementWindow::~TournamentManagementWindow()
+b3m::gui::TournamentRoundWidget::~TournamentRoundWidget()
 {
 	delete m_ui;
-}
-
-bool b3m::gui::TournamentManagementWindow::startTournament(const std::vector< Contestant >& i_contestants)
-{
-	return m_tournament.startTournament(i_contestants);
 }
 
 

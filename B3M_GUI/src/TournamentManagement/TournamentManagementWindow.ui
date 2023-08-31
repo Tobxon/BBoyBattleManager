@@ -46,7 +46,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="roundTabs">
      <property name="currentIndex">
       <number>-1</number>
      </property>

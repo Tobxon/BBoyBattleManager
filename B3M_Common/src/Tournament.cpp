@@ -36,21 +36,14 @@ bool b3m::common::Tournament::updateContestants(const std::vector <Contestant>& 
 	return false;
 }
 
-auto b3m::common::Tournament::createRound() -> TournamentRound*
+auto b3m::common::Tournament::addNewRound(std::unique_ptr<TournamentRound> i_newRound) -> TournamentRound*
 {
-	//TODO
-	auto curRound = std::make_unique<TournamentRound, std::initializer_list<Match>>(
-		{ {Contestant("Kru"),Contestant("Squad")}
-		, {Contestant("Team"),Contestant("Kids")}
-		, {Contestant("Horde"),Contestant("Mates")}});
-
-	return m_rounds.emplace_back(std::move(curRound)).get();
+	return m_rounds.emplace_back(std::move(i_newRound)).get();
 }
 
 bool b3m::common::Tournament::isRunning() const
 {
-	//TODO
-	return false;
+	return !m_rounds.empty();
 }
 
 

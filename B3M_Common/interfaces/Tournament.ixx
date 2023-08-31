@@ -50,7 +50,7 @@ public:
 
 	bool updateContestants(const std::vector <Contestant>&); //TODO to ranges?
 
-	TournamentRound* createRound(); //TODO const and list round in other object?
+	TournamentRound* addNewRound(std::unique_ptr<TournamentRound>); //TODO to slot?
 
 	[[nodiscard]] bool isRunning() const;
 private:

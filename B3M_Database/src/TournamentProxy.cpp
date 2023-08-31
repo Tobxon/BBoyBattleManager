@@ -40,12 +40,18 @@ bool b3m::database::TournamentProxy::startTournament(const std::vector <Contesta
 
 auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
 {
-	if(m_curTournament)
+	if(!m_curTournament || !m_matchmaker)
 	{
-		return m_curTournament->createRound();
+		return nullptr;
 	}
 
-	return {};
+	//TODO GOON create Round by using MatchMaker
+	auto curRound = std::make_unique<TournamentRound, std::initializer_list<Match>>(
+		{ {Contestant("Kru"),Contestant("Squad")}
+		, {Contestant("Team"),Contestant("Kids")}
+		, {Contestant("Horde"),Contestant("Mates")}});
+
+	return m_curTournament->addNewRound(std::move(curRound));
 }
 
 

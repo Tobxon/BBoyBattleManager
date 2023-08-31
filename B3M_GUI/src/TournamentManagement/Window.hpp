@@ -19,9 +19,11 @@ import <vector>;
 //Qt
 #include <QWidget>
 
+#include <ui_TournamentManagementWindow.h>
+
 //b3m
 import b3m.common;
-#include <ui_TournamentManagementWindow.h>
+import b3m.database;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -33,6 +35,7 @@ namespace b3m::gui
 
 
 using b3m::common::Match;
+using b3m::database::TournamentProxy;
 
 
 class TournamentManagementWindow : public QWidget
@@ -46,6 +49,8 @@ public:
 	std::vector<Match> createRound() const; //TODO const?
 private:
 	Ui::TournamentManagementWindow* m_ui;
+
+	TournamentProxy m_tournament;
 };
 
 

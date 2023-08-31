@@ -18,7 +18,9 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* const 
 
 	connect(m_ui->lowRightButton, &QPushButton::clicked, this, &QWidget::hide);
 
-	connect(m_ui->upLeftButton, &QPushButton::clicked, this, &TournamentManagementWindow::createRound);
+	connect(m_ui->upLeftButton, &QPushButton::clicked, [this](){
+		auto round = m_tournament.startRound();
+	});
 }
 
 b3m::gui::TournamentManagementWindow::~TournamentManagementWindow()
@@ -26,9 +28,9 @@ b3m::gui::TournamentManagementWindow::~TournamentManagementWindow()
 	delete m_ui;
 }
 
-auto b3m::gui::TournamentManagementWindow::createRound() const -> std::vector<Match>
+bool b3m::gui::TournamentManagementWindow::startTournament(const std::vector< Contestant >& i_contestants)
 {
-	return {};
+	return m_tournament.startTournament(i_contestants);
 }
 
 

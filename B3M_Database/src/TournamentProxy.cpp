@@ -1,8 +1,5 @@
 //--------------------------------------------------------------------------------------------------
-/**
- * \brief General Module Interface Unit for bem.database which combines als module partitions.
- *
- */
+// For explanation see interface file (.ixx).
 
 
 //--------------------------------------------------------------------------------------------------
@@ -11,18 +8,47 @@
 module;
 
 
+module b3m.database;
+
+import :TournamentProxy;
 //--------------------------------------------------------------------------------------------------
-//------ MODULE CONTENT                                                                       ------
+//------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export module b3m.database;
+
+//std
 
 
 //--------------------------------------------------------------------------------------------------
-//------ Declarations                                                                         ------
+//------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
-export import :ParticipantsDepot;
-export import :TeamsCollector;
-export import :TournamentProxy;
+
+bool b3m::database::TournamentProxy::startTournament(const std::vector <Contestant>& i_contestants)
+{
+	if(m_curTournament && m_curTournament->isRunning())
+	{
+		return false;
+	}
+
+	if(m_curTournament && !m_curTournament->isRunning())
+	{
+		return m_curTournament->updateContestants(i_contestants);
+	}
+
+	m_curTournament = std::make_unique<Tournament>(i_contestants);
+	return true;
+}
+
+auto b3m::database::TournamentProxy::startRound() -> std::vector<Match>
+{
+	if(m_curTournament)
+	{
+		//TODO
+//		return m_curTournament->createRound();
+		return {{},{},{},{},{},{},{}};
+	}
+
+	return {};
+}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

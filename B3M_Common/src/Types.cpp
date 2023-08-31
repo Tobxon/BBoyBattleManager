@@ -76,5 +76,12 @@ bool b3m::common::Team::addMember(Participant& i_newMember)
 	return false;
 }
 
+//Match --------------------------------------------------------------------------------------------
+auto b3m::common::Match::getContestants() -> std::vector< Contestant >
+{
+	//TODO
+	return {Team("Crew1",{}),Team("Crew2",{})};
+}
+
 
 //END OF FILE --------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TeamMatchResultInput</class>
- <widget class="QWidget" name="TeamMatchResultInput">
+ <class>MatchResultDialog</class>
+ <widget class="QWidget" name="MatchResultDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -22,7 +22,20 @@
     </widget>
    </item>
    <item>
-    <widget class="QDoubleSpinBox" name="resultTeamA"/>
+    <widget class="QDoubleSpinBox" name="resultTeamA">
+     <property name="decimals">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <double>3.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.500000000000000</double>
+     </property>
+     <property name="value">
+      <double>0.000000000000000</double>
+     </property>
+    </widget>
    </item>
    <item alignment="Qt::AlignHCenter">
     <widget class="QLabel" name="versus">
@@ -32,7 +45,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QDoubleSpinBox" name="resultTeamB"/>
+    <widget class="QDoubleSpinBox" name="resultTeamB">
+     <property name="decimals">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <double>5.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.500000000000000</double>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="teamB">

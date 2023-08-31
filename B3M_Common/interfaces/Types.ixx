@@ -91,14 +91,15 @@ private:
 
 
 //Match
+using Contestant = b3m::common::Team;
+
 class Match
 {
 public:
+	[[nodiscard]] std::vector< Contestant > getContestants() const;
 
-private:
 	//TODO contestant as template or polymorphic type?
-	Team contestantA;
-	Team contestantB;
+	std::vector< Contestant > getContestants();
 };
 
 

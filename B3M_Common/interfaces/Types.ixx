@@ -105,13 +105,12 @@ public:
 	[[nodiscard]] std::pair< Contestant::Name_t, Contestant::Name_t > getContestantNames() const;
 	//TODO contestant as template or polymorphic type?
 
-	bool setResult(const Judgement&, const Judgement&);
-	bool changeResult(const Judgement&, const Judgement&);
+	bool setResult(const Contestant::Name_t&, const Judgement&);
 
 	[[nodiscard]] bool isFinished() const;
 private:
 	std::pair< Contestant, Contestant > m_contestants;
-	std::optional< std::pair< Judgement, Judgement >> m_result{ std::nullopt };
+	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };
 };
 
 

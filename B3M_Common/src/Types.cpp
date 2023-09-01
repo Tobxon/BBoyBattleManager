@@ -88,31 +88,27 @@ auto b3m::common::Match::getContestantNames() const
 	return { m_contestants.first.getName(), m_contestants.second.getName() };
 }
 
-bool b3m::common::Match::setResult(const Judgement& i_resultA, const Judgement& i_resultB)
+bool b3m::common::Match::setResult(const Contestant::Name_t& i_contestantName, const Judgement& i_result)
 {
-	if(m_result.has_value())
+	if(i_contestantName == m_contestants.first.getName())
+	{
+		m_result.first = i_result;
+	}
+	else if(i_contestantName == m_contestants.second.getName())
+	{
+		m_result.second = i_result;
+	}
+	else
 	{
 		return false;
 	}
 
-	m_result = std::make_pair(i_resultA, i_resultB);
-	return true;
-}
-
-bool b3m::common::Match::changeResult(const Judgement& i_resultA, const Judgement& i_resultB)
-{
-	if(!m_result.has_value())
-	{
-		return false;
-	}
-
-	m_result = std::make_pair(i_resultA, i_resultB);
 	return true;
 }
 
 bool b3m::common::Match::isFinished() const
 {
-	return m_result.has_value();
+	return m_result.first.has_value() && m_result.second.has_value();
 }
 
 

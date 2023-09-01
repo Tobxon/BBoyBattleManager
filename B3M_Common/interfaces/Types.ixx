@@ -26,6 +26,7 @@ import <string>;
 import <map>;
 import <vector>;
 import <optional>;
+import <utility>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -87,6 +88,24 @@ private:
 	Name_t m_name{"unknown Breaker"};
 	Team_t m_team{};
 	Rating m_rating{};
+};
+
+
+//Match
+using Contestant = b3m::common::Team;
+
+
+//TODO enable Matches with 3 contestants
+class Match
+{
+public:
+	Match(const Contestant&, const Contestant&);
+
+	[[nodiscard]] std::pair< Contestant::Name_t, Contestant::Name_t > getContestantNames() const;
+
+	//TODO contestant as template or polymorphic type?
+private:
+	std::pair< Contestant, Contestant > m_contestants;
 };
 
 

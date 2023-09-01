@@ -5,13 +5,16 @@
  *
  */
 
-
 #ifndef B3M_GUI_TEAMS_VIEW_HPP_
 #define B3M_GUI_TEAMS_VIEW_HPP_
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
+
+//std
+import <vector>;
 
 //Qt
 #include <QListView>
@@ -20,6 +23,7 @@
 #include <QString>
 
 //b3m
+import b3m.common;
 import b3m.database;
 
 
@@ -31,8 +35,12 @@ namespace b3m::gui
 
 
 
+using b3m::common::Contestant;
+
+
 //View ---------------------------------------------------------------------------------------------
 using b3m::database::ParticipantsDepot;
+class TeamsModel;
 
 
 class TeamsView : public QListView
@@ -42,8 +50,9 @@ class TeamsView : public QListView
 public:
 	explicit TeamsView(ParticipantsDepot&, QWidget* = nullptr);
 
+	[[nodiscard]] std::vector< Contestant > getContestants() const;
 private:
-	QAbstractListModel* m_model;
+	TeamsModel* m_model;
 };
 
 
@@ -61,6 +70,8 @@ public:
 	int rowCount(const QModelIndex& parent = {}) const override;
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 //	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+
+	[[nodiscard]] std::vector< Contestant > getMarkedTeams() const;
 
 private:
 	TeamsByRanking m_teams;

@@ -22,6 +22,7 @@ export module b3m.database;
 //--------------------------------------------------------------------------------------------------
 export import :ParticipantsDepot;
 export import :TeamsCollector;
+export import :TournamentProxy;
 
 
 //END OF FILE --------------------------------------------------------------------------------------

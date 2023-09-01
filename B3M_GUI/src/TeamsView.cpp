@@ -28,6 +28,11 @@ b3m::gui::TeamsView::TeamsView(ParticipantsDepot& i_participants, QWidget* paren
 	QListView::setModel(m_model);
 }
 
+auto b3m::gui::TeamsView::getContestants() const -> std::vector< Contestant >
+{
+	return m_model->getMarkedTeams();
+}
+
 
 //TeamsViewModel -----------------------------------------------------------------------------------
 b3m::gui::TeamsModel::TeamsModel(ParticipantsDepot& i_participants, QObject* parent)
@@ -60,6 +65,19 @@ QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
 	return {};
 }
 
+auto b3m::gui::TeamsModel::getMarkedTeams() const -> std::vector< Contestant >
+{
+	//TODO return only teams that are marked
+	std::vector< Contestant > o_teams;
+	for(const auto& team : m_teams)
+	{
+		o_teams.emplace_back(team.toStdString());
+	}
+	return o_teams;
+}
+
+
+//free functions -----------------------------------------------------------------------------------
 auto b3m::gui::getTeamNamesSortedByRating(const ParticipantsDepot& i_participantsSource) -> TeamsByRanking
 {
 	TeamsByRanking o_sortedTeamNames;

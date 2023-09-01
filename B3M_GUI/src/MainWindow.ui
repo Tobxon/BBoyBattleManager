@@ -72,7 +72,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>B-Girls and B-Boys Page</string>
+         <string>Registration</string>
         </property>
        </widget>
       </item>
@@ -88,6 +88,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="lowRightButton">
+        <property name="text">
+         <string>Start Battles</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

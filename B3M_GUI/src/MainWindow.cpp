@@ -17,10 +17,11 @@
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-b3m::gui::MainWindow::MainWindow(b3m::database::ParticipantsDepot& i_participantStorage,
-	QMainWindow* parent)
-	: QMainWindow(parent), m_ui(new Ui::B3M_MainWindow), m_participantDialog(new b3m::gui::ParticipantsDialog(i_participantStorage))
+b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainWindow* i_parent)
+	: QMainWindow(i_parent), m_ui(new Ui::B3M_MainWindow)
+	, m_participantDialog(new b3m::gui::ParticipantsDialog(i_participantStorage))
 	, m_teamsOverview(new TeamsView(i_participantStorage))
+	, m_tournamentManagementWindow(new TournamentManagementWindow())
 {
 	m_ui->setupUi(this);
 
@@ -29,6 +30,12 @@ b3m::gui::MainWindow::MainWindow(b3m::database::ParticipantsDepot& i_participant
 	});
 
 	m_ui->gridLayout->addWidget(m_teamsOverview, 2, 0, 1, 1);
+
+	connect(m_ui->lowRightButton, &QPushButton::clicked, [this](){ //TODO to QAction
+		const auto teams = m_teamsOverview->getContestants();
+		m_tournamentManagementWindow->startTournament(teams);
+		m_tournamentManagementWindow->show();
+	});
 }
 
 b3m::gui::MainWindow::~MainWindow()

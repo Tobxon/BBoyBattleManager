@@ -76,5 +76,17 @@ bool b3m::common::Team::addMember(Participant& i_newMember)
 	return false;
 }
 
+//Match --------------------------------------------------------------------------------------------
+b3m::common::Match::Match(const Contestant& i_contestantA, const Contestant& i_contestantB)
+	: m_contestants{i_contestantA, i_contestantB}
+{
+}
+
+auto b3m::common::Match::getContestantNames() const
+-> std::pair< Contestant::Name_t, Contestant::Name_t >
+{
+	return { m_contestants.first.getName(), m_contestants.second.getName() };
+}
+
 
 //END OF FILE --------------------------------------------------------------------------------------

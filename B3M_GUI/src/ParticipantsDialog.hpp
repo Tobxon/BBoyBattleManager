@@ -5,9 +5,9 @@
  *
  */
 
-
 #ifndef B3M_GUI_PARTICIPANTS_DIALOG_HPP_
 #define B3M_GUI_PARTICIPANTS_DIALOG_HPP_
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------

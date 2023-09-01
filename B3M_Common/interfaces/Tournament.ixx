@@ -53,6 +53,7 @@ public:
 	TournamentRound* addNewRound(std::unique_ptr<TournamentRound>); //TODO to slot?
 
 	[[nodiscard]] bool isRunning() const;
+	[[nodiscard]] std::vector< Contestant > getContestants() const{ return m_contestants; }
 private:
 	std::vector< Contestant > m_contestants;
 

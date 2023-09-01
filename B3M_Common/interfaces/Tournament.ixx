@@ -49,6 +49,7 @@ public:
 	explicit Tournament(const std::vector <Contestant>&); //TODO to ranges?
 
 	bool updateContestants(const std::vector <Contestant>&); //TODO to ranges?
+	//TODO update contestants when registered Teams change?
 
 	TournamentRound* addNewRound(std::unique_ptr<TournamentRound>); //TODO to slot?
 

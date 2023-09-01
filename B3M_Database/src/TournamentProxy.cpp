@@ -15,8 +15,6 @@ import :TournamentProxy;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-//std
-
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
@@ -47,14 +45,16 @@ auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
 
 	const auto contestants = m_curTournament->getContestants();
 
-	TournamentRound curRound;
+	auto curRound = std::make_unique< TournamentRound >();
 	for(std::size_t i = 1; i < contestants.size(); i = i+2)
 	{
-		curRound.emplace_back(contestants.at(i-1),contestants.at(i));
+		const auto& contestantA = contestants.at(i-1);
+		const auto& contestantB = contestants.at(i);
+		curRound->emplace_back(contestantA, contestantB);
 	}
 	//TODO create Round by using MatchMaker
 
-	return m_curTournament->addNewRound(std::make_unique<TournamentRound>(curRound));
+	return m_curTournament->addNewRound(std::move(curRound));
 }
 
 

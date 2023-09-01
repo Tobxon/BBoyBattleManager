@@ -35,6 +35,9 @@ namespace b3m::gui
 
 
 using b3m::database::ParticipantsDepot;
+using b3m::gui::ParticipantsDialog;
+using b3m::gui::TeamsView;
+using b3m::gui::TournamentManagementWindow;
 
 
 class MainWindow : public QMainWindow
@@ -52,9 +55,9 @@ public:
 private:
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
 
-	b3m::gui::ParticipantsDialog* m_participantDialog{ nullptr };
-	b3m::gui::TeamsView* m_teamsOverview{ nullptr };
-	b3m::gui::TournamentManagementWindow* m_tournamentManagementWindow{ nullptr };
+	ParticipantsDialog* m_participantDialog{ nullptr };
+	TeamsView* m_teamsOverview{ nullptr };
+	TournamentManagementWindow* m_tournamentManagementWindow{ nullptr };
 };
 
 

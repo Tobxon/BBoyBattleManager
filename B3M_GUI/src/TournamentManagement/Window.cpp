@@ -21,7 +21,7 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_pare
 
 	connect(m_ui->lowRightButton, &QPushButton::clicked, this, &QWidget::hide);
 
-	connect(m_ui->upLeftButton, &QPushButton::clicked, [this](){
+	connect(m_ui->upLeftButton, &QPushButton::clicked, [this](){ //TODO to QAction
 		auto round = m_tournament.startRound();
 		//TODO get round index
 		static int roundIndex = 0;

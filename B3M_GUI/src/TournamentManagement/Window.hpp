@@ -34,7 +34,6 @@ namespace b3m::gui
 
 
 
-using b3m::common::Match;
 using b3m::database::TournamentProxy;
 using b3m::common::Contestant;
 

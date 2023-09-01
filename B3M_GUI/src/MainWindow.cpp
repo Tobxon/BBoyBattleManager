@@ -31,7 +31,7 @@ b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainW
 
 	m_ui->gridLayout->addWidget(m_teamsOverview, 2, 0, 1, 1);
 
-	connect(m_ui->lowRightButton, &QPushButton::clicked, [this](){
+	connect(m_ui->lowRightButton, &QPushButton::clicked, [this](){ //TODO to QAction
 		const auto teams = m_teamsOverview->getContestants();
 		m_tournamentManagementWindow->startTournament(teams);
 		m_tournamentManagementWindow->show();

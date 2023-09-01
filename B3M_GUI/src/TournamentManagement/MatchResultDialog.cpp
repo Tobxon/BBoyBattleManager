@@ -24,6 +24,15 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 	const auto teamBName = QString::fromStdString(teams.second);
 	m_ui->teamA->setText(teamAName);
 	m_ui->teamB->setText(teamBName);
+
+	connect(m_ui->resultTeamA, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
+		const auto teamName = m_ui->teamA->text().toStdString();
+		m_match->setResult(teamName, i_newVal);
+	});
+	connect(m_ui->resultTeamB, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
+		const auto teamName = m_ui->teamB->text().toStdString();
+		m_match->setResult(teamName, i_newVal);
+	});
 }
 
 b3m::gui::MatchResultDialog::~MatchResultDialog()

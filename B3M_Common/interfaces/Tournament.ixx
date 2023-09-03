@@ -41,6 +41,7 @@ export namespace b3m::common
 using b3m::common::Match;
 using TournamentRound = std::vector<Match>;
 using b3m::common::Contestant;
+using History = std::vector< TournamentRound* >;
 
 
 class Tournament
@@ -55,6 +56,8 @@ public:
 
 	[[nodiscard]] bool isRunning() const;
 	[[nodiscard]] std::vector< Contestant > getContestants() const{ return m_contestants; }
+
+	[[nodiscard]] History getHistory() const;
 private:
 	std::vector< Contestant > m_contestants;
 

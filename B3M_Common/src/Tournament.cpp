@@ -14,6 +14,9 @@ import :Tournament;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+//std
+import <algorithm>;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
@@ -44,6 +47,19 @@ auto b3m::common::Tournament::addNewRound(std::unique_ptr<TournamentRound> i_new
 bool b3m::common::Tournament::isRunning() const
 {
 	return !m_rounds.empty();
+}
+
+auto b3m::common::Tournament::getHistory() const -> History
+{
+	History o_rounds;
+	for(auto& round : m_rounds)
+	{
+		if(std::ranges::find_if(*round, [](const Match& i_match){ return !i_match.isFinished(); }) == round->cend())
+		{
+			o_rounds.emplace_back(round.get());
+		}
+	}
+	return o_rounds;
 }
 
 

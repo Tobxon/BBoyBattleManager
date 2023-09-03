@@ -8,9 +8,8 @@
 module;
 
 
-module b3m.database;
-
-import :TournamentProxy;
+module b3m.logic;
+import :MatchMaker;
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
@@ -20,33 +19,7 @@ import :TournamentProxy;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-bool b3m::database::TournamentProxy::startTournament(const std::vector <Contestant>& i_contestants)
-{
-	if(m_curTournament && m_curTournament->isRunning())
-	{
-		return false;
-	}
 
-	if(m_curTournament && !m_curTournament->isRunning())
-	{
-		return m_curTournament->updateContestants(i_contestants);
-	}
-
-	m_curTournament = std::make_unique<Tournament>(i_contestants);
-	return true;
-}
-
-auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
-{
-	if(!m_curTournament)
-	{
-		return nullptr;
-	}
-
-	auto curRound = std::make_unique< TournamentRound >(m_matchMaker->createRound(*m_curTournament));
-
-	return m_curTournament->addNewRound(std::move(curRound));
-}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

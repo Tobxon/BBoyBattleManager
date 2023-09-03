@@ -14,6 +14,7 @@ target_sources(B3M_Database
 target_link_libraries(B3M_Database
 	PRIVATE
 		B3M_Common
+		B3M_Logic
 )
 
 

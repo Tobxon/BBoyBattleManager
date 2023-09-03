@@ -1,5 +1,8 @@
 //--------------------------------------------------------------------------------------------------
-// For explanation see interface file (.ixx).
+/**
+ * \brief MatchMaker is the base class for match making algorithm.
+ *
+ */
 
 
 //--------------------------------------------------------------------------------------------------
@@ -8,45 +11,43 @@
 module;
 
 
-module b3m.database;
+//--------------------------------------------------------------------------------------------------
+//------ MODULE CONTENT                                                                       ------
+//--------------------------------------------------------------------------------------------------
+export module b3m.logic:MatchMaker;
 
-import :TournamentProxy;
+
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+//b3m
+import b3m.common;
+
 
 //--------------------------------------------------------------------------------------------------
-//------ Implementations                                                                      ------
+//------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-
-bool b3m::database::TournamentProxy::startTournament(const std::vector <Contestant>& i_contestants)
+export namespace b3m::logic
 {
-	if(m_curTournament && m_curTournament->isRunning())
-	{
-		return false;
-	}
 
-	if(m_curTournament && !m_curTournament->isRunning())
-	{
-		return m_curTournament->updateContestants(i_contestants);
-	}
 
-	m_curTournament = std::make_unique<Tournament>(i_contestants);
-	return true;
-}
 
-auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
+using b3m::common::TournamentRound;
+using b3m::common::Tournament;
+
+
+class MatchMaker
 {
-	if(!m_curTournament)
-	{
-		return nullptr;
-	}
+public:
+	virtual ~MatchMaker();
 
-	auto curRound = std::make_unique< TournamentRound >(m_matchMaker->createRound(*m_curTournament));
+	virtual TournamentRound createRound(const Tournament&) = 0;
+};
 
-	return m_curTournament->addNewRound(std::move(curRound));
-}
+
+
+} //namespace b3m::logic
 
 
 //END OF FILE --------------------------------------------------------------------------------------

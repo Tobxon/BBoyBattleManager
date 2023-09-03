@@ -93,6 +93,7 @@ private:
 
 //Match
 using Contestant = b3m::common::Team;
+using Judgement = double;
 
 
 //TODO enable Matches with 3 contestants
@@ -102,10 +103,14 @@ public:
 	Match(const Contestant&, const Contestant&);
 
 	[[nodiscard]] std::pair< Contestant::Name_t, Contestant::Name_t > getContestantNames() const;
-
 	//TODO contestant as template or polymorphic type?
+
+	bool setResult(const Contestant::Name_t&, const Judgement&);
+
+	[[nodiscard]] bool isFinished() const;
 private:
 	std::pair< Contestant, Contestant > m_contestants;
+	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };
 };
 
 

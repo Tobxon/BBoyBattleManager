@@ -46,6 +46,7 @@ using b3m::common::Match;
 using b3m::common::Contestant;
 using b3m::common::TournamentRound;
 using b3m::logic::MatchMaker;
+using b3m::logic::SwissMatchMaker;
 
 
 class TournamentProxy
@@ -59,7 +60,7 @@ public:
 private:
 	std::unique_ptr< Tournament > m_curTournament{ nullptr };
 
-	MatchMaker* m_matchMaker;
+	std::unique_ptr< MatchMaker > m_matchMaker{ std::make_unique<SwissMatchMaker>() };
 };
 
 

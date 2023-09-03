@@ -40,9 +40,17 @@ using b3m::common::Tournament;
 class MatchMaker
 {
 public:
-	virtual ~MatchMaker();
+	virtual ~MatchMaker() = default;
 
 	virtual TournamentRound createRound(const Tournament&) = 0;
+};
+
+
+//SwissMatchMaker ----------------------------------------------------------------------------------
+class SwissMatchMaker : public MatchMaker
+{
+public:
+	TournamentRound createRound(const Tournament&) override;
 };
 
 

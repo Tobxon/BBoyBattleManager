@@ -14,6 +14,11 @@ import :MatchMaker;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+auto b3m::logic::SwissMatchMaker::createRound(const Tournament&) -> TournamentRound
+{
+	return {};
+}
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------

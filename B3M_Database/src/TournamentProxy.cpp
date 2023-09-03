@@ -43,16 +43,7 @@ auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
 		return nullptr;
 	}
 
-	const auto contestants = m_curTournament->getContestants();
-
-	auto curRound = std::make_unique< TournamentRound >();
-	for(std::size_t i = 1; i < contestants.size(); i = i+2)
-	{
-		const auto& contestantA = contestants.at(i-1);
-		const auto& contestantB = contestants.at(i);
-		curRound->emplace_back(contestantA, contestantB);
-	}
-	//TODO create Round by using MatchMaker
+	auto curRound = std::make_unique< TournamentRound >(m_matchMaker->createRound(*m_curTournament));
 
 	return m_curTournament->addNewRound(std::move(curRound));
 }

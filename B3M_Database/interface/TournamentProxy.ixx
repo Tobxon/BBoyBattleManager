@@ -29,6 +29,7 @@ import <vector>;
 
 //b3m
 import b3m.common;
+import b3m.logic;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -44,6 +45,7 @@ using b3m::common::Team;
 using b3m::common::Match;
 using b3m::common::Contestant;
 using b3m::common::TournamentRound;
+using b3m::logic::MatchMaker;
 
 
 class TournamentProxy
@@ -56,6 +58,8 @@ public:
 
 private:
 	std::unique_ptr< Tournament > m_curTournament{ nullptr };
+
+	MatchMaker* m_matchMaker;
 };
 
 

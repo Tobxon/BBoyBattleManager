@@ -21,6 +21,9 @@ export module b3m.logic:MatchMaker;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+//b3m
+import b3m.common;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
@@ -30,7 +33,17 @@ export namespace b3m::logic
 
 
 
+using b3m::common::TournamentRound;
+using b3m::common::Tournament;
 
+
+class MatchMaker
+{
+public:
+	virtual ~MatchMaker();
+
+	virtual TournamentRound createRound(const Tournament&) = 0;
+};
 
 
 

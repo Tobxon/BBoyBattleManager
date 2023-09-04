@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD 23)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #subprojects
+add_subdirectory(Utility)
 add_subdirectory(B3M_Common)
 add_subdirectory(B3M_Logic)
 add_subdirectory(B3M_Database)

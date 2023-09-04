@@ -1,5 +1,8 @@
 //--------------------------------------------------------------------------------------------------
-// For explanation see interface file (.ixx).
+/**
+ * \brief Module Interface Unit for utility functions for the use of integers.
+ *
+ */
 
 
 //--------------------------------------------------------------------------------------------------
@@ -8,62 +11,44 @@
 module;
 
 
-module b3m.logic;
-import :MatchMaker;
+//--------------------------------------------------------------------------------------------------
+//------ MODULE CONTENT                                                                       ------
+//--------------------------------------------------------------------------------------------------
+export module utility:integer;
+
+
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-//std
-import <algorithm>;
 
-import utility;
-
-//b3m
-import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
+export namespace utility
+{
 
-using b3m::common::Team;
+
+
+template< typename posUintType >
+constexpr posUintType ceil_pos_uint_division(posUintType i_dividend, posUintType i_divisor);
+
+
+
+} //namespace utility
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) -> TournamentRound
+template< typename posUintType >
+constexpr posUintType utility::ceil_pos_uint_division(posUintType i_dividend, posUintType i_divisor)
 {
-	auto contestants = i_tournament.getContestants();
-	if(contestants.size() < 2)
-	{
-		return {};
-	}
-
-	const auto& history = i_tournament.getHistory();
-
-	TournamentRound o_round;
-
-//	if(history.empty())
-//	{
-		//sort contestants by initial ranking
-		std::ranges::sort(contestants, [](const Team& i_a, const Team i_b){
-			return i_a.getRating() < i_b.getRating();
-		});
-
-		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
-			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
-		{
-			o_round.emplace_back(*firstHalfIt, *secondHalfIt);
-		}
-//	}
-
-	return o_round;
+	return i_dividend/i_divisor + (i_dividend % i_divisor != 0);
 }
-
-
 
 
 //END OF FILE --------------------------------------------------------------------------------------

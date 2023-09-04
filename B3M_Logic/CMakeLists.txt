@@ -10,6 +10,7 @@ target_sources(B3M_Logic
 target_link_libraries(B3M_Logic
 	PRIVATE
 		B3M_Common
+		Utility
 )
 
 

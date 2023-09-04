@@ -100,14 +100,20 @@ using Judgement = double;
 class Match
 {
 public:
+	enum class Result{
+		win,
+		loose,
+		tie
+	};
+
 	Match(const Contestant&, const Contestant&);
 
 	[[nodiscard]] std::pair< Contestant::Name_t, Contestant::Name_t > getContestantNames() const;
 	//TODO contestant as template or polymorphic type?
+	[[nodiscard]] bool isFinished() const;
+	[[nodiscard]] std::optional< std::map< Contestant::Name_t, Result >> getResults() const;
 
 	bool setResult(const Contestant::Name_t&, const Judgement&);
-
-	[[nodiscard]] bool isFinished() const;
 private:
 	std::pair< Contestant, Contestant > m_contestants;
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };

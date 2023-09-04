@@ -111,5 +111,20 @@ bool b3m::common::Match::isFinished() const
 	return m_result.first.has_value() && m_result.second.has_value();
 }
 
+auto b3m::common::Match::getResults() const
+-> std::optional< std::map< Contestant::Name_t, Result >>
+{
+	if(!isFinished())
+	{
+		return std::nullopt;
+	}
+
+	const auto resultFirst = (m_result.first > m_result.second) ? Result::win : (m_result.first < m_result.second) ? Result::loose : Result::tie;
+	const auto resultSecond = (m_result.second > m_result.first) ? Result::win : (m_result.second < m_result.first) ? Result::loose : Result::tie;
+	return std::map< Contestant::Name_t, Result >{
+		{ m_contestants.first.getName(), resultFirst}
+		,{ m_contestants.second.getName(), resultSecond}};
+}
+
 
 //END OF FILE --------------------------------------------------------------------------------------

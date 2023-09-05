@@ -28,10 +28,12 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 	connect(m_ui->resultTeamA, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
 		const auto teamName = m_ui->teamA->text().toStdString();
 		m_match->setResult(teamName, i_newVal);
+		emit mightBeFinished(); //TODO to signal from match object itself
 	});
 	connect(m_ui->resultTeamB, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
 		const auto teamName = m_ui->teamB->text().toStdString();
 		m_match->setResult(teamName, i_newVal);
+		emit mightBeFinished(); //TODO to signal from match object itself
 	});
 }
 

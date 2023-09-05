@@ -21,13 +21,33 @@ b3m::gui::TournamentRoundWidget::TournamentRoundWidget(TournamentRound& i_round,
 
 	for(auto& match : *m_round)
 	{
-		m_ui->matchesLayout->addWidget(new MatchResultDialog(match));
+		auto matchDialog = new MatchResultDialog(match);
+		m_ui->matchesLayout->addWidget(matchDialog);
+		connect(matchDialog, &MatchResultDialog::mightBeFinished, [this](){ if(isFinished()) emit roundFinished();}); //TODO to signals of core classes itself
 	}
 }
 
 b3m::gui::TournamentRoundWidget::~TournamentRoundWidget()
 {
 	delete m_ui;
+}
+
+bool b3m::gui::TournamentRoundWidget::isFinished()
+{
+	if(!m_round)
+	{
+		return false;
+	}
+
+	for(const auto& match : *m_round)
+	{
+		if(!match.isFinished())
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 

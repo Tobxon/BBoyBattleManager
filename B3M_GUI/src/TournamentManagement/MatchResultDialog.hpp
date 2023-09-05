@@ -34,10 +34,13 @@ using b3m::common::Match;
 
 class MatchResultDialog : public QWidget
 {
+	Q_OBJECT;
+
 public:
 	MatchResultDialog(Match&, QWidget* = nullptr);
 	~MatchResultDialog();
-
+signals:
+	void mightBeFinished(); //TODO remove
 private:
 	Ui::MatchResultDialog* m_ui;
 

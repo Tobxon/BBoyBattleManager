@@ -34,11 +34,16 @@ using b3m::common::TournamentRound;
 
 class TournamentRoundWidget : public QWidget
 {
+	Q_OBJECT;
+
 public:
 	TournamentRoundWidget(TournamentRound&, QWidget* = nullptr);
 	~TournamentRoundWidget();
-
+signals:
+	void roundFinished();
 private:
+	bool isFinished();
+
 	Ui::TournamentRoundWidget* m_ui;
 
 	TournamentRound* m_round{ nullptr };

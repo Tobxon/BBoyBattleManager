@@ -15,6 +15,7 @@
 
 //std
 import <vector>;
+import <optional>;
 
 //Qt
 #include <QWidget>
@@ -47,10 +48,14 @@ public:
 	~TournamentManagementWindow() override;
 
 	bool startTournament(const std::vector< Contestant >&);
+signals:
+	void newRoundStarted();
 private:
 	Ui::TournamentManagementWindow* m_ui;
 
 	TournamentProxy m_tournament;
+
+	std::optional< QMetaObject::Connection > m_roundFinished{ std::nullopt };
 };
 
 

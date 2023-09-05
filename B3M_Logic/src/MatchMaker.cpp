@@ -16,6 +16,9 @@ import :MatchMaker;
 
 //std
 import <algorithm>;
+import <vector>;
+import <functional>;
+import <ranges>;
 
 import utility;
 
@@ -31,6 +34,7 @@ using b3m::common::Team;
 using b3m::common::Contestant;
 using b3m::common::History;
 using b3m::common::TournamentRating;
+using b3m::common::Match;
 
 
 void sortTeamsByResults(std::vector< Contestant >&, const History&);
@@ -56,21 +60,63 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		std::ranges::sort(contestants, [](const Team& i_a, const Team i_b){
 			return i_a.getRating() < i_b.getRating();
 		});
-	}
-	else
-	{
-		//sort contestants by match results (and initial rating)
-		sortTeamsByResults(contestants, history);
+
+		TournamentRound o_round;
+		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
+			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
+		{
+			o_round.emplace_back(*firstHalfIt, *secondHalfIt);
+		}
+
+		return o_round;
 	}
 
-	TournamentRound o_round;
-	for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
-		firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
+	//sort contestants by match results (and initial rating)
+	sortTeamsByResults(contestants, history);
+
+	//iterate over contestants - first those who have waited in rounds before and then from by ranking
+	std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> contestantsIterateOrder{};
+	contestantsIterateOrder.reserve(contestants.size());
+
+	for(const auto& round : std::views::reverse(history))
 	{
-		o_round.emplace_back(*firstHalfIt, *secondHalfIt);
+		if(round)
+		{
+			if(const auto contestantWaited = std::ranges::find_if_not(contestants, [&round](const Contestant& i_contestant){
+				return std::ranges::find_if(*round, [&i_contestant](const Match& i_match){
+					const auto& opponents = i_match.getContestantNames();
+					return opponents.first == i_contestant.getName() || opponents.second == i_contestant.getName();
+				}) != round->cend();
+			}); contestantWaited != contestants.cend())
+			{
+				contestantsIterateOrder.emplace_back(*contestantWaited);
+			}
+		}
+	}
+	for(const auto& contestant : contestants)
+	{
+		if(std::ranges::find_if(contestantsIterateOrder, [contestant](const auto& contestantReference){
+			return contestantReference.get().getName() == contestant.getName();
+		}) == contestantsIterateOrder.cend())
+		{
+			contestantsIterateOrder.emplace_back(contestant);
+		}
 	}
 
-	return o_round;
+	for(const auto& contestantReference : contestantsIterateOrder)
+	{
+		//get previous opponents for current contestant
+		//TODO
+
+		//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
+		//TODO
+
+		//if match is found - mark contestants as taken and append match to TournamentRound to return
+		//TODO
+
+		//if match isn't found skip this contestant, if this happens again report an error (maybe throw)
+		//TODO
+		}
 }
 
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history)

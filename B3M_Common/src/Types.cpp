@@ -112,7 +112,7 @@ bool b3m::common::Match::isFinished() const
 }
 
 auto b3m::common::Match::getResults() const
--> std::optional< std::map< Contestant::Name_t, Result >>
+-> std::optional< std::map< Contestant::Name_t, FullResult >>
 {
 	if(!isFinished())
 	{
@@ -120,10 +120,42 @@ auto b3m::common::Match::getResults() const
 	}
 
 	const auto resultFirst = (m_result.first > m_result.second) ? Result::win : (m_result.first < m_result.second) ? Result::loose : Result::tie;
-	const auto resultSecond = (m_result.second > m_result.first) ? Result::win : (m_result.second < m_result.first) ? Result::loose : Result::tie;
-	return std::map< Contestant::Name_t, Result >{
-		{ m_contestants.first.getName(), resultFirst}
-		,{ m_contestants.second.getName(), resultSecond}};
+	const auto resultSecond = (resultFirst == Result::loose) ? Result::win : (resultFirst == Result::win) ? Result::loose : Result::tie;
+	return std::map< Contestant::Name_t, FullResult >{
+		{ m_contestants.first.getName(), { resultFirst, m_result.first.value() }}
+		,{ m_contestants.second.getName(), { resultSecond, m_result.second.value() }}};
+}
+
+
+//TournamentRating ---------------------------------------------------------------------------------
+auto b3m::common::TournamentRating::operator+=(const Match::FullResult& i_newResult) -> TournamentRating&
+{
+	switch (i_newResult.first)
+	{
+		case Match::Result::win:
+			++m_numOfWins;
+			break;
+		case Match::Result::loose:
+			++m_numOfLooses;
+			break;
+		case Match::Result::tie:
+			++m_numOfTies;
+			break;
+	}
+
+	m_numOfVotes += i_newResult.second;
+
+	return *this;
+}
+
+int b3m::common::TournamentRating::getCombinedRating() const
+{
+	return m_numOfWins*3 + m_numOfTies*1 + m_numOfLooses*(-3);
+}
+
+int b3m::common::TournamentRating::getNumberOfRatings() const
+{
+	return m_numOfWins + m_numOfTies + m_numOfLooses;
 }
 
 

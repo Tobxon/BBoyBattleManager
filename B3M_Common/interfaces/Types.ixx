@@ -92,8 +92,8 @@ private:
 
 
 //Match
-using Contestant = b3m::common::Team;
-using Judgement = double;
+using Contestant = b3m::common::Team; //TODO contestant as template or polymorphic type?
+using Judgement = float;
 
 
 //TODO enable Matches with 3 contestants
@@ -105,18 +105,35 @@ public:
 		loose,
 		tie
 	};
+	using FullResult = std::pair< Result, Judgement >;
 
 	Match(const Contestant&, const Contestant&);
 
 	[[nodiscard]] std::pair< Contestant::Name_t, Contestant::Name_t > getContestantNames() const;
-	//TODO contestant as template or polymorphic type?
 	[[nodiscard]] bool isFinished() const;
-	[[nodiscard]] std::optional< std::map< Contestant::Name_t, Result >> getResults() const;
+	[[nodiscard]] std::optional< std::map< Contestant::Name_t, FullResult >> getResults() const;
 
 	bool setResult(const Contestant::Name_t&, const Judgement&);
 private:
-	std::pair< Contestant, Contestant > m_contestants;
+	std::pair< Contestant, Contestant > m_contestants; //TODO to reference_wrapper< Contestant > oder Contestant::Name_t
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };
+};
+
+
+struct TournamentRating
+{
+	int m_numOfWins{ 0 };
+	int m_numOfTies{ 0 };
+	int m_numOfLooses{ 0 };
+
+	Judgement m_numOfVotes{ 0 };
+
+	TournamentRating& operator+=(const Match::FullResult&);
+//	std::strong_ordering operator<=>(const TournamentRating&) const;
+	bool operator==(const TournamentRating&) const = default;
+
+	[[nodiscard]] int getCombinedRating() const;
+	[[nodiscard]] int getNumberOfRatings() const;
 };
 
 

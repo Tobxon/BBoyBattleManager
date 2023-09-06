@@ -103,12 +103,42 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		}
 	}
 
-	for(const auto& contestantReference : contestantsIterateOrder)
+	for(const auto& currentContestantRef : contestantsIterateOrder)
 	{
 		//get previous opponents for current contestant
+		std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> previousOpponents; //TODO to reference to contestants element
+		for(const auto& round : history)
+		{
+			for(const auto& match : *round)
+			{
+				const auto& matchOpponents = match.getContestantNames();
+				if(matchOpponents.first == currentContestantRef.get().getName())
+				{
+					const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //TODO use reference or ID of Contestants everywhere
+					if(opponent != contestants.cend())
+					{
+						previousOpponents.emplace_back(*opponent);
+					}
+				}
+				else if(matchOpponents.second == currentContestantRef.get().getName())
+				{
+					const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.first](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;});
+					if(opponent != contestants.cend())
+					{
+						previousOpponents.emplace_back(*opponent);
+					}
+				}
+				//TODO expects only matches with 2 opponents
+			}
+		}
+
+		//remove itself and previous opponents from possible opponents list
 		//TODO
 
 		//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
+		//TODO
+
+		//search in weighted list of possible opponents for best fitting contestant
 		//TODO
 
 		//if match is found - mark contestants as taken and append match to TournamentRound to return
@@ -116,7 +146,9 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 
 		//if match isn't found skip this contestant, if this happens again report an error (maybe throw)
 		//TODO
-		}
+	}
+
+	return {};
 }
 
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history)

@@ -19,6 +19,7 @@ import <algorithm>;
 import <vector>;
 import <functional>;
 import <ranges>;
+import <map>;
 
 import utility;
 
@@ -74,8 +75,10 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	//sort contestants by match results (and initial rating)
 	sortTeamsByResults(contestants, history);
 
+	using contestantsElement_t = decltype(contestants)::value_type;
+
 	//iterate over contestants - first those who have waited in rounds before and then from by ranking
-	std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> contestantsIterateOrder{};
+	std::vector< std::reference_wrapper< const contestantsElement_t >> contestantsIterateOrder{};
 	contestantsIterateOrder.reserve(contestants.size());
 
 	for(const auto& round : std::views::reverse(history))
@@ -103,49 +106,60 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		}
 	}
 
+	std::map< std::reference_wrapper< const contestantsElement_t >, bool, std::function<bool(const contestantsElement_t&, const contestantsElement_t&)> > takenContestants{
+		[](const contestantsElement_t& i_a, const contestantsElement_t& i_b)
+		{
+			return i_a.getName() < i_b.getName();
+		}
+	};
+	std::ranges::transform(contestantsIterateOrder, std::inserter(takenContestants, takenContestants.end()), [](const auto& i_contestantRef){ return std::make_pair(i_contestantRef, false); });
+
 	for(const auto& currentContestantRef : contestantsIterateOrder)
 	{
-		//get previous opponents for current contestant
-		std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> previousOpponents; //TODO to reference to contestants element
-		for(const auto& round : history)
+		if(!takenContestants.at(currentContestantRef))
 		{
-			for(const auto& match : *round)
+			//get previous opponents for current contestant
+			std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> previousOpponents; //TODO to reference to contestants element
+			for(const auto& round : history)
 			{
-				const auto& matchOpponents = match.getContestantNames();
-				if(matchOpponents.first == currentContestantRef.get().getName())
+				for(const auto& match : *round)
 				{
-					const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //TODO use reference or ID of Contestants everywhere
-					if(opponent != contestants.cend())
+					const auto& matchOpponents = match.getContestantNames();
+					if(matchOpponents.first == currentContestantRef.get().getName())
 					{
-						previousOpponents.emplace_back(*opponent);
+						const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //TODO use reference or ID of Contestants everywhere
+						if(opponent != contestants.cend())
+						{
+							previousOpponents.emplace_back(*opponent);
+						}
 					}
-				}
-				else if(matchOpponents.second == currentContestantRef.get().getName())
-				{
-					const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.first](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;});
-					if(opponent != contestants.cend())
+					else if(matchOpponents.second == currentContestantRef.get().getName())
 					{
-						previousOpponents.emplace_back(*opponent);
+						const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.first](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;});
+						if(opponent != contestants.cend())
+						{
+							previousOpponents.emplace_back(*opponent);
+						}
 					}
+					//TODO expects only matches with 2 opponents
 				}
-				//TODO expects only matches with 2 opponents
 			}
+
+			//remove itself and previous opponents from possible opponents list
+			//TODO
+
+			//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
+			//TODO
+
+			//search in weighted list of possible opponents for best fitting contestant
+			//TODO
+
+			//if match is found - mark contestants as taken and append match to TournamentRound to return
+			//TODO
+
+			//if match isn't found skip this contestant, if this happens again report an error (maybe throw)
+			//TODO
 		}
-
-		//remove itself and previous opponents from possible opponents list
-		//TODO
-
-		//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
-		//TODO
-
-		//search in weighted list of possible opponents for best fitting contestant
-		//TODO
-
-		//if match is found - mark contestants as taken and append match to TournamentRound to return
-		//TODO
-
-		//if match isn't found skip this contestant, if this happens again report an error (maybe throw)
-		//TODO
 	}
 
 	return {};

@@ -146,7 +146,9 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 			}
 
 			//remove itself and previous opponents from possible opponents list
-			//TODO
+			const auto possibleOpponents = contestants
+				| std::views::filter([&currentContestantRef](const contestantsElement_t& i_contestant){ return i_contestant != currentContestantRef.get(); })
+				| std::views::filter([&takenContestants](const contestantsElement_t& i_contestant){ return takenContestants.at(i_contestant); });
 
 			//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
 			//TODO

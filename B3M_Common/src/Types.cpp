@@ -76,6 +76,11 @@ bool b3m::common::Team::addMember(Participant& i_newMember)
 	return false;
 }
 
+bool b3m::common::Team::operator==(const Team& i_other) const
+{
+	return i_other.m_name == m_name;
+}
+
 //Match --------------------------------------------------------------------------------------------
 b3m::common::Match::Match(const Contestant& i_contestantA, const Contestant& i_contestantB)
 	: m_contestants{i_contestantA, i_contestantB}

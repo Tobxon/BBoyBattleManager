@@ -40,6 +40,7 @@ using b3m::common::Match;
 
 void sortTeamsByResults(std::vector< Contestant >&, const History&);
 std::vector< std::reference_wrapper< const Contestant >> reorderContestantsByIterateOrder(const std::vector< Contestant >&, const History&);
+std::vector< std::reference_wrapper< const Contestant >> getPreviousOpponents(const Contestant&, const std::vector< Contestant >&, const History&);
 
 
 //--------------------------------------------------------------------------------------------------
@@ -92,38 +93,11 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		{
 			if(!takenContestants.at(currentContestantRef))
 			{
-				//get previous opponents for current contestant
-				std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> previousOpponents; //TODO to reference to contestants element //TODO to set (faster search)?
-				for(const auto& round : history)
-				{
-					for(const auto& match : *round)
-					{
-						const auto& matchOpponents = match.getContestantNames();
-						if(matchOpponents.first == currentContestantRef.get().getName())
-						{
-							const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //TODO use reference or ID of Contestants everywhere
-							if(opponent != contestants.cend())
-							{
-								previousOpponents.emplace_back(*opponent);
-							}
-						}
-						else if(matchOpponents.second == currentContestantRef.get().getName())
-						{
-							const auto& opponent = std::ranges::find_if(contestants,[opponentName = matchOpponents.first](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;});
-							if(opponent != contestants.cend())
-							{
-								previousOpponents.emplace_back(*opponent);
-							}
-						}
-						//TODO expects only matches with 2 opponents
-					}
-				}
-
 				//remove itself and previous opponents from possible opponents list
 				auto possibleOpponents = contestants
 					| std::views::filter([&currentContestantRef](const Contestant& i_contestant){ return i_contestant != currentContestantRef.get(); })
 					| std::views::filter([&takenContestants](const Contestant& i_contestant){ return !takenContestants.at(i_contestant); })
-					| std::views::filter([&previousOpponents](const Contestant& i_contestant){ return std::ranges::find_if(previousOpponents, [&i_contestant](const auto& i_contestantRef){ return i_contestantRef.get() == i_contestant; }) == previousOpponents.end(); })
+					| std::views::filter([previousOpponents = getPreviousOpponents(currentContestantRef.get(), contestants, history)](const Contestant& i_contestant){ return std::ranges::find_if(previousOpponents, [&i_contestant](const auto& i_contestantRef){ return i_contestantRef.get() == i_contestant; }) == previousOpponents.end(); })
 					| std::ranges::to<std::vector<std::reference_wrapper< const Contestant >>>();
 
 				if(!possibleOpponents.empty())
@@ -260,6 +234,37 @@ std::vector< std::reference_wrapper< const Contestant >> reorderContestantsByIte
 	}
 
 	return o_reorderedContestants;
+}
+
+std::vector< std::reference_wrapper< const Contestant >> getPreviousOpponents(const Contestant& i_contestantToFindOpponents, const std::vector< Contestant >& i_contestants, const History& i_history)
+{
+	std::vector< std::reference_wrapper< const Contestant >> o_prevOpponents; //TODO to set (faster search)?
+	for(const auto& round : i_history)
+	{
+		for(const auto& match : *round)
+		{
+			const auto& matchOpponents = match.getContestantNames();
+			if(matchOpponents.first == i_contestantToFindOpponents.getName())
+			{
+				const auto& opponent = std::ranges::find_if(i_contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //TODO use reference or ID of Contestants everywhere
+				if(opponent != i_contestants.cend())
+				{
+					o_prevOpponents.emplace_back(*opponent);
+				}
+			}
+			else if(matchOpponents.second == i_contestantToFindOpponents.getName())
+			{
+				const auto& opponent = std::ranges::find_if(i_contestants,[opponentName = matchOpponents.first](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;});
+				if(opponent != i_contestants.cend())
+				{
+					o_prevOpponents.emplace_back(*opponent);
+				}
+			}
+			//TODO expects only matches with 2 opponents
+		}
+	}
+
+	return o_prevOpponents;
 }
 
 

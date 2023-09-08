@@ -37,10 +37,12 @@ using b3m::common::History;
 using b3m::common::TournamentRating;
 using b3m::common::Match;
 
+using ContestantRef_t = std::reference_wrapper< const Contestant >;
+
 
 void sortTeamsByResults(std::vector< Contestant >&, const History&);
-std::vector< std::reference_wrapper< const Contestant >> reorderContestantsByIterateOrder(const std::vector< Contestant >&, const History&);
-std::vector< std::reference_wrapper< const Contestant >> getPreviousOpponents(const Contestant&, const std::vector< Contestant >&, const History&);
+std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< Contestant >&, const History&);
+std::vector< ContestantRef_t > getPreviousOpponents(const Contestant&, const std::vector< Contestant >&, const History&);
 
 
 //--------------------------------------------------------------------------------------------------
@@ -52,20 +54,19 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	auto contestants = i_tournament.getContestants();
 	if(contestants.size() < 2)
 	{
-		return {};
+		return {}; //TODO properly report error
 	}
-
-	TournamentRound o_round;
 
 	const auto& history = i_tournament.getHistory();
 
 	if(history.empty())
 	{
-		//sort contestants by initial ranking
+		//sort contestants by initial rating
 		std::ranges::sort(contestants, [](const Contestant& i_a, const Contestant i_b){
 			return i_a.getRating() < i_b.getRating();
 		});
 
+		TournamentRound o_round;
 		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
 			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
 		{
@@ -79,42 +80,40 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		//sort contestants by match results (and initial rating)
 		sortTeamsByResults(contestants, history);
 
-		//TODO improvement by using unordered_map?
-		std::map< std::reference_wrapper< const Contestant >, bool, std::function<bool(const Contestant&, const Contestant&)> > takenContestants{
-			[](const Contestant& i_a, const Contestant& i_b)
-			{
-				return i_a.getName() < i_b.getName();
-			}
-		};
-		std::ranges::transform(contestants, std::inserter(takenContestants, takenContestants.end()), [](const auto& i_contestantRef){ return std::make_pair(i_contestantRef, false); });
-
+		TournamentRound o_round;
 		//iterate over contestants - first those who have waited in rounds before and then by ranking
-		for(const auto& currentContestantRef : reorderContestantsByIterateOrder(contestants, history))
+		for(const auto& currentContestantRef : reorderContestantsByPriority(contestants, history))
 		{
-			if(!takenContestants.at(currentContestantRef))
+			const auto& checkIfContestantIsAvailable = [&curRound = std::as_const(o_round)](const Contestant& i_contestant){
+				return std::ranges::find_if(curRound, [&i_contestant](const Match& i_match){
+					const auto& opponents = i_match.getContestantNames();
+					return opponents.first == i_contestant.getName() || opponents.second == i_contestant.getName();
+				}) == curRound.cend();
+			};
+
+			if(checkIfContestantIsAvailable(currentContestantRef))
 			{
 				//remove itself and previous opponents from possible opponents list
 				auto possibleOpponents = contestants
 					| std::views::filter([&currentContestantRef](const Contestant& i_contestant){ return i_contestant != currentContestantRef.get(); })
-					| std::views::filter([&takenContestants](const Contestant& i_contestant){ return !takenContestants.at(i_contestant); })
+					| std::views::filter(checkIfContestantIsAvailable)
 					| std::views::filter([previousOpponents = getPreviousOpponents(currentContestantRef.get(), contestants, history)](const Contestant& i_contestant){ return std::ranges::find_if(previousOpponents, [&i_contestant](const auto& i_contestantRef){ return i_contestantRef.get() == i_contestant; }) == previousOpponents.end(); })
-					| std::ranges::to<std::vector<std::reference_wrapper< const Contestant >>>();
+					| std::ranges::to<std::vector<ContestantRef_t>>();
 
 				if(!possibleOpponents.empty())
 				{
-					//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
-					//TODO dont copy, create a view
+					//sort possible opponents by distance weight - wrapped around, perfect opponent gets 0 (like algorithm when history is empty), each element moving away -1)
 					const auto& curContestantPos = std::distance(contestants.begin(), std::ranges::find(contestants, currentContestantRef.get()));
-					std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> contestantsWeightingOrder(contestants.cbegin() + curContestantPos, contestants.cend());
-					const decltype(contestants)::value_type* blockerContestant{ nullptr };
+					std::vector< ContestantRef_t> contestantsWeightingOrder(contestants.cbegin() + curContestantPos, contestants.cend()); //TODO dont copy, create a view
+					const Contestant* blockerContestant{ nullptr };
 					if(contestants.size() % 2 != 0)
 					{
-						blockerContestant = new decltype(contestants)::value_type(""); //TODO save enough?
+						blockerContestant = new Contestant(""); //TODO save enough?
 						contestantsWeightingOrder.emplace_back(*blockerContestant);
 					}
 					contestantsWeightingOrder.insert(contestantsWeightingOrder.end(), contestants.cbegin(), contestants.cbegin() + curContestantPos);
 
-					std::map< std::reference_wrapper< const decltype(contestants)::value_type >, int, std::function<bool(const Contestant&, const Contestant&)> > contestantsWeighting{
+					std::map< ContestantRef_t, int, std::function<bool(const Contestant&, const Contestant&)> > contestantsWeighting{
 						[](const Contestant& i_a, const Contestant& i_b)
 						{
 							return i_a.getName() < i_b.getName();
@@ -129,13 +128,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 						return contestantsWeighting.at(i_contestantA) > contestantsWeighting.at(i_contestantB);
 					});
 
-					//search in weighted list of possible opponents for best fitting contestant
-					const auto& foundOpponent = possibleOpponents.front();
-
-					//if match is found - mark contestants as taken and append match to TournamentRound to return
-					o_round.emplace_back(currentContestantRef.get(), foundOpponent.get());
-					takenContestants.insert_or_assign(currentContestantRef, true);
-					takenContestants.insert_or_assign(foundOpponent, true);
+					o_round.emplace_back(currentContestantRef.get(), possibleOpponents.front().get());
 
 					if(contestants.size() % 2 != 0)
 					{
@@ -149,15 +142,16 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 				}
 			}
 		}
-	}
 
-	return o_round;
+		return o_round;
+	}
 }
 
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history)
 {
 	std::map< Contestant::Name_t, TournamentRating > contestantsRating;
 
+	//TODO to std algorithm use?
 	for(const auto& round : i_history)
 	{
 		for(const auto& match : *round)
@@ -172,7 +166,6 @@ void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const Hi
 			}
 		}
 	}
-
 	for(const auto& contestant : i_contestantsToSort)
 	{
 		const auto contestantName = contestant.getName();
@@ -192,16 +185,16 @@ void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const Hi
 			const auto combRatingB = contestantsRating.at(i_b.getName()).getCombinedRating();
 			if(combRatingA == combRatingB)
 			{
-				return contestantsRating.at(i_a.getName()).m_numOfVotes > contestantsRating.at(i_b.getName()).m_numOfVotes;
+				return static_cast<double>(contestantsRating.at(i_a.getName()).m_numOfVotes)/numberOfRounds > static_cast<double>(contestantsRating.at(i_b.getName()).m_numOfVotes)/numberOfRounds;
 			}
 			return static_cast<double>(combRatingA)/numberOfRounds
 				> static_cast<double>(combRatingB)/numberOfRounds;
 	});
 }
 
-std::vector< std::reference_wrapper< const Contestant >> reorderContestantsByIterateOrder(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)
+std::vector< ContestantRef_t> reorderContestantsByPriority(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)
 {
-	std::vector< std::reference_wrapper< const Contestant >> o_reorderedContestants;
+	std::vector< ContestantRef_t> o_reorderedContestants;
 	o_reorderedContestants.reserve(i_contestantsToReorder.size());
 
 	for(const auto& round : std::views::reverse(i_history))
@@ -236,9 +229,9 @@ std::vector< std::reference_wrapper< const Contestant >> reorderContestantsByIte
 	return o_reorderedContestants;
 }
 
-std::vector< std::reference_wrapper< const Contestant >> getPreviousOpponents(const Contestant& i_contestantToFindOpponents, const std::vector< Contestant >& i_contestants, const History& i_history)
+std::vector< ContestantRef_t> getPreviousOpponents(const Contestant& i_contestantToFindOpponents, const std::vector< Contestant >& i_contestants, const History& i_history)
 {
-	std::vector< std::reference_wrapper< const Contestant >> o_prevOpponents; //TODO to set (faster search)?
+	std::vector< ContestantRef_t> o_prevOpponents; //TODO to set (faster search)?
 	for(const auto& round : i_history)
 	{
 		for(const auto& match : *round)

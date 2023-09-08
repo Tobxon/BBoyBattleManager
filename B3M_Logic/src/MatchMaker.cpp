@@ -52,13 +52,14 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	{
 		return {};
 	}
+	using contestantsElement_t = decltype(contestants)::value_type;
 
 	const auto& history = i_tournament.getHistory();
 
 	if(history.empty())
 	{
 		//sort contestants by initial ranking
-		std::ranges::sort(contestants, [](const Team& i_a, const Team i_b){
+		std::ranges::sort(contestants, [](const contestantsElement_t& i_a, const contestantsElement_t i_b){
 			return i_a.getRating() < i_b.getRating();
 		});
 
@@ -74,8 +75,6 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 
 	//sort contestants by match results (and initial rating)
 	sortTeamsByResults(contestants, history);
-
-	using contestantsElement_t = decltype(contestants)::value_type;
 
 	//iterate over contestants - first those who have waited in rounds before and then from by ranking
 	std::vector< std::reference_wrapper< const contestantsElement_t >> contestantsIterateOrder{};
@@ -119,7 +118,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		if(!takenContestants.at(currentContestantRef))
 		{
 			//get previous opponents for current contestant
-			std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> previousOpponents; //TODO to reference to contestants element
+			std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> previousOpponents; //TODO to reference to contestants element //TODO to set (faster search)?
 			for(const auto& round : history)
 			{
 				for(const auto& match : *round)
@@ -146,12 +145,36 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 			}
 
 			//remove itself and previous opponents from possible opponents list
-			const auto possibleOpponents = contestants
+			auto possibleOpponents = contestants
 				| std::views::filter([&currentContestantRef](const contestantsElement_t& i_contestant){ return i_contestant != currentContestantRef.get(); })
-				| std::views::filter([&takenContestants](const contestantsElement_t& i_contestant){ return takenContestants.at(i_contestant); });
+				| std::views::filter([&takenContestants](const contestantsElement_t& i_contestant){ return !takenContestants.at(i_contestant); })
+				| std::views::filter([&previousOpponents](const contestantsElement_t& i_contestant){ return std::ranges::find_if(previousOpponents, [&i_contestant](const auto& i_contestantRef){ return i_contestantRef.get() == i_contestant; }) == previousOpponents.end(); })
+				| std::ranges::to<std::vector<std::reference_wrapper< const contestantsElement_t >>>();
 
 			//sort possible opponents by distance weight (the closer they are to the current one the smaller the weight should be see excel) - skip previous opponents
-			//TODO
+			//TODO dont copy, create a view
+			const auto& curContestantPos = std::distance(contestants.begin(), std::ranges::find(contestants, currentContestantRef.get()));
+			std::vector< std::reference_wrapper< const decltype(contestants)::value_type >> contestantsWeightingOrder(contestants.cbegin() + curContestantPos, contestants.cend());
+			if(contestants.size() % 2 != 0)
+			{
+//				contestantsWeightingOrder.emplace_back(""); //TODO! how to emplace an empty element
+			}
+			contestantsWeightingOrder.insert(contestantsWeightingOrder.end(), contestants.cbegin(), contestants.cbegin() + curContestantPos);
+
+			std::map< std::reference_wrapper< const decltype(contestants)::value_type >, int, std::function<bool(const contestantsElement_t&, const contestantsElement_t&)> > contestantsWeighting{
+					[](const contestantsElement_t& i_a, const contestantsElement_t& i_b)
+					{
+						return i_a.getName() < i_b.getName();
+					}
+			};
+			for(auto it = contestantsWeightingOrder.cbegin(); it != contestantsWeightingOrder.cend(); ++it)
+			{
+				contestantsWeighting[*it] = -std::abs(std::distance(it, (contestantsWeightingOrder.cbegin() + contestantsWeightingOrder.size()/2)));
+			}
+
+			std::ranges::sort(possibleOpponents, [&contestantsWeighting](const auto& i_contestantA, const auto& i_contestantB){
+				return contestantsWeighting.at(i_contestantA) > contestantsWeighting.at(i_contestantB);
+			});
 
 			//search in weighted list of possible opponents for best fitting contestant
 			//TODO

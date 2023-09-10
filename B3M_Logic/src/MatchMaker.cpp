@@ -75,81 +75,81 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 
 		return o_round;
 	}
-	else
+
+	//sort contestants by match results (and initial rating)
+	sortTeamsByResults(contestants, history);
+
+	TournamentRound o_round;
+	//iterate over contestants - first those who have waited in rounds before and then by ranking
+	const auto contestantsInIterateOrder = reorderContestantsByPriority(contestants, history);
+	for(const auto& currentContestantRef : contestantsInIterateOrder)
 	{
-		//sort contestants by match results (and initial rating)
-		sortTeamsByResults(contestants, history);
+		const auto& checkIfContestantIsAvailable = [&curRound = std::as_const(o_round)](const Contestant& i_contestant){
+			return std::ranges::find_if(curRound, [&i_contestant](const Match& i_match){
+				const auto& opponents = i_match.getContestantNames();
+				return opponents.first == i_contestant.getName() || opponents.second == i_contestant.getName();
+			}) == curRound.cend();
+		};
 
-		TournamentRound o_round;
-		//iterate over contestants - first those who have waited in rounds before and then by ranking
-		for(const auto& currentContestantRef : reorderContestantsByPriority(contestants, history))
+		if(checkIfContestantIsAvailable(currentContestantRef))
 		{
-			const auto& checkIfContestantIsAvailable = [&curRound = std::as_const(o_round)](const Contestant& i_contestant){
-				return std::ranges::find_if(curRound, [&i_contestant](const Match& i_match){
-					const auto& opponents = i_match.getContestantNames();
-					return opponents.first == i_contestant.getName() || opponents.second == i_contestant.getName();
-				}) == curRound.cend();
-			};
+			//remove itself and previous opponents from possible opponents list
+			auto possibleOpponents = contestants
+				| std::views::filter([&currentContestantRef](const Contestant& i_contestant){ return i_contestant != currentContestantRef.get(); })
+				| std::views::filter(checkIfContestantIsAvailable)
+				| std::views::filter([previousOpponents = getPreviousOpponents(currentContestantRef.get(), contestants, history)](const Contestant& i_contestant){ return std::ranges::find_if(previousOpponents, [&i_contestant](const auto& i_contestantRef){ return i_contestantRef.get() == i_contestant; }) == previousOpponents.end(); })
+				| std::ranges::to<std::vector<ContestantRef_t>>();
 
-			if(checkIfContestantIsAvailable(currentContestantRef))
+			if(!possibleOpponents.empty())
 			{
-				//remove itself and previous opponents from possible opponents list
-				auto possibleOpponents = contestants
-					| std::views::filter([&currentContestantRef](const Contestant& i_contestant){ return i_contestant != currentContestantRef.get(); })
-					| std::views::filter(checkIfContestantIsAvailable)
-					| std::views::filter([previousOpponents = getPreviousOpponents(currentContestantRef.get(), contestants, history)](const Contestant& i_contestant){ return std::ranges::find_if(previousOpponents, [&i_contestant](const auto& i_contestantRef){ return i_contestantRef.get() == i_contestant; }) == previousOpponents.end(); })
-					| std::ranges::to<std::vector<ContestantRef_t>>();
-
-				if(!possibleOpponents.empty())
+				//sort possible opponents by distance weight - wrapped around, perfect opponent gets 0 (like algorithm when history is empty), each element moving away -1)
+				const auto& curContestantPos = std::distance(contestants.begin(), std::ranges::find(contestants, currentContestantRef.get()));
+				std::vector< ContestantRef_t> contestantsWeightingOrder(contestants.cbegin() + curContestantPos, contestants.cend()); //TODO dont copy, create a view
+				const Contestant* blockerContestant{ nullptr };
+				if(contestants.size() % 2 != 0)
 				{
-					//sort possible opponents by distance weight - wrapped around, perfect opponent gets 0 (like algorithm when history is empty), each element moving away -1)
-					const auto& curContestantPos = std::distance(contestants.begin(), std::ranges::find(contestants, currentContestantRef.get()));
-					std::vector< ContestantRef_t> contestantsWeightingOrder(contestants.cbegin() + curContestantPos, contestants.cend()); //TODO dont copy, create a view
-					const Contestant* blockerContestant{ nullptr };
-					if(contestants.size() % 2 != 0)
-					{
-						blockerContestant = new Contestant(""); //TODO save enough?
-						contestantsWeightingOrder.emplace_back(*blockerContestant);
-					}
-					contestantsWeightingOrder.insert(contestantsWeightingOrder.end(), contestants.cbegin(), contestants.cbegin() + curContestantPos);
-
-					std::map< ContestantRef_t, int, std::function<bool(const Contestant&, const Contestant&)> > contestantsWeighting{
-						[](const Contestant& i_a, const Contestant& i_b)
-						{
-							return i_a.getName() < i_b.getName();
-						}
-					};
-					for(auto it = contestantsWeightingOrder.cbegin(); it != contestantsWeightingOrder.cend(); ++it)
-					{
-						contestantsWeighting[*it] = -std::abs(std::distance(it, (contestantsWeightingOrder.cbegin() + contestantsWeightingOrder.size()/2)));
-					}
-
-					std::ranges::sort(possibleOpponents, [&contestantsWeighting](const auto& i_contestantA, const auto& i_contestantB){
-						return contestantsWeighting.at(i_contestantA) > contestantsWeighting.at(i_contestantB);
-					});
-
-					o_round.emplace_back(currentContestantRef.get(), possibleOpponents.front().get());
-
-					if(contestants.size() % 2 != 0)
-					{
-						delete blockerContestant;
-					}
+					blockerContestant = new Contestant(""); //TODO save enough?
+					contestantsWeightingOrder.emplace_back(*blockerContestant);
 				}
-				else
+				contestantsWeightingOrder.insert(contestantsWeightingOrder.end(), contestants.cbegin(), contestants.cbegin() + curContestantPos);
+
+				std::map< ContestantRef_t, int, std::function<bool(const Contestant&, const Contestant&)> > contestantsWeighting{
+					[](const Contestant& i_a, const Contestant& i_b)
+					{
+						return i_a.getName() < i_b.getName();
+					}
+				};
+				for(auto it = contestantsWeightingOrder.cbegin(); it != contestantsWeightingOrder.cend(); ++it)
 				{
-					//if match isn't found skip this contestant, if this happens again report an error (maybe throw)
-					//TODO
+					contestantsWeighting[*it] = -std::abs(std::distance(it, (contestantsWeightingOrder.cbegin() + contestantsWeightingOrder.size()/2)));
+				}
+
+				std::ranges::sort(possibleOpponents, [&contestantsWeighting](const auto& i_contestantA, const auto& i_contestantB){
+					return contestantsWeighting.at(i_contestantA) > contestantsWeighting.at(i_contestantB);
+				});
+
+				o_round.emplace_back(currentContestantRef.get(), possibleOpponents.front().get());
+
+				if(contestants.size() % 2 != 0)
+				{
+					delete blockerContestant;
 				}
 			}
+			else
+			{
+				//if match isn't found skip this contestant, if this happens again report an error (maybe throw)
+				//TODO
+			}
 		}
-
-		return o_round;
 	}
+
+	return o_round;
 }
 
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history)
 {
 	std::map< Contestant::Name_t, TournamentRating > contestantsRating;
+	std::map< Contestant::Name_t, int > contestantsNumberOfRounds;
 
 	//TODO to std algorithm use?
 	for(const auto& round : i_history)
@@ -162,6 +162,7 @@ void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const Hi
 				for (const auto& [contestantName, results] : matchResult.value())
 				{
 					contestantsRating[contestantName] += results;
+					contestantsNumberOfRounds[contestantName]++;
 				}
 			}
 		}
@@ -179,16 +180,20 @@ void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const Hi
 
 	std::ranges::sort(i_contestantsToSort,
 		[&contestantsRating = std::as_const(contestantsRating),
-		 &numberOfRounds = std::as_const(numberOfRounds)]
+		 &contestantsNumberOfRounds = std::as_const(contestantsNumberOfRounds)]
 		(const Contestant& i_a, const Contestant& i_b){
-			const auto combRatingA = contestantsRating.at(i_a.getName()).getCombinedRating();
-			const auto combRatingB = contestantsRating.at(i_b.getName()).getCombinedRating();
-			if(combRatingA == combRatingB)
+			const auto& aName =  i_a.getName();
+			const auto& bName =  i_b.getName();
+			const auto& numberOfRoundsA = contestantsNumberOfRounds.contains(aName) ? contestantsNumberOfRounds.at(aName) : 0;
+			const auto& numberOfRoundsB = contestantsNumberOfRounds.contains(bName) ? contestantsNumberOfRounds.at(bName) : 0;
+			const auto resultA = (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(aName).getCombinedRating())/numberOfRoundsA : 0.0);
+			const auto resultB = (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(bName).getCombinedRating())/numberOfRoundsB : 0.0);
+			if(resultA == resultB)
 			{
-				return static_cast<double>(contestantsRating.at(i_a.getName()).m_numOfVotes)/numberOfRounds > static_cast<double>(contestantsRating.at(i_b.getName()).m_numOfVotes)/numberOfRounds;
+				return (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(aName).m_numOfVotes)/numberOfRoundsA : 0.0)
+					> (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(bName).m_numOfVotes)/numberOfRoundsB : 0.0);
 			}
-			return static_cast<double>(combRatingA)/numberOfRounds
-				> static_cast<double>(combRatingB)/numberOfRounds;
+			return resultA > resultB;
 	});
 }
 

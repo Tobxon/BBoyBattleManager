@@ -131,8 +131,8 @@ struct TournamentRating
 	Judgement m_numOfVotes{ 0 };
 
 	TournamentRating& operator+=(const Match::FullResult&);
-//	std::strong_ordering operator<=>(const TournamentRating&) const;
 	bool operator==(const TournamentRating&) const = default;
+	//TODO implement ordering?
 
 	[[nodiscard]] int getCombinedRating() const;
 	[[nodiscard]] int getNumberOfRatings() const;

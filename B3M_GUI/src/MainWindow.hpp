@@ -24,6 +24,7 @@ import b3m.database;
 #include "ParticipantsDialog.hpp"
 #include "TeamsView.hpp"
 #include "TournamentManagement/Window.hpp"
+#include "Presentation/ManagementWindow.hpp"
 
 
 //--------------------------------------------------------------------------------------------------
@@ -61,6 +62,7 @@ private:
 	ParticipantsDialog* m_participantDialog{ nullptr };
 	TeamsView* m_teamsOverview{ nullptr };
 	TournamentManagementWindow* m_tournamentManagementWindow{ nullptr };
+	PresentationManagementWindow* m_presentationManagementWindow{ nullptr };
 };
 
 

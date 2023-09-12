@@ -15,6 +15,7 @@ target_sources(B3M_GUI
 		"src/TournamentManagement/Window.hpp"
 		"src/TournamentManagement/TournamentRoundWidget.hpp"
 		"src/TournamentManagement/MatchResultDialog.hpp"
+		"src/Presentation/ManagementWindow.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/MainWindow.cpp"
 		"src/MainWindow.ui"
@@ -27,11 +28,14 @@ target_sources(B3M_GUI
 		"src/TournamentManagement/TournamentRoundWidget.ui"
 		"src/TournamentManagement/MatchResultDialog.cpp"
 		"src/TournamentManagement/MatchResultDialog.ui"
+		"src/Presentation/ManagementWindow.cpp"
+		"src/Presentation/PresentationManagementWindow.ui"
 )
 
-set_target_properties(B3M_GUI PROPERTIES  
-	AUTOMOC TRUE
-	AUTOUIC TRUE
+set_target_properties(B3M_GUI
+	PROPERTIES
+		AUTOMOC TRUE
+		AUTOUIC TRUE
 ) 
 
 target_link_libraries(B3M_GUI 

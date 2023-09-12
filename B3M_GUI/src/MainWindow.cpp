@@ -7,6 +7,7 @@
 //--------------------------------------------------------------------------------------------------
 //module;
 #include "MainWindow.hpp"
+//module B3M_MainWindow;
 
 //Qt
 #include <QPushButton>
@@ -14,7 +15,6 @@
 #include <QCloseEvent>
 
 
-//module B3M_MainWindow;
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
@@ -24,6 +24,7 @@ b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainW
 	, m_participantDialog(new b3m::gui::ParticipantsDialog(i_participantStorage))
 	, m_teamsOverview(new TeamsView(i_participantStorage))
 	, m_tournamentManagementWindow(new TournamentManagementWindow())
+	, m_presentationManagementWindow(new PresentationManagementWindow())
 {
 	m_ui->setupUi(this);
 
@@ -37,6 +38,10 @@ b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainW
 		const auto teams = m_teamsOverview->getContestants();
 		m_tournamentManagementWindow->startTournament(teams);
 		m_tournamentManagementWindow->show();
+	});
+
+	connect(m_ui->upRightButton, &QPushButton::clicked, [this](){
+		m_presentationManagementWindow->show();
 	});
 }
 

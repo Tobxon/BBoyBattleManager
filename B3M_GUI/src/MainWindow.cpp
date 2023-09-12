@@ -10,6 +10,8 @@
 
 //Qt
 #include <QPushButton>
+#include <QMessageBox>
+#include <QCloseEvent>
 
 
 //module B3M_MainWindow;
@@ -41,6 +43,18 @@ b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainW
 b3m::gui::MainWindow::~MainWindow()
 {
 	delete m_ui;
+}
+
+void b3m::gui::MainWindow::closeEvent(QCloseEvent *event)
+{
+	if (QMessageBox::Yes == QMessageBox::question(this, "Close Confirmation", "Bist du sicher, dass du alles aufgeben willst?", QMessageBox::Yes | QMessageBox::No))
+	{
+		QApplication::closeAllWindows();
+	}
+	else
+	{
+		event->ignore();
+	}
 }
 
 

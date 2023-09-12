@@ -31,10 +31,10 @@ int main(int argc, char** argv)
 	b3m::database::ParticipantsDepot allParticipants;
 
 	//main window
-	b3m::gui::MainWindow b3mMainWin(allParticipants);
+	auto b3mMainWin = new b3m::gui::MainWindow(allParticipants);
 
 	//create startup window
-	b3mMainWin.show();
+	b3mMainWin->show();
 
 	const int result = app.exec();
 	return result;

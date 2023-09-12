@@ -52,6 +52,9 @@ public:
 	MainWindow(MainWindow&&) = delete;
 	MainWindow& operator=(MainWindow&&) = delete;
 
+protected:
+	void closeEvent(QCloseEvent *event);
+
 private:
 	Ui::B3M_MainWindow* m_ui{ new Ui::B3M_MainWindow };
 

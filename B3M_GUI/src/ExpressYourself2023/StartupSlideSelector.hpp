@@ -4,8 +4,8 @@
  *
  */
 
-#ifndef B3M_GUI_PRESENTATION_MANAGEMENT_WINDOW_HPP
-#define B3M_GUI_PRESENTATION_MANAGEMENT_WINDOW_HPP
+#ifndef B3M_GUI_EXPRESS_YOURSELF_2023_STARTUP_SLIDE_HPP
+#define B3M_GUI_EXPRESS_YOURSELF_2023_STARTUP_SLIDE_HPP
 
 
 //--------------------------------------------------------------------------------------------------
@@ -13,52 +13,39 @@
 //--------------------------------------------------------------------------------------------------
 
 //Qt
-#include <QWidget>
-
-#include "ui_PresentationManagementWindow.h"
+#include <QLabel>
 
 //b3m
 #include <SlideSelector.hpp>
-
-//ey2023
-#include <StartupSlideSelector.hpp>
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m::gui
+namespace b3m::gui::ey2023
 {
 
 
 
-class PresentationManagementWindow : public QWidget
-{
-	Q_OBJECT;
+using b3m::gui::presentation::SlideSelector;
 
+
+class StartupSlideSelector : public SlideSelector
+{
 public:
-	explicit PresentationManagementWindow(QWidget* = nullptr);
-	virtual ~PresentationManagementWindow();
-
-signals:
-	void slidesVisible(bool);
+	explicit StartupSlideSelector(QWidget* = nullptr);
 
 private:
-	Ui::PresentationManagementWindow* m_ui{ new Ui::PresentationManagementWindow };
+	QLabel* m_startupImage{ new QLabel };
 
-	QWidget* m_presentationWindow{ new QWidget };
-	qsizetype m_presentationWindowScreeIndex{ 1%(QGuiApplication::screens().size()) }; //use second screen on start
-
-	b3m::gui::presentation::SlideSelector* m_startup{ new b3m::gui::ey2023::StartupSlideSelector };
-
-	void initializeScreen();
-	void setNewSlide(QWidget*);
+private slots:
+	QWidget* getSlide() override;
 };
 
 
 
-} //namespace b3m::gui
+}; //namespace b3m::gui::ey2023
 
 
-#endif //B3M_GUI_PRESENTATION_MANAGEMENT_WINDOW_HPP
+#endif //B3M_GUI_EXPRESS_YOURSELF_2023_STARTUP_SLIDE_HPP
 //END OF FILE --------------------------------------------------------------------------------------

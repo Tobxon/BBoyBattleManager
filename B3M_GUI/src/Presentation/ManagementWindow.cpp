@@ -43,10 +43,16 @@ b3m::gui::PresentationManagementWindow::PresentationManagementWindow(QWidget* i_
 		m_presentationWindowScreeIndex = ++m_presentationWindowScreeIndex%(QGuiApplication::screens().size());
 		initializeScreen();
 	});
+
+	//add slide selectors
+	m_ui->verticalLayout->insertWidget(1, m_startup);
+	connect(m_startup, &b3m::gui::presentation::SlideSelector::newSlide, this, &PresentationManagementWindow::setNewSlide);
+	connect(this, &PresentationManagementWindow::slidesVisible, m_startup, &b3m::gui::presentation::SlideSelector::setEnabled);
 }
 
 b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 {
+	if(m_startup){ delete m_startup; }
 	if(m_presentationWindow){ delete m_presentationWindow; }
 	delete m_ui;
 }
@@ -62,7 +68,7 @@ void b3m::gui::PresentationManagementWindow::initializeScreen()
 
 void b3m::gui::PresentationManagementWindow::setNewSlide(QWidget* i_newSlide)
 {
-	delete m_presentationWindow;
+	if(m_presentationWindow){ delete m_presentationWindow; }
 	m_presentationWindow = i_newSlide;
 	initializeScreen();
 }

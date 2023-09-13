@@ -17,14 +17,9 @@
 //--------------------------------------------------------------------------------------------------
 
 b3m::gui::ey2023::StartupSlideSelector::StartupSlideSelector(QWidget* i_parent)
-	: SlideSelector(i_parent)
+	: SlideSelector("Startup Slide", i_parent)
 {
-	setObjectName("pushButton");
-	setEnabled(false);
-	setText(tr("Startup Slide"));
-
-	QPixmap mainImage("D:/Dev/Repos/B3M_dev/EY2023/resources/B3M_EY2023-start_page.png");
-	m_startupImage->setPixmap(mainImage);
+	m_startupImage->setPixmap(QPixmap("D:/Dev/Repos/B3M_dev/EY2023/resources/B3M_EY2023-start_page.png"));
 }
 
 QWidget* b3m::gui::ey2023::StartupSlideSelector::getSlide()

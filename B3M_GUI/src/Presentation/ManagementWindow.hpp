@@ -14,6 +14,7 @@
 
 //Qt
 #include <QWidget>
+#include <QList>
 
 #include "ui_PresentationManagementWindow.h"
 
@@ -22,6 +23,7 @@
 
 //ey2023
 #include <StartupSlideSelector.hpp>
+#include <RankingSlideSelector.hpp>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -30,6 +32,9 @@
 namespace b3m::gui
 {
 
+
+
+using b3m::gui::presentation::SlideSelector;
 
 
 class PresentationManagementWindow : public QWidget
@@ -49,7 +54,9 @@ private:
 	QWidget* m_presentationWindow{ new QWidget };
 	qsizetype m_presentationWindowScreeIndex{ 1%(QGuiApplication::screens().size()) }; //use second screen on start
 
-	b3m::gui::presentation::SlideSelector* m_startup{ new b3m::gui::ey2023::StartupSlideSelector };
+	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector,
+									  new b3m::gui::ey2023::RankingSlideSelector  };
+	SlideSelector* m_curSlide{ nullptr };
 
 	void initializeScreen();
 	void setNewSlide(QWidget*);

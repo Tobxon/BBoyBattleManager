@@ -1,7 +1,8 @@
 find_package(Qt6 REQUIRED COMPONENTS Widgets Gui Core)
+qt_standard_project_setup()
 
 
-add_library(B3M_Presentation)
+qt_add_library(B3M_Presentation STATIC)
 target_sources(B3M_Presentation
 	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/Presentation/SlideSelector.hpp"
@@ -16,19 +17,18 @@ target_link_libraries(B3M_Presentation
 	PUBLIC
 		Qt::Widgets
 )
-set_target_properties(B3M_Presentation
-		PROPERTIES
-		AUTOMOC TRUE
-)
 
 
 
-add_library(EY2023_Presentation)
+qt_add_library(EY2023_Presentation STATIC)
 target_sources(EY2023_Presentation
 	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/ExpressYourself2023/StartupSlideSelector.hpp"
+		"src/ExpressYourself2023/RankingSlideSelector.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/ExpressYourself2023/StartupSlideSelector.cpp"
+		"src/ExpressYourself2023/SlideTemplate.ui"
+		"src/ExpressYourself2023/RankingSlideSelector.cpp"
 )
 target_include_directories(EY2023_Presentation
 	PUBLIC
@@ -36,13 +36,12 @@ target_include_directories(EY2023_Presentation
 )
 target_link_libraries(EY2023_Presentation
 	PUBLIC
-		Qt::Widgets
+		Qt::Core
 		B3M_Presentation
 )
-set_target_properties(EY2023_Presentation
-	PROPERTIES
-		AUTOMOC TRUE
-)
+
+get_target_property(EY2023_Presentation_includeDirs EY2023_Presentation INCLUDE_DIRECTORIES)
+message("EY2023_Presentation include directories: ${EY2023_Presentation_includeDirs}")
 
 
 

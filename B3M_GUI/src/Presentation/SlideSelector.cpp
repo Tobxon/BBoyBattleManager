@@ -13,13 +13,13 @@
 //--------------------------------------------------------------------------------------------------
 
 
-b3m::gui::presentation::SlideSelector::SlideSelector(QWidget* i_parent)
+b3m::gui::presentation::SlideSelector::SlideSelector(const char* i_buttonText, QWidget* i_parent)
 	: QPushButton(i_parent)
 {
-	connect(this, &QPushButton::clicked, [this](){
-		emit newSlide(getSlide());
-		setEnabled(false);
-	});
+	setEnabled(false);
+	setText(tr(i_buttonText));
+
+	connect(this, &QPushButton::clicked, [this](){ emit newSlide(getSlide()); });
 }
 
 

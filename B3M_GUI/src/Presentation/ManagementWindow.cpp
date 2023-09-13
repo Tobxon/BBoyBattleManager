@@ -7,6 +7,10 @@
 //--------------------------------------------------------------------------------------------------
 #include "ManagementWindow.hpp"
 
+//std
+import <algorithm>;
+import <ranges>;
+
 //Qt
 #include <QScreen>
 #include <QGuiApplication>
@@ -28,6 +32,7 @@ b3m::gui::PresentationManagementWindow::PresentationManagementWindow(QWidget* i_
 	connect(m_ui->lowLeftButton, &QPushButton::clicked, [this](){
 		initializeScreen();
 		emit slidesVisible(true);
+		if(m_curSlide){ m_curSlide->setEnabled(false); } //TODO bad design?
 	});
 	connect(m_ui->lowRightButton, &QPushButton::clicked, [this](){
 		m_presentationWindow->hide();
@@ -45,14 +50,28 @@ b3m::gui::PresentationManagementWindow::PresentationManagementWindow(QWidget* i_
 	});
 
 	//add slide selectors
-	m_ui->verticalLayout->insertWidget(1, m_startup);
-	connect(m_startup, &b3m::gui::presentation::SlideSelector::newSlide, this, &PresentationManagementWindow::setNewSlide);
-	connect(this, &PresentationManagementWindow::slidesVisible, m_startup, &b3m::gui::presentation::SlideSelector::setEnabled);
+	for(auto* const curSlide : std::views::reverse(m_slides))
+	{
+		m_ui->verticalLayout->insertWidget(1, curSlide);
+		connect(curSlide, &b3m::gui::presentation::SlideSelector::newSlide, this, &PresentationManagementWindow::setNewSlide);
+		connect(curSlide, &b3m::gui::presentation::SlideSelector::newSlide, [this, curSlide](){
+			std::ranges::for_each(m_slides, [curSlide](auto* const slide){
+				if(slide){
+					if(slide != curSlide){ slide->setEnabled(true); }
+					else{ slide->setEnabled(false); }
+				}});
+			m_curSlide = curSlide;
+		});
+		connect(this, &PresentationManagementWindow::slidesVisible, curSlide, &b3m::gui::presentation::SlideSelector::setEnabled);
+	}
 }
 
 b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 {
-	if(m_startup){ delete m_startup; }
+	std::ranges::for_each(m_slides, [](auto* slide){
+		if(slide) delete slide;
+		slide = nullptr;
+	});
 	if(m_presentationWindow){ delete m_presentationWindow; }
 	delete m_ui;
 }
@@ -68,7 +87,7 @@ void b3m::gui::PresentationManagementWindow::initializeScreen()
 
 void b3m::gui::PresentationManagementWindow::setNewSlide(QWidget* i_newSlide)
 {
-	if(m_presentationWindow){ delete m_presentationWindow; }
+	if(m_presentationWindow){ m_presentationWindow->hide(); }
 	m_presentationWindow = i_newSlide;
 	initializeScreen();
 }

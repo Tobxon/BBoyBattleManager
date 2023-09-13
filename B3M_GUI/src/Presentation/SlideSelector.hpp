@@ -14,6 +14,7 @@
 
 //Qt
 #include <QPushButton>
+#include <QString>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ class SlideSelector : public QPushButton
 	Q_OBJECT;
 
 public:
-	explicit SlideSelector(QWidget* = nullptr);
+	explicit SlideSelector(const char*, QWidget* = nullptr);
 
 signals:
 	void newSlide(QWidget*);

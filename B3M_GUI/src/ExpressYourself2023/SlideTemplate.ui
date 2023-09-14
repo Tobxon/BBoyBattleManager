@@ -19,8 +19,8 @@
   <widget class="QLabel" name="eyLogo">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>100</y>
+     <x>90</x>
+     <y>135</y>
      <width>150</width>
      <height>180</height>
     </rect>

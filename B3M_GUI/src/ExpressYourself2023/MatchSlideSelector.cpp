@@ -38,7 +38,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(QWidget* i_parent)
 	m_ui->setupUi(this);
 
 	//TODO import font at a central place
-	int id = QFontDatabase::addApplicationFont("C:/Dev/Repos/B3M_dev/EY2023/resources/freshmarker.ttf");
+	int id = QFontDatabase::addApplicationFont("D:/Dev/Repos/B3M_dev/EY2023/resources/freshmarker.ttf");
 	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 	QFont freshmarker(family);
 
@@ -60,7 +60,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(QWidget* i_parent)
 	system.setPointSize(fontSize);
 
 	int index = 0;
-	for(const auto match : curRound)
+	for(const auto& match : curRound)
 	{
 		const auto& [teamAName, teamBName] = match.getContestantNames();
 		auto* const teamANameLabel = new QLabel(this);

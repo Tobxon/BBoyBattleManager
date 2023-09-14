@@ -43,9 +43,6 @@ target_link_libraries(EY2023_Presentation
 		B3M_Common
 )
 
-get_target_property(EY2023_Presentation_includeDirs EY2023_Presentation INCLUDE_DIRECTORIES)
-message("EY2023_Presentation include directories: ${EY2023_Presentation_includeDirs}")
-
 
 
 qt_add_executable(B3M_GUI MACOSX_BUNDLE WIN32

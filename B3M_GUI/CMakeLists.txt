@@ -25,10 +25,12 @@ target_sources(EY2023_Presentation
 	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/ExpressYourself2023/StartupSlideSelector.hpp"
 		"src/ExpressYourself2023/RankingSlideSelector.hpp"
+		"src/ExpressYourself2023/MatchSlideSelector.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/ExpressYourself2023/StartupSlideSelector.cpp"
 		"src/ExpressYourself2023/SlideTemplate.ui"
 		"src/ExpressYourself2023/RankingSlideSelector.cpp"
+		"src/ExpressYourself2023/MatchSlideSelector.cpp"
 )
 target_include_directories(EY2023_Presentation
 	PUBLIC
@@ -38,6 +40,7 @@ target_link_libraries(EY2023_Presentation
 	PUBLIC
 		Qt::Core
 		B3M_Presentation
+		B3M_Common
 )
 
 get_target_property(EY2023_Presentation_includeDirs EY2023_Presentation INCLUDE_DIRECTORIES)

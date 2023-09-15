@@ -36,6 +36,7 @@ namespace b3m::gui::ey2023
 
 using b3m::gui::presentation::SlideSelector;
 using b3m::common::TournamentRound;
+using b3m::common::Contestant;
 
 
 class MatchSlide : public QWidget
@@ -49,6 +50,7 @@ private:
 
 	QList< QLabel* > m_teams;
 	TournamentRound* m_round;
+	QMap< Contestant::Name_t, QLabel* > m_contestantsScores;
 
 //	void arrangeMatches();
 };

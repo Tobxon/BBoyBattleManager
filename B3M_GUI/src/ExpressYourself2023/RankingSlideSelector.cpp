@@ -62,8 +62,6 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		{"Die BBoys",{1, 2}},
 		{"Fire Girls",{0, 0}}};
 
-//	const auto
-
 	const int logoWidth = 150;
 	const int outerFrameWidth = widthScreen/8-logoWidth;
 	const int innerFrameWidth = widthScreen/16;

@@ -26,11 +26,13 @@ target_sources(EY2023_Presentation
 		"src/ExpressYourself2023/StartupSlideSelector.hpp"
 		"src/ExpressYourself2023/RankingSlideSelector.hpp"
 		"src/ExpressYourself2023/MatchSlideSelector.hpp"
+		"src/ExpressYourself2023/DetailedRankingSlideSelector.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/ExpressYourself2023/StartupSlideSelector.cpp"
 		"src/ExpressYourself2023/SlideTemplate.ui"
 		"src/ExpressYourself2023/RankingSlideSelector.cpp"
 		"src/ExpressYourself2023/MatchSlideSelector.cpp"
+		"src/ExpressYourself2023/DetailedRankingSlideSelector.cpp"
 )
 target_include_directories(EY2023_Presentation
 	PUBLIC

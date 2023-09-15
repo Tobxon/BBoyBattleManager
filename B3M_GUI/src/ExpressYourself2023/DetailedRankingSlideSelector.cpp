@@ -5,11 +5,8 @@
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-#include "RankingSlideSelector.hpp"
+#include "DetailedRankingSlideSelector.hpp"
 #include "ui_SlideTemplate.h"
-
-//std
-import <utility>;
 
 //Qt
 #include <QPaintEvent>
@@ -28,8 +25,8 @@ static constexpr /*unsigned*/ int heightScreen = 1080;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-//RankingSlide -------------------------------------------------------------------------------------
-b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
+//DetailedRankingSlide -------------------------------------------------------------------------------------
+b3m::gui::ey2023::DetailedRankingSlide::DetailedRankingSlide(QWidget* i_parent)
 	: QWidget(i_parent), m_ui(new Ui::SlideTemplate)
 {
 	m_ui->setupUi(this);
@@ -41,19 +38,19 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 
 	QFont system;
 
-	QList<std::pair< QString, std::pair<int, int> >> teamNames{
-		{"DDC Talents",{3, 8}},
-		{"GingerBreads Crew",{3, 8}},
-		{"Style Insiders",{2, 7}},
-		{"Nasty Attack",{2, 6}},
-		{"Offbeat",{2, 6}},
-		{"Dream ASF",{1, 4}},
-		{"Crazy Monkeys",{1, 4}},
-		{"Fresh Family",{1, 3}},
-		{"Speed Breaker",{1, 3}},
-		{"The Wild Foxes",{1, 3}},
-		{"Die BBoys",{1, 2}},
-		{"Fire Girls",{0, 0}}};
+	QList<std::pair< QString, std::pair<QString, int> >> teamNames{
+			{"DDC Talents",{"3/0/0", 8}},
+			{"GingerBreads Crew",{"3/0/0", 8}},
+			{"Style Insiders",{"2/0/1", 7}},
+			{"Nasty Attack",{"2/0/1", 6}},
+			{"Offbeat",{"2/0/1", 6}},
+			{"Dream ASF",{"1/0/2", 4}},
+			{"Crazy Monkeys",{"1/0/2", 4}},
+			{"Fresh Family",{"1/0/2", 3}},
+			{"Speed Breaker",{"1/0/2", 3}},
+			{"The Wild Foxes",{"1/0/2", 3}},
+			{"Die BBoys",{"1/0/2", 2}},
+			{"Fire Girls",{"0/0/3", 0}}};
 
 	const int logoWidth = 150;
 	const int outerFrameWidth = widthScreen/8-logoWidth;
@@ -95,7 +92,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 	crewHeader->setAttribute( Qt::WA_TranslucentBackground, true );
 
 	// Siege
-	QString winsHeaderLettering{"Siege"};
+	QString winsHeaderLettering{"S/U/N"};
 	auto* const winsHeader = new QLabel(this);
 	winsHeader->setObjectName(winsHeaderLettering + "_header");
 	const QRect winsHeaderSpace{ crewHeaderSpace.right(), outerFrameHeight+innerFrameHeight, winsColumnWidth, heightOfRow };
@@ -143,7 +140,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		winsLabel->setObjectName(teamName + "_wins");
 		const QRect winsLabelSpace{ winsHeaderSpace.left(), lastRowBottom, winsHeaderSpace.width(), heightOfRow };
 		winsLabel->setGeometry(winsLabelSpace);
-		winsLabel->setText(QString::number(results.first));
+		winsLabel->setText(results.first);
 		winsLabel->setAlignment(Qt::AlignCenter);
 		winsLabel->setFont(freshmarker);
 		winsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
@@ -161,19 +158,19 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 	}
 }
 
-b3m::gui::ey2023::RankingSlide::~RankingSlide()
+b3m::gui::ey2023::DetailedRankingSlide::~DetailedRankingSlide()
 {
 	delete m_ui;
 }
 
-void b3m::gui::ey2023::RankingSlide::arrangeTeamNames()
+void b3m::gui::ey2023::DetailedRankingSlide::arrangeTeamNames()
 {
 
 }
 
 
-//RankingSlideSelector -----------------------------------------------------------------------------
-b3m::gui::ey2023::RankingSlideSelector::RankingSlideSelector(QWidget* i_parent)
+//DetailedRankingSlideSelector -----------------------------------------------------------------------------
+b3m::gui::ey2023::DetailedRankingSlideSelector::DetailedRankingSlideSelector(QWidget* i_parent)
 	: SlideSelector("Ranking Slide", i_parent)
 {
 }

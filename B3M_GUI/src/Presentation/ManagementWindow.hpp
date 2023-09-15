@@ -25,6 +25,7 @@
 #include <StartupSlideSelector.hpp>
 #include <RankingSlideSelector.hpp>
 #include <MatchSlideSelector.hpp>
+#include <DetailedRankingSlideSelector.hpp>
 
 
 //--------------------------------------------------------------------------------------------------
@@ -57,6 +58,7 @@ private:
 
 	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector,
 									  new b3m::gui::ey2023::RankingSlideSelector,
+									  new b3m::gui::ey2023::DetailedRankingSlideSelector,
 									  new b3m::gui::ey2023::MatchSlideSelector };
 	SlideSelector* m_curSlide{ nullptr };
 

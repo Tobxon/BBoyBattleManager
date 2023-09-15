@@ -43,6 +43,7 @@ target_link_libraries(EY2023_Presentation
 		Qt::Core
 		B3M_Presentation
 		B3M_Common
+		B3M_Logic
 )
 
 

@@ -16,10 +16,17 @@ import <utility>;
 #include <QPainter>
 #include <QFontDatabase>
 
+//b3m
+import b3m.common;
+import b3m.logic;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
+using b3m::common::History;
+
+
 static constexpr /*unsigned*/ int widthScreen = 1920;
 static constexpr /*unsigned*/ int heightScreen = 1080;
 
@@ -55,6 +62,8 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		{"Die BBoys",{1, 2}},
 		{"Fire Girls",{0, 0}}};
 
+//	const auto
+
 	const int logoWidth = 150;
 	const int outerFrameWidth = widthScreen/8-logoWidth;
 	const int innerFrameWidth = widthScreen/16;
@@ -82,6 +91,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 	rankingHeader->setAlignment(Qt::AlignCenter);
 	rankingHeader->setFont(system);
 	rankingHeader->setAttribute( Qt::WA_TranslucentBackground, true );
+	rankingHeader->setStyleSheet("{color: #FFFFFF}");
 
 	// Crew
 	QString crewHeaderLettering{"Crew"};
@@ -93,6 +103,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 	crewHeader->setAlignment(Qt::AlignCenter);
 	crewHeader->setFont(system);
 	crewHeader->setAttribute( Qt::WA_TranslucentBackground, true );
+	crewHeader->setStyleSheet("{color: #FFFFFF}");
 
 	// Siege
 	QString winsHeaderLettering{"Siege"};
@@ -104,6 +115,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 	winsHeader->setAlignment(Qt::AlignCenter);
 	winsHeader->setFont(system);
 	winsHeader->setAttribute( Qt::WA_TranslucentBackground, true );
+	winsHeader->setStyleSheet("{color: #000000}");
 
 	// Hände
 	QString pointsHeaderLettering{"Hände"};
@@ -115,6 +127,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 	pointsHeader->setAlignment(Qt::AlignCenter);
 	pointsHeader->setFont(system);
 	pointsHeader->setAttribute( Qt::WA_TranslucentBackground, true );
+	pointsHeader->setStyleSheet("{color: #FFFFFF}");
 
 	int lastRowBottom = crewHeaderSpace.bottom();
 	int ranking = 1;
@@ -128,6 +141,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		teamRankingLabel->setAlignment(Qt::AlignCenter);
 		teamRankingLabel->setFont(freshmarker);
 		teamRankingLabel->setAttribute( Qt::WA_TranslucentBackground, true );
+		teamRankingLabel->setStyleSheet("{color: #FFFFFF}");
 		++ranking;
 
 		auto* const crewLabel = new QLabel(this);
@@ -138,6 +152,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		crewLabel->setAlignment(Qt::AlignCenter);
 		crewLabel->setFont(freshmarker);
 		crewLabel->setAttribute( Qt::WA_TranslucentBackground, true );
+		crewLabel->setStyleSheet("{color: #FFFFFF}");
 
 		auto* const winsLabel = new QLabel(this);
 		winsLabel->setObjectName(teamName + "_wins");
@@ -147,6 +162,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		winsLabel->setAlignment(Qt::AlignCenter);
 		winsLabel->setFont(freshmarker);
 		winsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
+		winsLabel->setStyleSheet("{color: #FFFFFF}");
 
 		auto* const pointsLabel = new QLabel(this);
 		pointsLabel->setObjectName(teamName + "_points");
@@ -156,6 +172,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(QWidget* i_parent)
 		pointsLabel->setAlignment(Qt::AlignCenter);
 		pointsLabel->setFont(freshmarker);
 		pointsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
+		pointsLabel->setStyleSheet("{color: #FFFFFF}");
 
 		lastRowBottom = crewLabelSpace.bottom();
 	}

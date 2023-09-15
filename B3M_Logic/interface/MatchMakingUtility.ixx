@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief MatchMaker is the base class for match making algorithm.
+ * \brief Utility Functions that may be needed for different match making algorithms.
  *
  */
 
@@ -14,7 +14,7 @@ module;
 //--------------------------------------------------------------------------------------------------
 //------ MODULE CONTENT                                                                       ------
 //--------------------------------------------------------------------------------------------------
-export module b3m.logic:MatchMaker;
+export module b3m.logic:MatchMakingUtility;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -22,6 +22,8 @@ export module b3m.logic:MatchMaker;
 //--------------------------------------------------------------------------------------------------
 
 //std
+import <map>;
+import <optional>;
 import <vector>;
 
 //b3m
@@ -36,30 +38,14 @@ export namespace b3m::logic
 
 
 
-using b3m::common::TournamentRound;
-using b3m::common::Tournament;
-using b3m::common::Contestant;
 using b3m::common::History;
+using b3m::common::Contestant;
+using b3m::common::TournamentRating;
 
 
-void sortTeamsByResults(std::vector< Contestant >&, const History&);
+using ContestantsWithRating_t = std::map< Contestant::Name_t, TournamentRating >;
 
-
-class MatchMaker
-{
-public:
-	virtual ~MatchMaker() = default;
-
-	virtual TournamentRound createRound(const Tournament&) = 0;
-};
-
-
-//SwissMatchMaker ----------------------------------------------------------------------------------
-class SwissMatchMaker : public MatchMaker
-{
-public:
-	TournamentRound createRound(const Tournament&) override;
-};
+ContestantsWithRating_t calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
 
 
 

@@ -16,7 +16,6 @@ import :MatchMaker;
 
 //std
 import <algorithm>;
-import <vector>;
 import <functional>;
 import <ranges>;
 import <map>;
@@ -40,7 +39,6 @@ using b3m::common::Match;
 using ContestantRef_t = std::reference_wrapper< const Contestant >;
 
 
-void sortTeamsByResults(std::vector< Contestant >&, const History&);
 std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< Contestant >&, const History&);
 std::vector< ContestantRef_t > getPreviousOpponents(const Contestant&, const std::vector< Contestant >&, const History&);
 
@@ -144,57 +142,6 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	}
 
 	return o_round;
-}
-
-void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history)
-{
-	std::map< Contestant::Name_t, TournamentRating > contestantsRating;
-	std::map< Contestant::Name_t, int > contestantsNumberOfRounds;
-
-	//TODO to std algorithm use?
-	for(const auto& round : i_history)
-	{
-		for(const auto& match : *round)
-		{
-			const auto matchResult = match.getResults();
-			if(matchResult)
-			{
-				for (const auto& [contestantName, results] : matchResult.value())
-				{
-					contestantsRating[contestantName] += results;
-					contestantsNumberOfRounds[contestantName]++;
-				}
-			}
-		}
-	}
-	for(const auto& contestant : i_contestantsToSort)
-	{
-		const auto contestantName = contestant.getName();
-		if(!contestantsRating.contains(contestantName))
-		{
-			contestantsRating[contestantName];
-		}
-	}
-
-	const auto numberOfRounds = i_history.size();
-
-	std::ranges::sort(i_contestantsToSort,
-		[&contestantsRating = std::as_const(contestantsRating),
-		 &contestantsNumberOfRounds = std::as_const(contestantsNumberOfRounds)]
-		(const Contestant& i_a, const Contestant& i_b){
-			const auto& aName =  i_a.getName();
-			const auto& bName =  i_b.getName();
-			const auto& numberOfRoundsA = contestantsNumberOfRounds.contains(aName) ? contestantsNumberOfRounds.at(aName) : 0;
-			const auto& numberOfRoundsB = contestantsNumberOfRounds.contains(bName) ? contestantsNumberOfRounds.at(bName) : 0;
-			const auto resultA = (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(aName).getCombinedRating())/numberOfRoundsA : 0.0);
-			const auto resultB = (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(bName).getCombinedRating())/numberOfRoundsB : 0.0);
-			if(resultA == resultB)
-			{
-				return (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(aName).m_numOfVotes)/numberOfRoundsA : 0.0)
-					> (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(bName).m_numOfVotes)/numberOfRoundsB : 0.0);
-			}
-			return resultA > resultB;
-	});
 }
 
 std::vector< ContestantRef_t> reorderContestantsByPriority(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)

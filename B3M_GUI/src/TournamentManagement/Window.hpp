@@ -37,6 +37,7 @@ namespace b3m::gui
 
 using b3m::database::TournamentProxy;
 using b3m::common::Contestant;
+using b3m::common::TournamentRound;
 
 
 class TournamentManagementWindow : public QWidget
@@ -48,8 +49,10 @@ public:
 	~TournamentManagementWindow() override;
 
 	bool startTournament(const std::vector< Contestant >&);
+
 signals:
-	void newRoundStarted();
+	void newRoundStarted(TournamentRound&);
+
 private:
 	Ui::TournamentManagementWindow* m_ui;
 

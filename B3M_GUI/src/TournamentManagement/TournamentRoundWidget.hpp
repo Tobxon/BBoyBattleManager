@@ -39,8 +39,11 @@ class TournamentRoundWidget : public QWidget
 public:
 	TournamentRoundWidget(TournamentRound&, QWidget* = nullptr);
 	~TournamentRoundWidget();
+
 signals:
 	void roundFinished();
+//	void newRound(TournamentRound&);
+
 private:
 	bool isFinished();
 

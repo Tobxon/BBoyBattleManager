@@ -43,6 +43,8 @@ b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainW
 	connect(m_ui->upRightButton, &QPushButton::clicked, [this](){
 		m_presentationManagementWindow->show();
 	});
+
+	connect(m_tournamentManagementWindow, &TournamentManagementWindow::newRoundStarted, m_presentationManagementWindow, &PresentationManagementWindow::addSlideFor);
 }
 
 b3m::gui::MainWindow::~MainWindow()

@@ -20,6 +20,7 @@
 
 //b3m
 #include <SlideSelector.hpp>
+import b3m.common;
 
 //ey2023
 #include <StartupSlideSelector.hpp>
@@ -36,6 +37,8 @@ namespace b3m::gui
 
 
 using b3m::gui::presentation::SlideSelector;
+using b3m::common::TournamentRound;
+using b3m::common::Team;
 
 
 class PresentationManagementWindow : public QWidget
@@ -46,6 +49,9 @@ public:
 	explicit PresentationManagementWindow(QWidget* = nullptr);
 	virtual ~PresentationManagementWindow();
 
+public slots:
+	void addSlideFor(TournamentRound&);
+
 signals:
 	void slidesVisible(bool);
 
@@ -55,13 +61,15 @@ private:
 	QWidget* m_presentationWindow{ new QWidget };
 	qsizetype m_presentationWindowScreeIndex{ 1%(QGuiApplication::screens().size()) }; //use second screen on start
 
-	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector,
-									  new b3m::gui::ey2023::RankingSlideSelector,
-									  new b3m::gui::ey2023::MatchSlideSelector };
+	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector
+									, new b3m::gui::ey2023::RankingSlideSelector
+	};
 	SlideSelector* m_curSlide{ nullptr };
 
 	void initializeScreen();
 	void setNewSlide(QWidget*);
+
+	void initializeSlide(SlideSelector&);
 };
 
 

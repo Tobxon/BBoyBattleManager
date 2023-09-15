@@ -20,6 +20,7 @@
 
 //b3m
 #include <SlideSelector.hpp>
+import b3m.common;
 
 
 namespace Ui{ class SlideTemplate; }
@@ -34,18 +35,20 @@ namespace b3m::gui::ey2023
 
 
 using b3m::gui::presentation::SlideSelector;
+using b3m::common::TournamentRound;
 
 
 class MatchSlide : public QWidget
 {
 public:
-	explicit MatchSlide(QWidget* = nullptr);
+	explicit MatchSlide(TournamentRound&, QWidget* = nullptr);
 	~MatchSlide();
 
 private:
 	Ui::SlideTemplate* m_ui;
 
 	QList< QLabel* > m_teams;
+	TournamentRound* m_round;
 
 //	void arrangeMatches();
 };
@@ -56,10 +59,10 @@ class MatchSlideSelector : public SlideSelector
 Q_OBJECT;
 
 public:
-	explicit MatchSlideSelector(QWidget* = nullptr);
+	explicit MatchSlideSelector(TournamentRound&, QWidget* = nullptr);
 
 private:
-	MatchSlide* m_slide{ new MatchSlide };
+	MatchSlide* m_slide{ nullptr };
 
 private slots:
 	QWidget* getSlide() override{ return m_slide; }

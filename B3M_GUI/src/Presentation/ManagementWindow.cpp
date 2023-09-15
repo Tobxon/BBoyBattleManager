@@ -18,6 +18,12 @@ import <ranges>;
 
 
 //--------------------------------------------------------------------------------------------------
+//------ Declarations                                                                         ------
+//--------------------------------------------------------------------------------------------------
+using b3m::gui::ey2023::MatchSlideSelector;
+
+
+//--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
@@ -39,6 +45,7 @@ b3m::gui::PresentationManagementWindow::PresentationManagementWindow(QWidget* i_
 		emit slidesVisible(false);
 	});
 
+	//switching monitors
 	connect(m_ui->upLeftButton, &QPushButton::clicked, [this](){
 		const auto numOfScreens = QGuiApplication::screens().size();
 		m_presentationWindowScreeIndex = (m_presentationWindowScreeIndex == 0) ? numOfScreens-1 : --m_presentationWindowScreeIndex%(numOfScreens);
@@ -50,19 +57,9 @@ b3m::gui::PresentationManagementWindow::PresentationManagementWindow(QWidget* i_
 	});
 
 	//add slide selectors
-	for(auto* const curSlide : std::views::reverse(m_slides))
+	for(auto* const curSlide : m_slides)
 	{
-		m_ui->verticalLayout->insertWidget(1, curSlide);
-		connect(curSlide, &b3m::gui::presentation::SlideSelector::newSlide, this, &PresentationManagementWindow::setNewSlide);
-		connect(curSlide, &b3m::gui::presentation::SlideSelector::newSlide, [this, curSlide](){
-			std::ranges::for_each(m_slides, [curSlide](auto* const slide){
-				if(slide){
-					if(slide != curSlide){ slide->setEnabled(true); }
-					else{ slide->setEnabled(false); }
-				}});
-			m_curSlide = curSlide;
-		});
-		connect(this, &PresentationManagementWindow::slidesVisible, curSlide, &b3m::gui::presentation::SlideSelector::setEnabled);
+		initializeSlide(*curSlide);
 	}
 }
 
@@ -74,6 +71,13 @@ b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 	});
 	if(m_presentationWindow){ delete m_presentationWindow; }
 	delete m_ui;
+}
+
+void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round)
+{
+	auto* const slide = new MatchSlideSelector(i_round, this);
+	m_slides.push_back(slide);
+	initializeSlide(*slide);
 }
 
 void b3m::gui::PresentationManagementWindow::initializeScreen()
@@ -90,6 +94,26 @@ void b3m::gui::PresentationManagementWindow::setNewSlide(QWidget* i_newSlide)
 	if(m_presentationWindow){ m_presentationWindow->hide(); }
 	m_presentationWindow = i_newSlide;
 	initializeScreen();
+}
+
+void b3m::gui::PresentationManagementWindow::initializeSlide(SlideSelector& i_slide)
+{
+	m_ui->verticalLayout->insertWidget(1+m_slides.indexOf(&i_slide), &i_slide);
+	connect(&i_slide, &b3m::gui::presentation::SlideSelector::newSlide, this, &PresentationManagementWindow::setNewSlide);
+	connect(&i_slide, &b3m::gui::presentation::SlideSelector::newSlide, [this, &i_slide](){
+		std::ranges::for_each(m_slides, [&i_slide](auto* const slide){
+			if(slide){
+				if(slide != &i_slide){ slide->setEnabled(true); }
+				else{ slide->setEnabled(false); }
+			}});
+		m_curSlide = &i_slide;
+	});
+	connect(this, &PresentationManagementWindow::slidesVisible, &i_slide, &b3m::gui::presentation::SlideSelector::setEnabled);
+	//TODO set somewhere general if slides are currently visible
+	if(m_ui->upLeftButton->isEnabled())
+	{
+		i_slide.setEnabled(true);
+	}
 }
 
 

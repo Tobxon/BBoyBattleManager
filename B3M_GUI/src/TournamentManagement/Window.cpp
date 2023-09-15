@@ -35,7 +35,7 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_pare
 
 		auto roundWidget = new TournamentRoundWidget(*round);
 		m_ui->roundTabs->addTab(roundWidget, QString("Round ") + QString::number(++roundIndex));
-		emit newRoundStarted();
+		emit newRoundStarted(*round);
 
 		m_roundFinished = connect(roundWidget, &TournamentRoundWidget::roundFinished, [this](){ return m_ui->upLeftButton->setEnabled(true); });
 	});

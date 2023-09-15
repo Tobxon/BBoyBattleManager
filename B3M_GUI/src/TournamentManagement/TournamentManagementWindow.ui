@@ -37,7 +37,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="upRightMidButton">
+       <property name="text">
+        <string>Reset Round</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="upRightButton">
        <property name="text">
         <string>Reset Tournament</string>
        </property>

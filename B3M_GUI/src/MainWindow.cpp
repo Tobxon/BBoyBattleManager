@@ -45,6 +45,7 @@ b3m::gui::MainWindow::MainWindow(ParticipantsDepot& i_participantStorage, QMainW
 	});
 
 	connect(m_tournamentManagementWindow, &TournamentManagementWindow::newRoundStarted, m_presentationManagementWindow, &PresentationManagementWindow::addSlideFor);
+	connect(m_tournamentManagementWindow, &TournamentManagementWindow::rankingUpdated, m_presentationManagementWindow, &PresentationManagementWindow::newRanking);
 }
 
 b3m::gui::MainWindow::~MainWindow()

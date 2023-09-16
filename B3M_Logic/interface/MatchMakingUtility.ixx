@@ -41,11 +41,17 @@ export namespace b3m::logic
 using b3m::common::History;
 using b3m::common::Contestant;
 using b3m::common::TournamentRating;
+using b3m::common::ContestantsRanking;
+using b3m::common::SortedContestantsRanking;
 
 
-using ContestantsWithRating_t = std::map< Contestant::Name_t, TournamentRating >;
+//using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
 
-ContestantsWithRating_t calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
+
+ContestantsRanking calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
+SortedContestantsRanking getSortedRanking(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
+SortedContestantsRanking getSortedRanking(ContestantsRanking);
+void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history);
 
 
 

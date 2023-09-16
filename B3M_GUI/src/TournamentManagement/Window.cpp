@@ -37,7 +37,12 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_pare
 		m_ui->roundTabs->addTab(roundWidget, QString("Round ") + QString::number(++roundIndex));
 		emit newRoundStarted(*round, *roundWidget); //TODO to boost::signals
 
-		m_roundFinished = connect(roundWidget, &TournamentRoundWidget::roundFinished, [this](){ return m_ui->upLeftButton->setEnabled(true); });
+		m_roundFinished = connect(roundWidget, &TournamentRoundWidget::roundFinished, [this](){
+//			const auto& tournament = *m_tournament.getTournament();
+			const auto contestantsRanking = m_tournament.getCurrentContestantsRanking();
+			emit rankingUpdated(contestantsRanking);
+			return m_ui->upLeftButton->setEnabled(true);
+		});
 	});
 }
 

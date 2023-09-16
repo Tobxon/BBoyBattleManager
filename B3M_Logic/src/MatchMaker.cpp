@@ -144,6 +144,15 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	return o_round;
 }
 
+auto b3m::logic::SwissMatchMaker::getCurrentRanking(const Tournament& i_tournament) const -> SortedContestantsRanking
+{
+	auto contestants = i_tournament.getContestants();
+	const auto& history = i_tournament.getHistory();
+
+	return getSortedRanking(history, contestants);
+}
+
+
 std::vector< ContestantRef_t> reorderContestantsByPriority(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)
 {
 	std::vector< ContestantRef_t> o_reorderedContestants;

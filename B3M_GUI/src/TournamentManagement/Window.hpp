@@ -40,6 +40,7 @@ namespace b3m::gui
 using b3m::database::TournamentProxy;
 using b3m::common::Contestant;
 using b3m::common::TournamentRound;
+using b3m::common::SortedContestantsRanking;
 
 
 class TournamentManagementWindow : public QWidget
@@ -55,6 +56,7 @@ public:
 signals:
 	void newRoundStarted(TournamentRound&, TournamentRoundWidget&); //TODO to boost::signals - signal results changed from Match itself
 	void roundScoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
+	void rankingUpdated(const SortedContestantsRanking&);
 
 private:
 	Ui::TournamentManagementWindow* m_ui;

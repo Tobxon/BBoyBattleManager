@@ -25,6 +25,7 @@ export module b3m.common:Tournament;
 //std
 import <vector>;
 import <memory>;
+import <functional>;
 
 //b3m
 import :types;
@@ -42,6 +43,8 @@ using b3m::common::Match;
 using TournamentRound = std::vector<Match>;
 using b3m::common::Contestant;
 using History = std::vector< TournamentRound* >;
+using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating >;
+using SortedContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
 
 
 class Tournament

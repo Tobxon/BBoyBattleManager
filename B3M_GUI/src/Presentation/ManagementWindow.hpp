@@ -40,7 +40,8 @@ namespace b3m::gui
 
 using b3m::gui::presentation::SlideSelector;
 using b3m::common::TournamentRound;
-using b3m::common::Team;
+using b3m::common::Contestant;
+using b3m::common::SortedContestantsRanking;
 
 
 class PresentationManagementWindow : public QWidget
@@ -53,6 +54,7 @@ public:
 
 public slots:
 	void addSlideFor(TournamentRound&, const TournamentRoundWidget&); //TODO to boost::signals - signal results changed from Match itself
+	void newRanking(const SortedContestantsRanking&);
 
 signals:
 	void slidesVisible(bool);
@@ -63,14 +65,13 @@ private:
 	QWidget* m_presentationWindow{ new QWidget };
 	qsizetype m_presentationWindowScreeIndex{ 1%(QGuiApplication::screens().size()) }; //use second screen on start
 
-	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector
-									, new b3m::gui::ey2023::RankingSlideSelector
-	};
+	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector };
 	SlideSelector* m_curSlide{ nullptr };
 
 	void initializeScreen();
 	void setNewSlide(QWidget*);
 
+	void addNewSlide(SlideSelector&);
 	void initializeSlide(SlideSelector&);
 };
 

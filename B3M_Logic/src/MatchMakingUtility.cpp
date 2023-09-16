@@ -29,14 +29,16 @@ import b3m.common;
 using b3m::common::Contestant;
 using b3m::common::History;
 using b3m::common::TournamentRating;
+using b3m::common::ContestantsRanking;
+using b3m::common::SortedContestantsRanking;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
-auto b3m::logic::calculateRating(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> ContestantsWithRating_t
+auto b3m::logic::calculateRating(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> ContestantsRanking
 {
-	std::map< Contestant::Name_t, TournamentRating > contestantsRating;
+	ContestantsRanking contestantsRating;
 
 	for(const auto& round : i_history)
 	{
@@ -65,6 +67,40 @@ auto b3m::logic::calculateRating(const History& i_history, const std::optional<s
 	}
 
 	return contestantsRating;
+}
+
+auto b3m::logic::getSortedRanking(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> SortedContestantsRanking
+{
+	const auto& unsortedContestantRanking = calculateRating(i_history, i_contestants);
+
+	return getSortedRanking(unsortedContestantRanking);
+}
+
+auto b3m::logic::getSortedRanking(ContestantsRanking i_contestantsWithRating) -> SortedContestantsRanking
+{
+	SortedContestantsRanking sortedContestantsWithRating(
+		//TODO copied from line 138
+		[&contestantsRating = std::as_const(i_contestantsWithRating)]
+		(const Contestant::Name_t& i_lhs, const Contestant::Name_t& i_rhs){
+			const auto& numberOfRoundsA = contestantsRating.at(i_lhs).getNumberOfRatings();
+			const auto& numberOfRoundsB = contestantsRating.at(i_rhs).getNumberOfRatings();
+
+			const auto resultA = (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(i_lhs).getCombinedRating())/numberOfRoundsA : 0.0);
+			const auto resultB = (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(i_rhs).getCombinedRating())/numberOfRoundsB : 0.0);
+			if(resultA == resultB)
+			{
+				return (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(i_lhs).m_numOfVotes)/numberOfRoundsA : 0.0)
+					   > (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(i_rhs).m_numOfVotes)/numberOfRoundsB : 0.0);
+			}
+			return resultA > resultB;
+	});
+
+	for(const auto& [contestant, rating] : i_contestantsWithRating)
+	{
+		sortedContestantsWithRating.insert_or_assign(contestant, rating);
+	}
+
+	return sortedContestantsWithRating;
 }
 
 void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history)

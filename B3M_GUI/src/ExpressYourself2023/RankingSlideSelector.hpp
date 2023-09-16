@@ -20,6 +20,7 @@
 
 //b3m
 #include <SlideSelector.hpp>
+import b3m.common;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -34,12 +35,13 @@ namespace b3m::gui::ey2023
 
 
 using b3m::gui::presentation::SlideSelector;
+using b3m::common::SortedContestantsRanking;
 
 
 class RankingSlide : public QWidget
 {
 public:
-	explicit RankingSlide(QWidget* = nullptr);
+	explicit RankingSlide(const SortedContestantsRanking&, QWidget* = nullptr);
 	~RankingSlide();
 
 //public slots:
@@ -59,10 +61,10 @@ class RankingSlideSelector : public SlideSelector
 	Q_OBJECT;
 
 public:
-	explicit RankingSlideSelector(QWidget* = nullptr);
+	explicit RankingSlideSelector(const SortedContestantsRanking&, QWidget* = nullptr);
 
 private:
-	RankingSlide* m_slide{ new RankingSlide };
+	RankingSlide* m_slide{ nullptr };
 
 private slots:
 	QWidget* getSlide() override{ return m_slide; }

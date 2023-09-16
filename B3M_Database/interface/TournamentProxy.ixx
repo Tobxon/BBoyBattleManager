@@ -45,6 +45,7 @@ using b3m::common::Team;
 using b3m::common::Match;
 using b3m::common::Contestant;
 using b3m::common::TournamentRound;
+using b3m::common::SortedContestantsRanking;
 using b3m::logic::MatchMaker;
 using b3m::logic::SwissMatchMaker;
 
@@ -56,6 +57,7 @@ public:
 	TournamentRound* startRound();
 
 	[[nodiscard]] Tournament* getTournament() const{ return m_curTournament.get(); }
+	[[nodiscard]] SortedContestantsRanking getCurrentContestantsRanking() const;
 
 private:
 	std::unique_ptr< Tournament > m_curTournament{ nullptr };

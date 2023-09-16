@@ -24,6 +24,7 @@ import <ranges>;
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
 using b3m::gui::ey2023::MatchSlideSelector;
+using b3m::gui::ey2023::RankingSlideSelector;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -79,9 +80,14 @@ b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round, const TournamentRoundWidget& i_roundWidget) //TODO to boost::signals - signal results changed from Match itself
 {
 	auto* const slide = new MatchSlideSelector(i_round, this);
-	m_slides.push_back(slide);
-	initializeSlide(*slide);
+	addNewSlide(*slide);
 	connect(&i_roundWidget, &TournamentRoundWidget::scoresUpdated, slide, &MatchSlideSelector::updateScores); //TODO to boost::signals - signal results changed from Match itself
+}
+
+void b3m::gui::PresentationManagementWindow::newRanking(const SortedContestantsRanking& i_contestantsRanking)
+{
+	auto* const slide = new RankingSlideSelector(i_contestantsRanking, this);
+	addNewSlide(*slide);
 }
 
 void b3m::gui::PresentationManagementWindow::initializeScreen()
@@ -98,6 +104,12 @@ void b3m::gui::PresentationManagementWindow::setNewSlide(QWidget* i_newSlide)
 	if(m_presentationWindow){ m_presentationWindow->hide(); }
 	m_presentationWindow = i_newSlide;
 	initializeScreen();
+}
+
+void b3m::gui::PresentationManagementWindow::addNewSlide(SlideSelector& i_slide)
+{
+	m_slides.push_back(&i_slide);
+	initializeSlide(i_slide);
 }
 
 void b3m::gui::PresentationManagementWindow::initializeSlide(SlideSelector& i_slide)

@@ -16,6 +16,9 @@ import <ranges>;
 #include <QGuiApplication>
 #include <QPixmap>
 
+//b3m
+#include <TournamentRoundWidget.hpp> //TODO to boost::signals - signal results changed from Match itself
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
@@ -73,11 +76,12 @@ b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 	delete m_ui;
 }
 
-void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round)
+void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round, const TournamentRoundWidget& i_roundWidget) //TODO to boost::signals - signal results changed from Match itself
 {
 	auto* const slide = new MatchSlideSelector(i_round, this);
 	m_slides.push_back(slide);
 	initializeSlide(*slide);
+	connect(&i_roundWidget, &TournamentRoundWidget::scoresUpdated, slide, &MatchSlideSelector::updateScores); //TODO to boost::signals - signal results changed from Match itself
 }
 
 void b3m::gui::PresentationManagementWindow::initializeScreen()

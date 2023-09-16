@@ -22,6 +22,8 @@
 #include <SlideSelector.hpp>
 import b3m.common;
 
+namespace b3m::gui{ class TournamentRoundWidget; } //TODO to boost::signals - signal results changed from Match itself
+
 //ey2023
 #include <StartupSlideSelector.hpp>
 #include <RankingSlideSelector.hpp>
@@ -50,7 +52,7 @@ public:
 	virtual ~PresentationManagementWindow();
 
 public slots:
-	void addSlideFor(TournamentRound&);
+	void addSlideFor(TournamentRound&, const TournamentRoundWidget&); //TODO to boost::signals - signal results changed from Match itself
 
 signals:
 	void slidesVisible(bool);

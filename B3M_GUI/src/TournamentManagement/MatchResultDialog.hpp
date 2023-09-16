@@ -39,8 +39,10 @@ class MatchResultDialog : public QWidget
 public:
 	MatchResultDialog(Match&, QWidget* = nullptr);
 	~MatchResultDialog();
+
 signals:
-	void mightBeFinished(); //TODO remove
+	void scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
+
 private:
 	Ui::MatchResultDialog* m_ui;
 

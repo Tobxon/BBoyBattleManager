@@ -28,12 +28,30 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 	connect(m_ui->resultTeamA, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
 		const auto teamName = m_ui->teamA->text().toStdString();
 		m_match->setResult(teamName, i_newVal);
-		emit mightBeFinished(); //TODO to signal from match object itself
+		emit scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
 	});
 	connect(m_ui->resultTeamB, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
 		const auto teamName = m_ui->teamB->text().toStdString();
 		m_match->setResult(teamName, i_newVal);
-		emit mightBeFinished(); //TODO to signal from match object itself
+		emit scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
+	});
+
+	static constexpr auto numOfJudges = 3.0;
+	m_ui->resultTeamA->setMaximum(numOfJudges);
+	m_ui->resultTeamB->setMaximum(numOfJudges);
+	connect(m_ui->resultTeamA, &QDoubleSpinBox::valueChanged, [this](double i_newOtherVal){
+		const auto thisNewVal = numOfJudges-i_newOtherVal;
+		if(m_ui->resultTeamB->value() != thisNewVal)
+		{
+			m_ui->resultTeamB->setValue(thisNewVal);
+		}
+	});
+	connect(m_ui->resultTeamB, &QDoubleSpinBox::valueChanged, [this](double i_newOtherVal){
+		const auto thisNewVal = numOfJudges-i_newOtherVal;
+		if(m_ui->resultTeamA->value() != thisNewVal)
+		{
+			m_ui->resultTeamA->setValue(thisNewVal);
+		}
 	});
 }
 

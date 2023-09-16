@@ -41,8 +41,8 @@ public:
 	~TournamentRoundWidget();
 
 signals:
-	void roundFinished();
-//	void newRound(TournamentRound&);
+	void roundFinished(); //TODO to boost::signals - signal results changed from Match itself
+	void scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
 
 private:
 	bool isFinished();

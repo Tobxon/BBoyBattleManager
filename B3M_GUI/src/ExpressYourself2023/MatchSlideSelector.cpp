@@ -8,6 +8,9 @@
 #include "MatchSlideSelector.hpp"
 #include "ui_SlideTemplate.h"
 
+//std
+import <cmath>;
+
 //Qt
 #include <QFontDatabase>
 
@@ -75,13 +78,10 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, QWidget* i_pa
 			teamAResult->setObjectName(teamAName + "_result");
 			QRect teamAResultSpace{ outerFrameWidth+logoWidth+innerFrameWidth, curTop, widthOfNumbers, heightOfRow };
 			teamAResult->setGeometry(teamAResultSpace);
-			teamAResult->setText("1");
+			teamAResult->setText("");
 			teamAResult->setAlignment(Qt::AlignCenter);
 			teamAResult->setFont(freshmarker); //TODO
 			teamAResult->setAttribute(Qt::WA_TranslucentBackground, true);
-			m_contestantsScores[teamAName] = teamAResult;
-			palette.setColor(teamAResult->foregroundRole(), Qt::white);
-			teamAResult->setPalette(palette);
 			m_contestantsScores[teamAName] = teamAResult;
 
 			auto *const teamANameLabel = new QLabel(this);
@@ -120,12 +120,10 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, QWidget* i_pa
 			teamBResult->setObjectName(teamBName + "_result");
 			const QRect teamBResultSpace{ teamBLabelSpace.right(), curTop, widthOfNumbers, heightOfRow };
 			teamBResult->setGeometry(teamBResultSpace);
-			teamBResult->setText("2");
+			teamBResult->setText("");
 			teamBResult->setAlignment(Qt::AlignCenter);
 			teamBResult->setFont(freshmarker); //TODO
 			teamBResult->setAttribute(Qt::WA_TranslucentBackground, true);
-			palette.setColor(teamBResult->foregroundRole(), Qt::white);
-			teamBResult->setPalette(palette);
 			m_contestantsScores[teamBName] = teamBResult;
 
 			curTop = teamBLabelSpace.bottom();
@@ -138,11 +136,40 @@ b3m::gui::ey2023::MatchSlide::~MatchSlide()
 	delete m_ui;
 }
 
+void b3m::gui::ey2023::MatchSlide::updateScores()
+{
+	for(const auto match : *m_round)
+	{
+		const auto& [teamAName, teamBName] = match.getContestantNames();
+		const auto& results = match.getResults();
+		if(results)
+		{
+			const auto& resultsVal = results.value();
+			if(m_contestantsScores.contains(teamAName) && resultsVal.contains(teamAName))
+			{
+				const auto newText = QString::number(std::lround(resultsVal.at(teamAName).second));
+				m_contestantsScores[teamAName]->setText(newText);
+			}
+			if(m_contestantsScores.contains(teamBName) && resultsVal.contains(teamBName))
+			{
+				const auto newText = QString::number(std::lround(resultsVal.at(teamBName).second));
+				m_contestantsScores[teamBName]->setText(newText);
+			}
+		}
+	}
+}
+
 
 //MatchSlideSelector -------------------------------------------------------------------------------
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, QWidget* i_parent)
 		: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round))
 {
+}
+
+//TODO to boost::signals - signal results changed from Match itself
+void b3m::gui::ey2023::MatchSlideSelector::updateScores()
+{
+	m_slide->updateScores();
 }
 
 

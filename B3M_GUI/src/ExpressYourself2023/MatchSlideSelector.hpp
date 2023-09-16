@@ -41,9 +41,14 @@ using b3m::common::Contestant;
 
 class MatchSlide : public QWidget
 {
+	Q_OBJECT;
+
 public:
 	explicit MatchSlide(TournamentRound&, QWidget* = nullptr);
 	~MatchSlide();
+
+public slots:
+	void updateScores();
 
 private:
 	Ui::SlideTemplate* m_ui;
@@ -58,10 +63,13 @@ private:
 
 class MatchSlideSelector : public SlideSelector
 {
-Q_OBJECT;
+	Q_OBJECT; //TODO to boost::signals - signal results changed from Match itself
 
 public:
 	explicit MatchSlideSelector(TournamentRound&, QWidget* = nullptr);
+
+public slots:
+	void updateScores(); //TODO to boost::signals - signal results changed from Match itself
 
 private:
 	MatchSlide* m_slide{ nullptr };

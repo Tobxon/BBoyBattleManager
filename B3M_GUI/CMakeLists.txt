@@ -35,6 +35,7 @@ target_sources(EY2023_Presentation
 target_include_directories(EY2023_Presentation
 	PUBLIC
 		"src/ExpressYourself2023"
+		"src/TournamentManagement" //TODO to boost::signals - signal results changed from Match itself
 )
 target_link_libraries(EY2023_Presentation
 	PUBLIC

@@ -162,17 +162,9 @@ std::vector< ContestantRef_t> reorderContestantsByPriority(const std::vector< Co
 	{
 		if(round)
 		{
-			//TODO assumes that only one contestant didn't match last round - with the current from contestant perspective it can happen that multiple don't find a match
-			if(const auto contestantWaited = std::ranges::find_if_not(i_contestantsToReorder,
-				[&round](const Contestant& i_contestant){
-					return std::ranges::find_if(*round, [&i_contestant](const Match& i_match){
-						const auto& opponents = i_match.getContestantNames();
-						return opponents.first == i_contestant.getName() ||
-							opponents.second == i_contestant.getName();
-					}) != round->cend();
-			}); contestantWaited != i_contestantsToReorder.cend())
+			if(const auto freeTicketContestant = b3m::logic::getFreeTicketContestant(*round, i_contestantsToReorder); freeTicketContestant)
 			{
-				o_reorderedContestants.emplace_back(*contestantWaited);
+				o_reorderedContestants.emplace_back(freeTicketContestant.value());
 			}
 		}
 	}

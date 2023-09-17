@@ -135,7 +135,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 		crewLabel->setFont(freshmarker);
 		crewLabel->setAttribute( Qt::WA_TranslucentBackground, true );
 
-		const int wins = rating.m_numOfWins;
+		const int& wins = rating.m_numOfWins;
 		auto* const winsLabel = new QLabel(this);
 		winsLabel->setObjectName(teamName + "_wins");
 		const QRect winsLabelSpace{ winsHeaderSpace.left(), lastRowBottom, winsHeaderSpace.width(), heightOfRow };
@@ -145,7 +145,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 		winsLabel->setFont(freshmarker);
 		winsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
 
-		const auto votes = std::lround(rating.m_numOfVotes);
+		const auto& votes = rating.m_numOfVotes;
 		auto* const pointsLabel = new QLabel(this);
 		pointsLabel->setObjectName(teamName + "_points");
 		const QRect pointsLabelSpace{ pointsHeaderSpace.left(), lastRowBottom, pointsHeaderSpace.width(), heightOfRow };

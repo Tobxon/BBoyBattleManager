@@ -153,6 +153,9 @@ auto b3m::common::TournamentRating::operator+=(const Match::FullResult& i_newRes
 		case Match::Result::tie:
 			++m_numOfTies;
 			break;
+		case Match::Result::bye:
+			++m_numOfByes;
+			break;
 	}
 
 	m_numOfVotes += i_newResult.second;

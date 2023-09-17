@@ -105,7 +105,8 @@ public:
 	enum class Result{
 		win,
 		loose,
-		tie
+		tie,
+		bye
 	};
 	using FullResult = std::pair< Result, Judgement >;
 
@@ -122,12 +123,15 @@ private:
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };
 };
 
+constexpr Match::FullResult freeTicket{ Match::Result::bye, 1.5 };
+
 
 struct TournamentRating
 {
 	int m_numOfWins{ 0 };
 	int m_numOfTies{ 0 };
 	int m_numOfLooses{ 0 };
+	int m_numOfByes{ 0 };
 
 	Judgement m_numOfVotes{ 0 };
 

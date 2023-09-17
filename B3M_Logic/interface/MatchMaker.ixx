@@ -44,8 +44,6 @@ using b3m::common::ContestantsRanking;
 using b3m::common::SortedContestantsRanking;
 
 
-void sortTeamsByResults(std::vector< Contestant >&, const History&);
-
 
 class MatchMaker
 {

@@ -38,6 +38,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="upRightMidButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Reset Round</string>
        </property>
@@ -45,6 +48,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="upRightButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Reset Tournament</string>
        </property>

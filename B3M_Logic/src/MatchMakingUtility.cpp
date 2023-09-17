@@ -32,11 +32,35 @@ using b3m::common::History;
 using b3m::common::TournamentRating;
 using b3m::common::ContestantsRanking;
 using b3m::common::SortedContestantsRanking;
+using b3m::common::Match;
+using b3m::common::Judgement;
+using b3m::common::TournamentRound;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
+bool compareRatingsOrder(const TournamentRating& i_lhs, const TournamentRating& i_rhs)
+{
+	if(const auto lhsCombRating = i_lhs.getCombinedRating(), rhsCombRating = i_rhs.getCombinedRating();
+		lhsCombRating != rhsCombRating)
+	{
+		return lhsCombRating > rhsCombRating;
+	}
+	else if(const auto lhsByes = i_lhs.m_numOfByes, rhsByes = i_rhs.m_numOfByes;
+			lhsByes != rhsByes)
+	{
+		return lhsByes > rhsByes;
+	}
+	else if(const auto lhsVotes = i_lhs.m_numOfVotes, rhsVotes = i_rhs.m_numOfVotes;
+			lhsVotes != rhsVotes)
+	{
+		return lhsVotes > rhsVotes;
+	}
+
+	return false;
+}
+
 auto b3m::logic::calculateRating(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> ContestantsRanking
 {
 	ContestantsRanking contestantsRating;
@@ -48,10 +72,17 @@ auto b3m::logic::calculateRating(const History& i_history, const std::optional<s
 			const auto matchResult = match.getResults();
 			if(matchResult)
 			{
-				for (const auto& [contestantName, results] : matchResult.value())
+				for (const auto& [contestantName, result] : matchResult.value())
 				{
-					contestantsRating[contestantName] += results;
+					contestantsRating[contestantName] += result;
 				}
+			}
+		}
+		if(i_contestants)
+		{
+			if(const auto freeTicketContestant = getFreeTicketContestant(*round, i_contestants.value()))
+			{
+				contestantsRating[freeTicketContestant.value().getName()] += b3m::common::freeTicket;
 			}
 		}
 	}
@@ -85,21 +116,9 @@ auto b3m::logic::getSortedRanking(const std::vector< Contestant >& i_contestants
 		return std::make_pair<>(contestantName, i_contestantsWithRating.contains(contestantName) ? i_contestantsWithRating.at(contestantName) : TournamentRating{});
 	});
 
-	std::ranges::sort(sortedContestantsWithRating,[] //TODO merge with lamba on line 137
+	std::ranges::sort(sortedContestantsWithRating,[] //TODO merge with lamdba on line 137
 		(const SortedContestantsRanking::value_type& i_lhs, const SortedContestantsRanking::value_type& i_rhs){
-			const auto& lhsRating = i_lhs.second;
-			const auto& rhsRating = i_rhs.second;
-			const auto& numberOfRoundsA = lhsRating.getNumberOfRatings();
-			const auto& numberOfRoundsB = rhsRating.getNumberOfRatings();
-
-			const auto resultA = (numberOfRoundsA > 0 ? static_cast<double>(lhsRating.getCombinedRating())/numberOfRoundsA : 0.0);
-			const auto resultB = (numberOfRoundsB > 0 ? static_cast<double>(rhsRating.getCombinedRating())/numberOfRoundsB : 0.0);
-			if(resultA == resultB)
-			{
-				return (numberOfRoundsA > 0 ? static_cast<double>(lhsRating.m_numOfVotes)/numberOfRoundsA : 0.0)
-					   > (numberOfRoundsB > 0 ? static_cast<double>(rhsRating.m_numOfVotes)/numberOfRoundsB : 0.0);
-			}
-			return resultA > resultB;
+			return compareRatingsOrder(i_lhs.second, i_rhs.second);
 	});
 
 	return sortedContestantsWithRating;
@@ -138,29 +157,28 @@ void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSo
 	const auto numberOfRounds = i_history.size();
 
 	std::ranges::sort(i_contestantsToSort,
-		[&contestantsRating = std::as_const(contestantsRating),
-		 &contestantsNumberOfRounds = std::as_const(contestantsNumberOfRounds)]
-		(const Contestant& i_a, const Contestant& i_b){
-			const auto& aName =  i_a.getName();
-			const auto& bName =  i_b.getName();
-			const auto& numberOfRoundsAOld = contestantsNumberOfRounds.contains(aName) ? contestantsNumberOfRounds.at(aName) : 0;
-			const auto& numberOfRoundsA = contestantsRating.at(aName).getNumberOfRatings();
-			const auto& numberOfRoundsBOld = contestantsNumberOfRounds.contains(bName) ? contestantsNumberOfRounds.at(bName) : 0;
-			const auto& numberOfRoundsB = contestantsRating.at(bName).getNumberOfRatings();
-
-			//TODO DEBUG
-			assert(numberOfRoundsA==numberOfRoundsAOld);
-			assert(numberOfRoundsB==numberOfRoundsBOld);
-
-			const auto resultA = (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(aName).getCombinedRating())/numberOfRoundsA : 0.0);
-			const auto resultB = (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(bName).getCombinedRating())/numberOfRoundsB : 0.0);
-			if(resultA == resultB)
-			{
-				return (numberOfRoundsA > 0 ? static_cast<double>(contestantsRating.at(aName).m_numOfVotes)/numberOfRoundsA : 0.0)
-					> (numberOfRoundsB > 0 ? static_cast<double>(contestantsRating.at(bName).m_numOfVotes)/numberOfRoundsB : 0.0);
-			}
-			return resultA > resultB;
+		[&contestantsRating = std::as_const(contestantsRating)]
+		(const Contestant& i_lhs, const Contestant& i_rhs){
+			return compareRatingsOrder(contestantsRating.at(i_lhs.getName()), contestantsRating.at(i_rhs.getName()));
 	});
+}
+
+auto b3m::logic::getFreeTicketContestant(const TournamentRound& i_round, const std::vector< Contestant >& i_contestants) -> std::optional< Contestant >
+{
+	//TODO assumes that only one contestant didn't match last round - with the current from contestant perspective it can happen that multiple don't find a match
+	if(const auto contestantWaited = std::ranges::find_if_not(i_contestants,
+		[&i_round](const Contestant& i_contestant){
+			return std::ranges::find_if(i_round, [&i_contestant](const Match& i_match){
+				const auto& opponents = i_match.getContestantNames();
+				return opponents.first == i_contestant.getName() ||
+					opponents.second == i_contestant.getName();
+			}) != i_round.cend();
+		}); contestantWaited != i_contestants.cend())
+	{
+		return *contestantWaited;
+	}
+
+	return std::nullopt;
 }
 
 

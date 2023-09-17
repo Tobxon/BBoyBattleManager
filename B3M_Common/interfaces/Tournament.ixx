@@ -44,7 +44,8 @@ using TournamentRound = std::vector<Match>;
 using b3m::common::Contestant;
 using History = std::vector< TournamentRound* >;
 using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating >;
-using SortedContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
+//using SortedContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
+using SortedContestantsRanking = std::vector<std::pair< Contestant::Name_t, TournamentRating >>;
 
 
 class Tournament

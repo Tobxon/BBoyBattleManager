@@ -10,6 +10,7 @@
 
 //std
 import <utility>;
+import <cmath>;
 
 //Qt
 #include <QPaintEvent>
@@ -50,20 +51,6 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 	QString familyBerlinSans = QFontDatabase::applicationFontFamilies(idBerlinSans).at(0);
 	QFont berlinSans(familyBerlinSans);
 
-	QList<std::pair< QString, std::pair<int, int> >> teamNames{
-		{"DDC Talents",{3, 8}},
-		{"GingerBreads Crew",{3, 8}},
-		{"Style Insiders",{2, 7}},
-		{"Nasty Attack",{2, 6}},
-		{"Offbeat",{2, 6}},
-		{"Dream ASF",{1, 4}},
-		{"Crazy Monkeys",{1, 4}},
-		{"Fresh Family",{1, 3}},
-		{"Speed Breaker",{1, 3}},
-		{"The Wild Foxes",{1, 3}},
-		{"Die BBoys",{1, 2}},
-		{"Fire Girls",{0, 0}}};
-
 	const int logoWidth = 150;
 	const int outerFrameWidth = widthScreen/8-logoWidth;
 	const int innerFrameWidth = widthScreen/16;
@@ -74,7 +61,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 	const int outerFrameHeight = heightScreen/8;
 	const int innerFrameHeight = 0;
 
-	const int numOfRowsWithHeaders = teamNames.size()+1;
+	const int numOfRowsWithHeaders = i_contestantsWithRating.size()+1;
 	int heightOfRow = (heightScreen-2*outerFrameHeight-2*innerFrameHeight)/(numOfRowsWithHeaders);
 
 	const auto fontSize = heightOfRow > 200 ? 100 : heightOfRow/2;
@@ -127,7 +114,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 
 	int lastRowBottom = crewHeaderSpace.bottom();
 	int ranking = 1;
-	for(const auto& [teamName, results] : teamNames)
+	for(const auto& [teamName, rating] : i_contestantsWithRating)
 	{
 		auto* const teamRankingLabel = new QLabel(this);
 		teamRankingLabel->setObjectName(teamName + "_ranking");
@@ -143,25 +130,27 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 		crewLabel->setObjectName(teamName);
 		const QRect crewLabelSpace{ crewHeaderSpace.left(), lastRowBottom, crewHeaderSpace.width(), heightOfRow };
 		crewLabel->setGeometry(crewLabelSpace);
-		crewLabel->setText(teamName);
+		crewLabel->setText(QString::fromStdString(teamName));
 		crewLabel->setAlignment(Qt::AlignCenter);
 		crewLabel->setFont(freshmarker);
 		crewLabel->setAttribute( Qt::WA_TranslucentBackground, true );
 
+		const int wins = rating.m_numOfWins;
 		auto* const winsLabel = new QLabel(this);
 		winsLabel->setObjectName(teamName + "_wins");
 		const QRect winsLabelSpace{ winsHeaderSpace.left(), lastRowBottom, winsHeaderSpace.width(), heightOfRow };
 		winsLabel->setGeometry(winsLabelSpace);
-		winsLabel->setText(QString::number(results.first));
+		winsLabel->setText(QString::number(wins));
 		winsLabel->setAlignment(Qt::AlignCenter);
 		winsLabel->setFont(freshmarker);
 		winsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
 
+		const auto votes = std::lround(rating.m_numOfVotes);
 		auto* const pointsLabel = new QLabel(this);
 		pointsLabel->setObjectName(teamName + "_points");
 		const QRect pointsLabelSpace{ pointsHeaderSpace.left(), lastRowBottom, pointsHeaderSpace.width(), heightOfRow };
 		pointsLabel->setGeometry(pointsLabelSpace);
-		pointsLabel->setText(QString::number(results.second));
+		pointsLabel->setText(QString::number(votes));
 		pointsLabel->setAlignment(Qt::AlignCenter);
 		pointsLabel->setFont(freshmarker);
 		pointsLabel->setAttribute( Qt::WA_TranslucentBackground, true );

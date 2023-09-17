@@ -165,7 +165,7 @@ auto b3m::common::TournamentRating::operator+=(const Match::FullResult& i_newRes
 
 int b3m::common::TournamentRating::getCombinedRating() const
 {
-	return m_numOfWins*3 + m_numOfTies*1 + m_numOfLooses*(-2);
+	return m_numOfWins*3 + m_numOfTies*1;
 }
 
 int b3m::common::TournamentRating::getNumberOfRatings() const

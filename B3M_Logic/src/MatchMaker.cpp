@@ -153,18 +153,18 @@ auto b3m::logic::SwissMatchMaker::getCurrentRanking(const Tournament& i_tourname
 }
 
 
-std::vector< ContestantRef_t> reorderContestantsByPriority(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)
+std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)
 {
-	std::vector< ContestantRef_t> o_reorderedContestants;
+	std::vector< ContestantRef_t > o_reorderedContestants;
 	o_reorderedContestants.reserve(i_contestantsToReorder.size());
 
 	for(const auto& round : std::views::reverse(i_history))
 	{
 		if(round)
 		{
-			if(const auto freeTicketContestant = b3m::logic::getFreeTicketContestant(*round, i_contestantsToReorder); freeTicketContestant)
+			if(const auto freeTicketContestantIt = b3m::logic::getFreeTicketContestantIterator(*round, i_contestantsToReorder); freeTicketContestantIt != i_contestantsToReorder.cend())
 			{
-				o_reorderedContestants.emplace_back(freeTicketContestant.value());
+				o_reorderedContestants.emplace_back(*freeTicketContestantIt);
 			}
 		}
 	}

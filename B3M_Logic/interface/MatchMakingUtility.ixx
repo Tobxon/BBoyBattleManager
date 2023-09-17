@@ -54,7 +54,7 @@ SortedContestantsRanking getSortedRanking(const History&, const std::vector< Con
 SortedContestantsRanking getSortedRanking(const std::vector< Contestant >&, const ContestantsRanking&);
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history);
 
-std::optional< Contestant > getFreeTicketContestant(const TournamentRound&, const std::vector< Contestant >&);
+std::vector< Contestant >::const_iterator getFreeTicketContestantIterator(const TournamentRound&, const std::vector< Contestant >&); //TODO return iterator?
 
 
 

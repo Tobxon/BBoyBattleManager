@@ -49,8 +49,8 @@ using b3m::common::SortedContestantsRanking;
 
 
 ContestantsRanking calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
-SortedContestantsRanking getSortedRanking(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
-SortedContestantsRanking getSortedRanking(ContestantsRanking);
+SortedContestantsRanking getSortedRanking(const History&, const std::vector< Contestant >&);
+SortedContestantsRanking getSortedRanking(const std::vector< Contestant >&, const ContestantsRanking&);
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history);
 
 

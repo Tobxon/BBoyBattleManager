@@ -16,6 +16,7 @@ import :MatchMakingUtility;
 
 //std
 import <algorithm>;
+import <iterator>;
 import <cassert>; //TODO DEBUG
 
 //b3m
@@ -69,18 +70,22 @@ auto b3m::logic::calculateRating(const History& i_history, const std::optional<s
 	return contestantsRating;
 }
 
-auto b3m::logic::getSortedRanking(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> SortedContestantsRanking
+auto b3m::logic::getSortedRanking(const History& i_history, const std::vector< Contestant >& i_contestants) -> SortedContestantsRanking
 {
 	const auto& unsortedContestantRanking = calculateRating(i_history, i_contestants);
 
-	return getSortedRanking(unsortedContestantRanking);
+	return getSortedRanking(i_contestants, unsortedContestantRanking);
 }
 
-auto b3m::logic::getSortedRanking(ContestantsRanking i_contestantsWithRating) -> SortedContestantsRanking
+auto b3m::logic::getSortedRanking(const std::vector< Contestant >& i_contestants, const ContestantsRanking& i_contestantsWithRating) -> SortedContestantsRanking
 {
-	SortedContestantsRanking sortedContestantsWithRating{i_contestantsWithRating.cbegin(), i_contestantsWithRating.cend()};
+	SortedContestantsRanking sortedContestantsWithRating;
+	std::ranges::transform(i_contestants, std::back_inserter(sortedContestantsWithRating), [i_contestantsWithRating](const Contestant& i_contestant){
+		const auto& contestantName = i_contestant.getName();
+		return std::make_pair<>(contestantName, i_contestantsWithRating.contains(contestantName) ? i_contestantsWithRating.at(contestantName) : TournamentRating{});
+	});
 
-	std::ranges::sort(sortedContestantsWithRating,[]
+	std::ranges::sort(sortedContestantsWithRating,[] //TODO merge with lamba on line 137
 		(const SortedContestantsRanking::value_type& i_lhs, const SortedContestantsRanking::value_type& i_rhs){
 			const auto& lhsRating = i_lhs.second;
 			const auto& rhsRating = i_rhs.second;

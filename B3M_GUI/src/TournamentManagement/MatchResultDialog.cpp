@@ -25,15 +25,18 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 	m_ui->teamA->setText(teamAName);
 	m_ui->teamB->setText(teamBName);
 
-	connect(m_ui->resultTeamA, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
-		const auto teamName = m_ui->teamA->text().toStdString();
-		m_match->setResult(teamName, i_newVal);
-		emit scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
-	});
-	connect(m_ui->resultTeamB, &QDoubleSpinBox::valueChanged, [this](double i_newVal){
-		const auto teamName = m_ui->teamB->text().toStdString();
-		m_match->setResult(teamName, i_newVal);
-		emit scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
+	connect(m_ui->resultsLock, &QCheckBox::stateChanged, [this](int checkState){
+		const auto resultLhsTeam = m_ui->resultTeamA->value();
+		const auto resultRhsTeam = m_ui->resultTeamB->value();
+
+		if(checkState == Qt::Unchecked || (resultLhsTeam == 0 && resultRhsTeam == 0))
+		{
+			m_match->clearResult();
+		} else {
+			m_match->setResult(m_ui->teamA->text().toStdString(), resultLhsTeam);
+			m_match->setResult(m_ui->teamB->text().toStdString(), resultRhsTeam);
+		}
+		emit scoresUpdated();
 	});
 
 	static constexpr auto numOfJudges = 3.0;

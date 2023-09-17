@@ -111,6 +111,13 @@ bool b3m::common::Match::setResult(const Contestant::Name_t& i_contestantName, c
 	return true;
 }
 
+bool b3m::common::Match::clearResult()
+{
+	m_result = {std::nullopt, std::nullopt};
+
+	return true;
+}
+
 bool b3m::common::Match::isFinished() const
 {
 	return m_result.first.has_value() && m_result.second.has_value();

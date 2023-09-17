@@ -116,6 +116,7 @@ public:
 	[[nodiscard]] std::optional< std::map< Contestant::Name_t, FullResult >> getResults() const;
 
 	bool setResult(const Contestant::Name_t&, const Judgement&);
+	bool clearResult();
 private:
 	std::pair< Contestant, Contestant > m_contestants; //TODO to reference_wrapper< Contestant > oder Contestant::Name_t
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };

@@ -25,6 +25,7 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 	m_ui->teamA->setText(teamAName);
 	m_ui->teamB->setText(teamBName);
 
+	//TODO to boost::signals - signal results changed from Match itself
 	connect(m_ui->resultsLock, &QCheckBox::stateChanged, [this](int checkState){
 		const auto resultLhsTeam = m_ui->resultTeamA->value();
 		const auto resultRhsTeam = m_ui->resultTeamB->value();
@@ -38,6 +39,11 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, QWidget* i_parent
 		}
 		emit scoresUpdated();
 	});
+	connect(m_ui->resultsLock, &QCheckBox::stateChanged, [this](bool locked){
+		m_ui->resultTeamA->setEnabled(!locked);
+		m_ui->resultTeamB->setEnabled(!locked);
+	});
+	//TODO to boost::signals - signal results changed from Match itself
 
 	static constexpr auto numOfJudges = 3.0;
 	m_ui->resultTeamA->setMaximum(numOfJudges);

@@ -145,7 +145,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 		winsLabel->setFont(freshmarker);
 		winsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
 
-		const auto& votes = rating.m_numOfVotes;
+		const auto& votes = rating.m_numOfVotes - (rating.m_numOfByes * b3m::common::freeTicket.second);
 		auto* const pointsLabel = new QLabel(this);
 		pointsLabel->setObjectName(teamName + "_points");
 		const QRect pointsLabelSpace{ pointsHeaderSpace.left(), lastRowBottom, pointsHeaderSpace.width(), heightOfRow };
@@ -154,6 +154,28 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 		pointsLabel->setAlignment(Qt::AlignCenter);
 		pointsLabel->setFont(freshmarker);
 		pointsLabel->setAttribute( Qt::WA_TranslucentBackground, true );
+
+		if(rating.m_numOfByes > 0)
+		{
+			const int iconLength = fontSize*3/2;
+			const int iconUp = lastRowBottom+(heightOfRow-iconLength)/2;
+
+			auto* const freeTicketWinsIcon = new QLabel(this);
+			freeTicketWinsIcon->setObjectName(teamName + "_wins_bye");
+			const QRect freeTicketIconWinsSpace{ winsLabelSpace.left() + winsLabelSpace.width()*2/3, iconUp, iconLength, iconLength };
+			freeTicketWinsIcon->setGeometry(freeTicketIconWinsSpace);
+			freeTicketWinsIcon->setPixmap(QPixmap{"D:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"});
+			freeTicketWinsIcon->setAttribute( Qt::WA_TranslucentBackground, true );
+			freeTicketWinsIcon->setScaledContents(true);
+
+			auto* const freeTicketPointsIcon = new QLabel(this);
+			freeTicketPointsIcon->setObjectName(teamName + "_points_bye");
+			const QRect freeTicketIconPointsSpace{ pointsLabelSpace.left() + pointsLabelSpace.width()*2/3, iconUp, iconLength, iconLength };
+			freeTicketPointsIcon->setGeometry(freeTicketIconPointsSpace);
+			freeTicketPointsIcon->setPixmap(QPixmap{"D:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"});
+			freeTicketPointsIcon->setAttribute( Qt::WA_TranslucentBackground, true );
+			freeTicketPointsIcon->setScaledContents(true);
+		}
 
 		lastRowBottom = crewLabelSpace.bottom();
 	}

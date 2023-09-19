@@ -48,6 +48,8 @@ using b3m::common::ParticipantAttributes;
 class ParticipantsDepot
 {
 public:
+	ParticipantsDepot(const std::map< ParticipantName, ParticipantAttributes>& = {});
+
 	bool newParticipant(const ParticipantName&, const ParticipantAttributes& = {});
 	bool updateParticipantsAttributes(const ParticipantName&, const Attribute&, const std::string&);
 

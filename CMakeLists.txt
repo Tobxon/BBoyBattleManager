@@ -6,6 +6,11 @@ project(BBoyBattleManager VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 
 
+if (CMAKE_BUILD_TYPE MATCHES Debug)
+	add_definitions(-DDEBUG)
+endif()
+
+
 #to get a more clean solution overview (e.g. CMakePredefinedTargets as a folder)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

@@ -22,6 +22,11 @@ import <string>;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
+b3m::database::ParticipantsDepot::ParticipantsDepot(const std::map< ParticipantName, ParticipantAttributes>& i_participants)
+	: m_participants(i_participants)
+{
+}
+
 bool b3m::database::ParticipantsDepot::newParticipant(const ParticipantName& i_participant,
 													  const ParticipantAttributes& i_attributes)
 {

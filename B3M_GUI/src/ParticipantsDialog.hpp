@@ -32,6 +32,9 @@ namespace b3m::gui
 
 
 
+using b3m::database::ParticipantsDepot;
+
+
 //ParticipantsDialog -------------------------------------------------------------------------------
 class ParticipantsDialog : public QWidget
 {
@@ -44,6 +47,11 @@ public:
 private:
 	Ui::ParticipantsDialog* m_ui;
 	QAbstractTableModel* m_model;
+
+#if DEBUG
+	void test1();
+	ParticipantsDepot* m_participantsStorage{ nullptr };
+#endif //DEBUG
 };
 
 

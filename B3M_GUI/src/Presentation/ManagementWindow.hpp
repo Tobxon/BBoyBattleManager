@@ -65,7 +65,14 @@ private:
 	QWidget* m_presentationWindow{ new QWidget };
 	qsizetype m_presentationWindowScreeIndex{ 1%(QGuiApplication::screens().size()) }; //use second screen on start
 
-	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector };
+	TournamentRound test{
+		{Contestant("The Fresh Family"),Contestant("Me And Your Mother")}
+	};
+
+	QList< SlideSelector* > m_slides{ new b3m::gui::ey2023::StartupSlideSelector
+//									, new b3m::gui::ey2023::RankingSlideSelector
+									, new b3m::gui::ey2023::MatchSlideSelector(test)
+	};
 	SlideSelector* m_curSlide{ nullptr };
 
 	void initializeScreen();

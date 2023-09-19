@@ -10,6 +10,7 @@
 //std
 import <algorithm>;
 import <ranges>;
+import <iostream>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -21,16 +22,40 @@ b3m::gui::ParticipantsDialog::ParticipantsDialog(
 	b3m::database::ParticipantsDepot& i_participantsStorage, QWidget* const i_parent)
 	: QWidget(i_parent), m_ui(new Ui::ParticipantsDialog())
 	, m_model(new ParticipantsDialogModel(i_participantsStorage, this))
+#if DEBUG
+	, m_participantsStorage(&i_participantsStorage)
+#endif //DEBUG
 {
 	m_ui->setupUi(this);
 
 	m_ui->participantsTable->setModel(m_model);
+
+#if DEBUG
+	auto testButton1 = new QPushButton(this);
+	m_ui->horizontalLayout->addWidget(testButton1);
+	testButton1->setText(QCoreApplication::translate("ParticipantsDialog", "Test1", nullptr));
+	QMetaObject::connectSlotsByName(this);
+	const auto connectionTes1 = connect(testButton1, &QPushButton::clicked, this, &ParticipantsDialog::test1);
+#endif //DEBUG
 }
 
 b3m::gui::ParticipantsDialog::~ParticipantsDialog()
 {
 	delete m_ui;
 }
+
+#if DEBUG
+void b3m::gui::ParticipantsDialog::test1()
+{
+//	//GOON implement filling m_participantsStorage with test case 1 data
+//	const std::string team{b3m::common::teamAttribute};
+//	const std::string rating{b3m::common::ratingAttribute};
+////	const std::pair< std::string, std::string > team{b3m::common::teamAttribute, "z"};
+////	const std::pair< std::string, std::string > rating{b3m::common::ratingAttribute, 9};
+//	const b3m::database::ParticipantAttributes attributes{{{team, "z"}, {rating, 9}}};
+//	m_participantsStorage->newParticipant("guy", attributes);
+}
+#endif //DEBUG
 
 
 //ParticipantsDialogModel --------------------------------------------------------------------------

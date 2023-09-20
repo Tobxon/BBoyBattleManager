@@ -50,6 +50,9 @@ public:
 public slots:
 	void updateScores();
 
+protected:
+	void paintEvent(QPaintEvent*);
+
 private:
 	Ui::SlideTemplate* m_ui;
 

@@ -16,6 +16,7 @@ import <cmath>;
 #include <QPaintEvent>
 #include <QPainter>
 #include <QFontDatabase>
+#include <QStyleOption>
 
 //b3m
 import b3m.common;
@@ -186,9 +187,14 @@ b3m::gui::ey2023::RankingSlide::~RankingSlide()
 	delete m_ui;
 }
 
-void b3m::gui::ey2023::RankingSlide::arrangeTeamNames()
+void b3m::gui::ey2023::RankingSlide::paintEvent(QPaintEvent* event)
 {
+	QStyleOption opt;
+	opt.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 
+	QWidget::paintEvent(event);
 }
 
 

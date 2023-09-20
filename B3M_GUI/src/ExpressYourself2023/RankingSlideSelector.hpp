@@ -44,15 +44,13 @@ public:
 	explicit RankingSlide(const SortedContestantsRanking&, QWidget* = nullptr);
 	~RankingSlide();
 
-//public slots:
-//	void updateTeamName();
+protected:
+	void paintEvent(QPaintEvent*);
 
 private:
 	Ui::SlideTemplate* m_ui;
 
 	QList< QLabel* > m_teamNames;
-
-	void arrangeTeamNames();
 };
 
 

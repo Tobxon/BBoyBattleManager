@@ -13,6 +13,8 @@ import <cmath>;
 
 //Qt
 #include <QFontDatabase>
+#include <QStyleOption>
+#include <QPainter>
 
 //b3m
 import b3m.common;
@@ -157,6 +159,16 @@ void b3m::gui::ey2023::MatchSlide::updateScores()
 			}
 		}
 	}
+}
+
+void b3m::gui::ey2023::MatchSlide::paintEvent(QPaintEvent* event)
+{
+	QStyleOption opt;
+	opt.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+
+	QWidget::paintEvent(event);
 }
 
 

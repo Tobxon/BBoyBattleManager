@@ -24,6 +24,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="upLeftMidButton">
+       <property name="text">
+        <string>Finals</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="upButtonRowMid">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

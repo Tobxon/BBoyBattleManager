@@ -53,5 +53,10 @@ auto b3m::database::TournamentProxy::getCurrentContestantsRanking() const -> Sor
 	return m_matchMaker->getCurrentRanking(*m_curTournament);
 }
 
+void b3m::database::TournamentProxy::setMatchMaker(std::unique_ptr< MatchMaker > i_newMatchMaker)
+{
+	m_matchMaker = std::move(i_newMatchMaker);
+}
+
 
 //END OF FILE --------------------------------------------------------------------------------------

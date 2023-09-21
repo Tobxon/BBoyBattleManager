@@ -52,7 +52,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	auto contestants = i_tournament.getContestants();
 	if(contestants.size() < 2)
 	{
-		return { i_tournament }; //TODO properly report error
+		return TournamentRound(i_tournament); //TODO properly report error
 	}
 
 	const auto& history = i_tournament.getHistory();
@@ -153,6 +153,40 @@ auto b3m::logic::SwissMatchMaker::getCurrentRanking(const Tournament& i_tourname
 }
 
 
+b3m::logic::KOMatchMaker::KOMatchMaker(unsigned int i_numOfContestants)
+	: m_currentNumOfContestants(i_numOfContestants)
+{
+}
+
+auto b3m::logic::KOMatchMaker::createRound(const Tournament& i_tournament) -> TournamentRound
+{
+	auto contestants = i_tournament.getContestants();
+	if(contestants.size() < 2)
+	{
+		return TournamentRound(i_tournament); //TODO properly report error
+	}
+
+	const auto& history = i_tournament.getHistory();
+
+	if(!history.empty())
+	{
+		sortTeamsByResults(contestants, history);
+	}
+
+	const auto curRoundContestants = contestants | std::views::take(m_currentNumOfContestants);
+
+	TournamentRound o_round{ i_tournament };
+	for(auto itFirst = curRoundContestants.begin(), itLast = curRoundContestants.end()-1; itFirst < itLast; ++itFirst, --itLast)
+	{
+		o_round.emplace_back(*itFirst, *itLast);
+	}
+
+	m_currentNumOfContestants /= 2;
+	return o_round;
+}
+
+
+//local functions ----------------------------------------------------------------------------------
 std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< Contestant >& i_contestantsToReorder, const History& i_history)
 {
 	std::vector< ContestantRef_t > o_reorderedContestants;

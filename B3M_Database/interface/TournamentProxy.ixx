@@ -59,6 +59,8 @@ public:
 	[[nodiscard]] Tournament* getTournament() const{ return m_curTournament.get(); }
 	[[nodiscard]] SortedContestantsRanking getCurrentContestantsRanking() const;
 
+	void setMatchMaker(std::unique_ptr< MatchMaker >);
+
 private:
 	std::unique_ptr< Tournament > m_curTournament{ nullptr };
 

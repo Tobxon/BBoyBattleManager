@@ -7,8 +7,15 @@
 //--------------------------------------------------------------------------------------------------
 #include "Window.hpp"
 
+//std
+#include <memory>
+
+//Qt
+#include <QMessageBox>
+
 //b3m
 #include "TournamentRoundWidget.hpp"
+import b3m.logic;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -43,6 +50,22 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_pare
 			emit rankingUpdated(contestantsRanking);
 			return m_ui->upLeftButton->setEnabled(true);
 		});
+	});
+	connect(m_ui->upLeftMidButton, &QPushButton::toggled, [this](bool i_checked){
+		if(i_checked)
+		{
+			if (QMessageBox::Yes == QMessageBox::question(this, "Start Top4 Confirmation", "Start the Top4 now?", QMessageBox::Yes | QMessageBox::No))
+			{
+				m_tournament.setMatchMaker(std::make_unique<b3m::logic::KOMatchMaker>());
+			}
+		}
+		else
+		{
+			if (QMessageBox::Yes == QMessageBox::question(this, "Leave Top4 Confirmation", "Go back to Preselection?", QMessageBox::Yes | QMessageBox::No))
+			{
+				m_tournament.setMatchMaker(std::make_unique<b3m::logic::SwissMatchMaker>());
+			}
+		}
 	});
 }
 

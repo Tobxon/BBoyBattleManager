@@ -74,7 +74,7 @@ private:
 class TournamentRound : public std::vector<Match> //TODO to composition
 {
 public:
-	TournamentRound(const Tournament&);
+	explicit TournamentRound(const Tournament&);
 
 	[[nodiscard]] std::vector< Contestant > getContestants() const;
 	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?

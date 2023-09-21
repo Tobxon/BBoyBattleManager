@@ -41,8 +41,6 @@ export namespace b3m::database
 
 
 using b3m::common::Tournament;
-using b3m::common::Team;
-using b3m::common::Match;
 using b3m::common::Contestant;
 using b3m::common::TournamentRound;
 using b3m::common::SortedContestantsRanking;

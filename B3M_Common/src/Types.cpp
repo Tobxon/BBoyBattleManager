@@ -125,10 +125,18 @@ bool b3m::common::Match::changeContestant(const Contestant::Name_t& i_oldContest
 	{
 		if(isFirst)
 		{
+			if(m_contestants.second == i_newContestant)
+			{
+				return false;
+			}
 			m_contestants.first = i_newContestant;
 		}
 		else if(isSecond)
 		{
+			if(m_contestants.first == i_newContestant)
+			{
+				return false;
+			}
 			m_contestants.second = i_newContestant;
 		}
 

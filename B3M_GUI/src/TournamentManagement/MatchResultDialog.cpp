@@ -40,14 +40,20 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, const std::vector
 
 	//TODO to boost::signals - signal results changed from Match itself
 	connect(m_ui->TeamLhsSelector, &QComboBox::currentIndexChanged, [this](int newIndex){
-		const auto& oldContestants = m_match->getContestantNames();
+		const auto& oldContestant = m_match->getContestantNames().first;
 		const QString& newContestantName = m_ui->TeamLhsSelector->currentText(); //TODO save?
-		m_match->changeContestant(oldContestants.first, newContestantName.toStdString());
+		if(!m_match->changeContestant(oldContestant, newContestantName.toStdString()))
+		{
+			m_ui->TeamLhsSelector->setCurrentIndex(m_ui->TeamLhsSelector->findText(QString::fromStdString(oldContestant)));
+		}
 	});
 	connect(m_ui->TeamRhsSelector, &QComboBox::currentIndexChanged, [this](){
-		const auto& oldContestants = m_match->getContestantNames();
+		const auto& oldContestant = m_match->getContestantNames().second;
 		const QString& newContestantName = m_ui->TeamRhsSelector->currentText(); //TODO save?
-		m_match->changeContestant(oldContestants.second, newContestantName.toStdString());
+		if(!m_match->changeContestant(oldContestant, newContestantName.toStdString()))
+		{
+			m_ui->TeamRhsSelector->setCurrentIndex(m_ui->TeamRhsSelector->findText(QString::fromStdString(oldContestant)));
+		}
 	});
 	//TODO to boost::signals - signal results changed from Match itself
 

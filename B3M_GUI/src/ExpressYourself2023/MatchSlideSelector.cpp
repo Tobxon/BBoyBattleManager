@@ -8,9 +8,6 @@
 #include "MatchSlideSelector.hpp"
 #include "ui_SlideTemplate.h"
 
-//std
-import <cmath>;
-
 //Qt
 #include <QFontDatabase>
 #include <QStyleOption>
@@ -154,12 +151,12 @@ void b3m::gui::ey2023::MatchSlide::updateScores()
 			const auto& resultsVal = results.value();
 			if(m_contestantsScores.contains(teamAName) && resultsVal.contains(teamAName))
 			{
-				const auto newText = QString::number(std::lround(resultsVal.at(teamAName).second));
+				const auto newText = QString::number(resultsVal.at(teamAName).second);
 				m_contestantsScores[teamAName]->setText(newText);
 			}
 			if(m_contestantsScores.contains(teamBName) && resultsVal.contains(teamBName))
 			{
-				const auto newText = QString::number(std::lround(resultsVal.at(teamBName).second));
+				const auto newText = QString::number(resultsVal.at(teamBName).second);
 				m_contestantsScores[teamBName]->setText(newText);
 			}
 		}

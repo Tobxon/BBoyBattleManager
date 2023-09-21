@@ -69,6 +69,8 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, const std::vector
 	connect(m_ui->resultsLock, &QCheckBox::stateChanged, [this](bool locked){
 		m_ui->resultTeamLhs->setEnabled(!locked);
 		m_ui->resultTeamRhs->setEnabled(!locked);
+		m_ui->TeamLhsSelector->setEnabled(!locked);
+		m_ui->TeamRhsSelector->setEnabled(!locked);
 	});
 	//TODO to boost::signals - signal results changed from Match itself
 

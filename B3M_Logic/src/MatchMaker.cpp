@@ -52,7 +52,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	auto contestants = i_tournament.getContestants();
 	if(contestants.size() < 2)
 	{
-		return {}; //TODO properly report error
+		return { i_tournament }; //TODO properly report error
 	}
 
 	const auto& history = i_tournament.getHistory();
@@ -64,7 +64,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 			return i_a.getRating() < i_b.getRating();
 		});
 
-		TournamentRound o_round;
+		TournamentRound o_round{ i_tournament };
 		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
 			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
 		{
@@ -77,7 +77,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	//sort contestants by match results (and initial rating)
 	sortTeamsByResults(contestants, history);
 
-	TournamentRound o_round;
+	TournamentRound o_round{ i_tournament };
 	//iterate over contestants - first those who have waited in rounds before and then by ranking
 	const auto contestantsInIterateOrder = reorderContestantsByPriority(contestants, history);
 	for(const auto& currentContestantRef : contestantsInIterateOrder)

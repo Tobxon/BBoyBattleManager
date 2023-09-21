@@ -27,6 +27,7 @@ import <map>;
 import <vector>;
 import <optional>;
 import <utility>;
+import <functional>;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -118,8 +119,11 @@ public:
 
 	bool setResult(const Contestant::Name_t&, const Judgement&);
 	bool clearResult();
+
+	bool changeContestant(const Contestant::Name_t& i_oldContestantName, const Contestant::Name_t& i_newContestant);
+	mutable std::function< void(const std::pair< Contestant::Name_t, Contestant::Name_t >&) > m_contestantsChangedCallback; //TODO
 private:
-	std::pair< Contestant, Contestant > m_contestants; //TODO to reference_wrapper< Contestant > oder Contestant::Name_t
+	std::pair< Contestant::Name_t, Contestant::Name_t > m_contestants; //TODO to reference_wrapper< Contestant > oder Contestant::Name_t
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };
 };
 

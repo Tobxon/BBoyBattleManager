@@ -30,6 +30,7 @@ namespace b3m::gui
 
 
 using b3m::common::Match;
+using b3m::common::Contestant;
 
 
 class MatchResultDialog : public QWidget
@@ -37,11 +38,12 @@ class MatchResultDialog : public QWidget
 	Q_OBJECT;
 
 public:
-	MatchResultDialog(Match&, QWidget* = nullptr);
+	MatchResultDialog(Match&, const std::vector <Contestant>&, QWidget* = nullptr);
 	~MatchResultDialog();
 
 signals:
-	void scoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
+	void scoresUpdated();
+	void contestantChanged();
 
 private:
 	Ui::MatchResultDialog* m_ui;

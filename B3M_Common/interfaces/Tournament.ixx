@@ -39,8 +39,10 @@ export namespace b3m::common
 
 
 
+class TournamentRound;
+
+
 using b3m::common::Match;
-using TournamentRound = std::vector<Match>;
 using b3m::common::Contestant;
 using History = std::vector< TournamentRound* >;
 using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating >;
@@ -66,6 +68,19 @@ private:
 	std::vector< Contestant > m_contestants;
 
 	std::vector<std::unique_ptr< TournamentRound >> m_rounds;
+};
+
+
+class TournamentRound : public std::vector<Match> //TODO to composition
+{
+public:
+	TournamentRound(const Tournament&);
+
+	[[nodiscard]] std::vector< Contestant > getContestants() const;
+	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?
+
+private:
+	const Tournament* m_tournament{  }; //must never be nullptr //TODO to gsl
 };
 
 

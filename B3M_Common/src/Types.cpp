@@ -83,23 +83,23 @@ bool b3m::common::Team::operator==(const Team& i_other) const
 
 //Match --------------------------------------------------------------------------------------------
 b3m::common::Match::Match(const Contestant& i_contestantA, const Contestant& i_contestantB)
-	: m_contestants{i_contestantA, i_contestantB}
+	: m_contestants(i_contestantA.getName(), i_contestantB.getName())
 {
 }
 
 auto b3m::common::Match::getContestantNames() const
 -> std::pair< Contestant::Name_t, Contestant::Name_t >
 {
-	return { m_contestants.first.getName(), m_contestants.second.getName() };
+	return { m_contestants.first, m_contestants.second };
 }
 
 bool b3m::common::Match::setResult(const Contestant::Name_t& i_contestantName, const Judgement& i_result)
 {
-	if(i_contestantName == m_contestants.first.getName())
+	if(i_contestantName == m_contestants.first)
 	{
 		m_result.first = i_result;
 	}
-	else if(i_contestantName == m_contestants.second.getName())
+	else if(i_contestantName == m_contestants.second)
 	{
 		m_result.second = i_result;
 	}
@@ -118,6 +118,28 @@ bool b3m::common::Match::clearResult()
 	return true;
 }
 
+bool b3m::common::Match::changeContestant(const Contestant::Name_t& i_oldContestantName, const Contestant::Name_t& i_newContestant)
+{
+	if(bool isFirst = (m_contestants.first == i_oldContestantName), isSecond = (m_contestants.second == i_oldContestantName);
+			isFirst || isSecond)
+	{
+		if(isFirst)
+		{
+			m_contestants.first = i_newContestant;
+		}
+		else if(isSecond)
+		{
+			m_contestants.second = i_newContestant;
+		}
+
+		if(m_contestantsChangedCallback){ m_contestantsChangedCallback(m_contestants); }
+
+		return true;
+	}
+
+	return false;
+}
+
 bool b3m::common::Match::isFinished() const
 {
 	return m_result.first.has_value() && m_result.second.has_value();
@@ -134,8 +156,8 @@ auto b3m::common::Match::getResults() const
 	const auto resultFirst = (m_result.first > m_result.second) ? Result::win : (m_result.first < m_result.second) ? Result::loose : Result::tie;
 	const auto resultSecond = (resultFirst == Result::loose) ? Result::win : (resultFirst == Result::win) ? Result::loose : Result::tie;
 	return std::map< Contestant::Name_t, FullResult >{
-		{ m_contestants.first.getName(), { resultFirst, m_result.first.value() }}
-		,{ m_contestants.second.getName(), { resultSecond, m_result.second.value() }}};
+		{ m_contestants.first, { resultFirst, m_result.first.value() }}
+		,{ m_contestants.second, { resultSecond, m_result.second.value() }}};
 }
 
 

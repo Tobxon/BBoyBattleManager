@@ -62,5 +62,15 @@ auto b3m::common::Tournament::getHistory() const -> History
 	return o_rounds;
 }
 
+b3m::common::TournamentRound::TournamentRound(const Tournament& i_tournament)
+	: m_tournament(&i_tournament)
+{
+}
+
+auto b3m::common::TournamentRound::getContestants() const -> std::vector< Contestant >
+{
+	return m_tournament->getContestants();
+}
+
 
 //END OF FILE --------------------------------------------------------------------------------------

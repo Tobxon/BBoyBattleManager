@@ -128,6 +128,11 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, QWidget* i_pa
 			teamBResult->setAttribute(Qt::WA_TranslucentBackground, true);
 			m_contestantsScores[teamBName] = teamBResult;
 
+			match.m_contestantsChangedCallback = [teamANameLabel, teamBNameLabel](const std::pair< Contestant::Name_t, Contestant::Name_t >& i_newContestants){
+				teamANameLabel->setText(QString::fromStdString(i_newContestants.first));
+				teamBNameLabel->setText(QString::fromStdString(i_newContestants.second));
+			};
+
 			curTop = teamBLabelSpace.bottom();
 		}
 	}

@@ -61,6 +61,9 @@ class SwissMatchMaker : public MatchMaker
 public:
 	TournamentRound createRound(const Tournament&) override;
 	SortedContestantsRanking getCurrentRanking(const Tournament&) const override;
+
+private:
+	unsigned int m_roundCount{ 0 };
 };
 
 
@@ -73,6 +76,8 @@ public:
 	TournamentRound createRound(const Tournament&) override;
 private:
 	unsigned int m_currentNumOfContestants{4};
+
+	bool m_thirdPlaceMatched{ false };
 };
 
 

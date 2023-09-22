@@ -59,7 +59,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 	const int crewColumnWidth = widthScreen*5/16;
 	const int winsColumnWidth = widthScreen*2/16;
 
-	const int outerFrameHeight = heightScreen/8;
+	const int outerFrameHeight = heightScreen/16;
 	const int innerFrameHeight = 0;
 
 	const int numOfRowsWithHeaders = i_contestantsWithRating.size()+1;
@@ -113,6 +113,8 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 	pointsHeader->setFont(berlinSans);
 	pointsHeader->setAttribute( Qt::WA_TranslucentBackground, true );
 
+	QPalette palette;
+
 	int lastRowBottom = crewHeaderSpace.bottom();
 	int ranking = 1;
 	for(const auto& [teamName, rating] : i_contestantsWithRating)
@@ -135,6 +137,8 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_c
 		crewLabel->setAlignment(Qt::AlignCenter);
 		crewLabel->setFont(freshmarker);
 		crewLabel->setAttribute( Qt::WA_TranslucentBackground, true );
+		palette.setColor(crewLabel->foregroundRole(), Qt::white);
+		crewLabel->setPalette(palette);
 
 		const int& wins = rating.m_numOfWins;
 		auto* const winsLabel = new QLabel(this);

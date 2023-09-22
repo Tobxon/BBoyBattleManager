@@ -15,6 +15,7 @@ import <ranges>;
 #include <QScreen>
 #include <QGuiApplication>
 #include <QPixmap>
+#include <QString>
 
 //b3m
 #include <TournamentRoundWidget.hpp> //TODO to boost::signals - signal results changed from Match itself
@@ -79,7 +80,7 @@ b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 
 void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round, const TournamentRoundWidget& i_roundWidget) //TODO to boost::signals - signal results changed from Match itself
 {
-	auto* const slide = new MatchSlideSelector(i_round, this);
+	auto* const slide = new MatchSlideSelector(i_round, QString::fromStdString(i_round.getTitle()), this);
 	addNewSlide(*slide);
 	connect(&i_roundWidget, &TournamentRoundWidget::scoresUpdated, slide, &MatchSlideSelector::updateScores); //TODO to boost::signals - signal results changed from Match itself
 }

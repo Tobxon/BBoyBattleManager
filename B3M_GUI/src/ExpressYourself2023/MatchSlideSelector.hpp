@@ -44,7 +44,7 @@ class MatchSlide : public QWidget
 	Q_OBJECT;
 
 public:
-	explicit MatchSlide(TournamentRound&, QWidget* = nullptr);
+	explicit MatchSlide(TournamentRound&, const QString& = {}, QWidget* = nullptr);
 	~MatchSlide();
 
 public slots:
@@ -69,6 +69,7 @@ class MatchSlideSelector : public SlideSelector
 	Q_OBJECT; //TODO to boost::signals - signal results changed from Match itself
 
 public:
+	explicit MatchSlideSelector(TournamentRound&, const QString& = {}, QWidget* = nullptr);
 	explicit MatchSlideSelector(TournamentRound&, QWidget* = nullptr);
 
 public slots:

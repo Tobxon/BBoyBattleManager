@@ -26,6 +26,7 @@ export module b3m.common:Tournament;
 import <vector>;
 import <memory>;
 import <functional>;
+import <string>;
 
 //b3m
 import :types;
@@ -74,13 +75,18 @@ private:
 class TournamentRound : public std::vector<Match> //TODO to composition
 {
 public:
-	explicit TournamentRound(const Tournament&);
+	explicit TournamentRound(const Tournament&, const std::string& = {});
 
 	[[nodiscard]] std::vector< Contestant > getContestants() const;
 	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?
+	[[nodiscard]] std::string getTitle() const{ return m_title; } //TODO bad practice?
+
+	void setTitle(const std::string&);
 
 private:
 	const Tournament* m_tournament{  }; //must never be nullptr //TODO to gsl
+
+	std::string m_title;
 };
 
 

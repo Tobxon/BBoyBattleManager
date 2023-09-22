@@ -57,6 +57,8 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 
 	const auto& history = i_tournament.getHistory();
 
+
+	TournamentRound o_round{ i_tournament, "Runde " + std::to_string(++m_roundCount) };
 	if(history.empty())
 	{
 		//sort contestants by initial rating
@@ -64,7 +66,6 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 			return i_a.getRating() < i_b.getRating();
 		});
 
-		TournamentRound o_round{ i_tournament };
 		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
 			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
 		{
@@ -77,7 +78,6 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	//sort contestants by match results (and initial rating)
 	sortTeamsByResults(contestants, history);
 
-	TournamentRound o_round{ i_tournament };
 	//iterate over contestants - first those who have waited in rounds before and then by ranking
 	const auto contestantsInIterateOrder = reorderContestantsByPriority(contestants, history);
 	for(const auto& currentContestantRef : contestantsInIterateOrder)
@@ -176,12 +176,38 @@ auto b3m::logic::KOMatchMaker::createRound(const Tournament& i_tournament) -> To
 	const auto curRoundContestants = contestants | std::views::take(m_currentNumOfContestants);
 
 	TournamentRound o_round{ i_tournament };
-	for(auto itFirst = curRoundContestants.begin(), itLast = curRoundContestants.end()-1; itFirst < itLast; ++itFirst, --itLast)
+	if(m_currentNumOfContestants > 2)
 	{
-		o_round.emplace_back(*itFirst, *itLast);
+		if(m_currentNumOfContestants == 4)
+		{
+			o_round.setTitle("Halbfinale");
+		}
+		else if(m_currentNumOfContestants == 8)
+		{
+			o_round.setTitle("Viertelfinale");
+		}
+
+		for(auto itFirst = curRoundContestants.begin(), itLast = curRoundContestants.end()-1; itFirst < itLast; ++itFirst, --itLast)
+		{
+			o_round.emplace_back(*itFirst, *itLast);
+		}
+		m_currentNumOfContestants /= 2;
+	}
+	else
+	{
+		if(!m_thirdPlaceMatched)
+		{
+			o_round.setTitle("Battle um den 3. Platz");
+			o_round.emplace_back(*(curRoundContestants.begin()+2), *(curRoundContestants.begin()+3));
+			m_thirdPlaceMatched = true;
+		}
+		else
+		{
+			o_round.setTitle("Finale");
+			o_round.emplace_back(*curRoundContestants.begin(), *++curRoundContestants.begin());
+		}
 	}
 
-	m_currentNumOfContestants /= 2;
 	return o_round;
 }
 

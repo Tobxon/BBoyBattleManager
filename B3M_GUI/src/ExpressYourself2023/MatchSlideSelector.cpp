@@ -33,7 +33,7 @@ static constexpr /*unsigned*/ int heightScreen = 1080;
 //--------------------------------------------------------------------------------------------------
 
 //MatchSlide ---------------------------------------------------------------------------------------
-b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, QWidget* i_parent)
+b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, const QString& i_title, QWidget* i_parent)
 	: QWidget(i_parent), m_ui(new Ui::SlideTemplate), m_round(&i_round)
 {
 	m_ui->setupUi(this);
@@ -52,23 +52,33 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, QWidget* i_pa
 		const int outerFrameWidth = widthScreen/8-logoWidth;
 		const int innerFrameWidth = 0;
 
-		const int outerFrameHeight = heightScreen/8;
-		const int innerFrameHeight = 0;
+		const int outerFrameHeight = heightScreen/16;
+		const int titleHeight = heightScreen/8;
 
 		const int numOfRowsWithHeaders = m_round->size();
-		const int heightOfRow = (heightScreen - 2*outerFrameHeight - 2*innerFrameHeight)/(numOfRowsWithHeaders);
+		const int heightOfRow = (heightScreen - 2*outerFrameHeight - titleHeight)/(numOfRowsWithHeaders);
 
-		const int widthOfDrawArea = widthScreen - 2*outerFrameWidth - 2*logoWidth - 2*innerFrameWidth;
+		const int widthOfDrawArea = widthScreen - 2*outerFrameWidth - 2*logoWidth - titleHeight;
 		const auto fontSize = widthOfDrawArea/32;
+		const auto titleFontSize = titleHeight/2;
 		const int widthOfNumbers = fontSize*2;
 		const int widthContestantNameWidth = widthOfDrawArea/2 - widthOfNumbers - widthOfNumbers/2;
+
+		berlinSans.setPointSize(titleFontSize);
+		auto *const title = new QLabel(this);
+		title->setObjectName("title");
+		const QRect titleSpace{ outerFrameWidth+logoWidth+innerFrameWidth, outerFrameHeight, widthOfDrawArea, titleHeight };
+		title->setGeometry(titleSpace);
+		title->setText(i_title);
+		title->setAlignment(Qt::AlignCenter);
+		title->setFont(berlinSans); //TODO
+		title->setAttribute(Qt::WA_TranslucentBackground, true);
 
 		freshmarker.setPointSize(fontSize);
 		berlinSans.setPointSize(fontSize);
 
 		QPalette palette;
-
-		int curTop = outerFrameHeight+innerFrameHeight;
+		int curTop = titleSpace.bottom();
 		for (const auto& match : *m_round)
 		{
 			const auto &[teamAName, teamBName] = match.getContestantNames();
@@ -175,10 +185,13 @@ void b3m::gui::ey2023::MatchSlide::paintEvent(QPaintEvent* event)
 
 
 //MatchSlideSelector -------------------------------------------------------------------------------
+b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, const QString& i_title, QWidget* i_parent)
+		: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round, i_title))
+{}
+
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, QWidget* i_parent)
-		: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round))
-{
-}
+: MatchSlideSelector(i_round, {}, i_parent)
+{}
 
 //TODO to boost::signals - signal results changed from Match itself
 void b3m::gui::ey2023::MatchSlideSelector::updateScores()

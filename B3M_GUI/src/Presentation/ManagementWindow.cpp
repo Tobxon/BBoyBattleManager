@@ -82,7 +82,6 @@ void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_roun
 {
 	auto* const slide = new MatchSlideSelector(i_round, QString::fromStdString(i_round.getTitle()), this);
 	addNewSlide(*slide);
-	connect(&i_roundWidget, &TournamentRoundWidget::scoresUpdated, slide, &MatchSlideSelector::updateScores); //TODO to boost::signals - signal results changed from Match itself
 }
 
 void b3m::gui::PresentationManagementWindow::newRanking(const SortedContestantsRanking& i_contestantsRanking)

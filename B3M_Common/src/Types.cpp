@@ -108,6 +108,7 @@ bool b3m::common::Match::setResult(const Contestant::Name_t& i_contestantName, c
 		return false;
 	}
 
+	if(m_resultsChangedCallback){ m_resultsChangedCallback(m_result); }
 	return true;
 }
 

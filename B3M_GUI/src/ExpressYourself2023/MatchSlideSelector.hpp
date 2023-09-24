@@ -47,9 +47,6 @@ public:
 	explicit MatchSlide(TournamentRound&, const QString& = {}, QWidget* = nullptr);
 	~MatchSlide();
 
-public slots:
-	void updateScores();
-
 protected:
 	void paintEvent(QPaintEvent*);
 
@@ -58,9 +55,6 @@ private:
 
 	QList< QLabel* > m_teams;
 	TournamentRound* m_round;
-	QMap< Contestant::Name_t, QLabel* > m_contestantsScores;
-
-//	void arrangeMatches();
 };
 
 
@@ -71,9 +65,6 @@ class MatchSlideSelector : public SlideSelector
 public:
 	explicit MatchSlideSelector(TournamentRound&, const QString& = {}, QWidget* = nullptr);
 	explicit MatchSlideSelector(TournamentRound&, QWidget* = nullptr);
-
-public slots:
-	void updateScores(); //TODO to boost::signals - signal results changed from Match itself
 
 private:
 	MatchSlide* m_slide{ nullptr };

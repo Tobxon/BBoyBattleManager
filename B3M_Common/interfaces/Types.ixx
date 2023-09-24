@@ -118,6 +118,7 @@ public:
 	[[nodiscard]] std::optional< std::map< Contestant::Name_t, FullResult >> getResults() const;
 
 	bool setResult(const Contestant::Name_t&, const Judgement&);
+	mutable std::function< void(const std::pair< std::optional< Judgement >, std::optional< Judgement >>&) > m_resultsChangedCallback; //TODO
 	bool clearResult();
 
 	bool changeContestant(const Contestant::Name_t& i_oldContestantName, const Contestant::Name_t& i_newContestant);

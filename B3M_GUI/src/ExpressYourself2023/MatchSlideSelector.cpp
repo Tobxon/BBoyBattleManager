@@ -8,6 +8,9 @@
 #include "MatchSlideSelector.hpp"
 #include "ui_SlideTemplate.h"
 
+//std
+import <optional>;
+
 //Qt
 #include <QFontDatabase>
 #include <QStyleOption>
@@ -22,6 +25,7 @@ import b3m.common;
 //--------------------------------------------------------------------------------------------------
 using b3m::common::TournamentRound;
 using b3m::common::Match;
+using b3m::common::Judgement;
 
 
 static constexpr /*unsigned*/ int widthScreen = 1920;
@@ -91,7 +95,6 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, const QString
 			teamAResult->setAlignment(Qt::AlignCenter);
 			teamAResult->setFont(freshmarker); //TODO
 			teamAResult->setAttribute(Qt::WA_TranslucentBackground, true);
-			m_contestantsScores[teamAName] = teamAResult;
 
 			auto *const teamANameLabel = new QLabel(this);
 			teamANameLabel->setObjectName(QString::fromStdString(teamAName));
@@ -133,8 +136,20 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, const QString
 			teamBResult->setAlignment(Qt::AlignCenter);
 			teamBResult->setFont(freshmarker); //TODO
 			teamBResult->setAttribute(Qt::WA_TranslucentBackground, true);
-			m_contestantsScores[teamBName] = teamBResult;
 
+			//TODO to proper observer registrations
+			match.m_resultsChangedCallback = [teamAResult, teamBResult](const std::pair< std::optional< Judgement >, std::optional< Judgement >>& i_newResults){
+				const auto& teamLhsNewResult = i_newResults.first;
+				const auto& teamRhsNewResult = i_newResults.second;
+				if(teamLhsNewResult)
+				{
+					teamAResult->setText(QString::number(teamLhsNewResult.value()));
+				}
+				if(teamRhsNewResult)
+				{
+					teamBResult->setText(QString::number(teamRhsNewResult.value()));
+				}
+			};
 			match.m_contestantsChangedCallback = [teamANameLabel, teamBNameLabel](const std::pair< Contestant::Name_t, Contestant::Name_t >& i_newContestants){
 				teamANameLabel->setText(QString::fromStdString(i_newContestants.first));
 				teamBNameLabel->setText(QString::fromStdString(i_newContestants.second));
@@ -148,29 +163,6 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, const QString
 b3m::gui::ey2023::MatchSlide::~MatchSlide()
 {
 	delete m_ui;
-}
-
-void b3m::gui::ey2023::MatchSlide::updateScores()
-{
-	for(const auto match : *m_round)
-	{
-		const auto& [teamAName, teamBName] = match.getContestantNames();
-		const auto& results = match.getResults();
-		if(results)
-		{
-			const auto& resultsVal = results.value();
-			if(m_contestantsScores.contains(teamAName) && resultsVal.contains(teamAName))
-			{
-				const auto newText = QString::number(resultsVal.at(teamAName).second);
-				m_contestantsScores[teamAName]->setText(newText);
-			}
-			if(m_contestantsScores.contains(teamBName) && resultsVal.contains(teamBName))
-			{
-				const auto newText = QString::number(resultsVal.at(teamBName).second);
-				m_contestantsScores[teamBName]->setText(newText);
-			}
-		}
-	}
 }
 
 void b3m::gui::ey2023::MatchSlide::paintEvent(QPaintEvent* event)
@@ -192,12 +184,6 @@ b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_roun
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, QWidget* i_parent)
 : MatchSlideSelector(i_round, {}, i_parent)
 {}
-
-//TODO to boost::signals - signal results changed from Match itself
-void b3m::gui::ey2023::MatchSlideSelector::updateScores()
-{
-	m_slide->updateScores();
-}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

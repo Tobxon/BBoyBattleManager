@@ -24,7 +24,6 @@ b3m::gui::TournamentRoundWidget::TournamentRoundWidget(TournamentRound& i_round,
 		auto matchDialog = new MatchResultDialog(match, i_round.getTournament().getContestants());
 		m_ui->matchesLayout->addWidget(matchDialog);
 		connect(matchDialog, &MatchResultDialog::scoresUpdated, [this](){ if(isFinished()) emit roundFinished();}); //TODO to boost::signals - signal results changed from Match itself
-		connect(matchDialog, &MatchResultDialog::scoresUpdated, this, &TournamentRoundWidget::scoresUpdated); //TODO to boost::signals - signal results changed from Match itself
 	}
 }
 

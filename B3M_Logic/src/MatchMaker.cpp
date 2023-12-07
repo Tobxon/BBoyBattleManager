@@ -66,7 +66,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 			return i_a.getRating() < i_b.getRating();
 		});
 
-		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
+		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::integer::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
 			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
 		{
 			o_round.emplace_back(*firstHalfIt, *secondHalfIt);

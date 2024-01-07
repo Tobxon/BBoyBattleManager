@@ -28,7 +28,6 @@ target_sources(EY2023_Presentation
 		"src/ExpressYourself2023/MatchSlideSelector.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/ExpressYourself2023/StartupSlideSelector.cpp"
-		"src/ExpressYourself2023/SlideTemplate.ui"
 		"src/ExpressYourself2023/RankingSlideSelector.cpp"
 		"src/ExpressYourself2023/MatchSlideSelector.cpp"
 )
@@ -61,18 +60,12 @@ target_sources(B3M_GUI
 		"src/Presentation/ManagementWindow.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/MainWindow.cpp"
-		"src/MainWindow.ui"
 		"src/ParticipantsDialog.cpp"
-		"src/ParticipantsDialog.ui"
 		"src/TeamsView.cpp"
 		"src/TournamentManagement/Window.cpp"
-		"src/TournamentManagement/TournamentManagementWindow.ui"
 		"src/TournamentManagement/TournamentRoundWidget.cpp"
-		"src/TournamentManagement/TournamentRoundWidget.ui"
 		"src/TournamentManagement/MatchResultDialog.cpp"
-		"src/TournamentManagement/MatchResultDialog.ui"
 		"src/Presentation/ManagementWindow.cpp"
-		"src/Presentation/PresentationManagementWindow.ui"
 )
 
 set_target_properties(B3M_GUI

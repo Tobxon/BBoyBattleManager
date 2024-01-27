@@ -17,6 +17,7 @@ target_link_libraries(B3M_Presentation
 	PUBLIC
 		Qt::Widgets
 )
+target_compile_options(B3M_Presentation PRIVATE -wd5050) #aktuell ist dies für targets, die von Qt abhängen, nötig. #TODO remove if Qt works properly with modules
 
 
 
@@ -43,6 +44,7 @@ target_link_libraries(EY2023_Presentation
 		B3M_Common
 		B3M_Logic
 )
+target_compile_options(EY2023_Presentation PRIVATE -wd5050) #aktuell ist dies für targets, die von Qt abhängen, nötig. #TODO remove if Qt works properly with modules
 
 
 
@@ -81,3 +83,4 @@ target_link_libraries(B3M_GUI
 		B3M_Database
 		EY2023_Presentation
 )
+target_compile_options(B3M_GUI PRIVATE -wd5050) #aktuell ist dies für targets, die von Qt abhängen, nötig. #TODO remove if Qt works properly with modules

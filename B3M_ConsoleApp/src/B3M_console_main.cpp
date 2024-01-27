@@ -11,9 +11,9 @@
 
 import b3m.common;
 
-#include <iostream>
-#include <string>
-#include <vector>
+import <iostream>;
+import <string>;
+import <vector>;
 
 
 //--------------------------------------------------------------------------------------------------

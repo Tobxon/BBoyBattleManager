@@ -10,14 +10,14 @@
 //--------------------------------------------------------------------------------------------------
 
 //std
-#include <memory>
-#include <array>
-#include <map>
-#include <algorithm>
-#include <vector>
+import <memory>;
+import <array>;
+import <map>;
+import <algorithm>;
+import <vector>;
 
 //Catch2 - Test Framework
-#include <catch2/catch_test_macros.hpp>
+import <catch2/catch_test_macros.hpp>;
 
 //b3m
 import b3m.database;

@@ -8,7 +8,7 @@
 #include "Window.hpp"
 
 //std
-#include <memory>
+import <memory>;
 
 //Qt
 #include <QMessageBox>

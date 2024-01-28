@@ -21,6 +21,7 @@
 //b3m
 #include <SlideSelector.hpp>
 import b3m.common;
+import b3m.gui.presentation;
 
 
 namespace Ui{ class SlideTemplate; }
@@ -44,7 +45,7 @@ class MatchSlide : public QWidget
 	Q_OBJECT;
 
 public:
-	explicit MatchSlide(TournamentRound&, const QString& = {}, QWidget* = nullptr);
+	explicit MatchSlide(TournamentRound&, const b3m::gui::presentation::SlidesStyle&, const QString& = {}, QWidget* = nullptr);
 	~MatchSlide();
 
 protected:

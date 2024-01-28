@@ -4,10 +4,14 @@ qt_standard_project_setup()
 
 qt_add_library(B3M_Presentation STATIC)
 target_sources(B3M_Presentation
+	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
+		"src/Presentation/Presentation.ixx"
+		"src/Presentation/CommonSlidesStyle.ixx"
 	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/Presentation/SlideSelector.hpp"
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/Presentation/SlideSelector.cpp"
+		"src/Presentation/CommonSlidesStyle.cpp"
 )
 target_include_directories(B3M_Presentation
 	PUBLIC
@@ -23,6 +27,9 @@ target_compile_options(B3M_Presentation PRIVATE -wd5050) #aktuell ist dies für 
 
 qt_add_library(EY2023_Presentation STATIC)
 target_sources(EY2023_Presentation
+	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
+		"src/ExpressYourself2023/EY2023.ixx"
+		"src/ExpressYourself2023/SlidesStyle.ixx"
 	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/ExpressYourself2023/StartupSlideSelector.hpp"
 		"src/ExpressYourself2023/RankingSlideSelector.hpp"
@@ -31,6 +38,7 @@ target_sources(EY2023_Presentation
 		"src/ExpressYourself2023/StartupSlideSelector.cpp"
 		"src/ExpressYourself2023/RankingSlideSelector.cpp"
 		"src/ExpressYourself2023/MatchSlideSelector.cpp"
+		"src/ExpressYourself2023/SlidesStyle.cpp"
 )
 target_include_directories(EY2023_Presentation
 	PUBLIC

@@ -17,7 +17,7 @@ import <optional>;
 #include <QPainter>
 
 //b3m
-import b3m.common;
+import b3m.gui.ey2023;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -37,20 +37,16 @@ static constexpr /*unsigned*/ int heightScreen = 1080;
 //--------------------------------------------------------------------------------------------------
 
 //MatchSlide ---------------------------------------------------------------------------------------
-b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round, const QString& i_title, QWidget* i_parent)
+b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
+	const b3m::gui::presentation::SlidesStyle& i_style, const QString& i_title, QWidget* i_parent)
 	: QWidget(i_parent), m_ui(new Ui::SlideTemplate), m_round(&i_round)
 {
 	m_ui->setupUi(this);
 
 	if(!m_round->empty())
 	{
-		//TODO import font at a central place
-		int idFreshmaker = QFontDatabase::addApplicationFont("D:/Dev/Repos/B3M_dev/EY2023/resources/freshmarker.ttf");
-		QString familyFreshmaker = QFontDatabase::applicationFontFamilies(idFreshmaker).at(0);
-		QFont freshmarker(familyFreshmaker);
-		int idBerlinSans = QFontDatabase::addApplicationFont("D:/Dev/Repos/B3M_dev/EY2023/resources/BRLNSB.ttf");
-		QString familyBerlinSans = QFontDatabase::applicationFontFamilies(idBerlinSans).at(0);
-		QFont berlinSans(familyBerlinSans);
+		QFont freshmarker = i_style.getBackgroundFont();
+		QFont berlinSans = i_style.getForegroundFont();
 
 		const int logoWidth = 150;
 		const int outerFrameWidth = widthScreen/8-logoWidth;
@@ -178,7 +174,7 @@ void b3m::gui::ey2023::MatchSlide::paintEvent(QPaintEvent* event)
 
 //MatchSlideSelector -------------------------------------------------------------------------------
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, const QString& i_title, QWidget* i_parent)
-		: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round, i_title))
+		: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round, b3m::gui::ey2023::SlidesStyle{}, i_title))
 {}
 
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, QWidget* i_parent)

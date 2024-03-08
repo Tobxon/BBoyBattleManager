@@ -153,7 +153,7 @@ auto b3m::database::ParticipantsDepot::getParticipantsAttributes(const Participa
 	return std::nullopt;
 }
 
-//TODO to use of boost
+//TODO to use of boost.signal2 
 void b3m::database::ParticipantsDepot::registerCallback(const std::function<void (const ParticipantsDepot&)>& i_callback)
 {
 	m_reportChangesSignal = i_callback;

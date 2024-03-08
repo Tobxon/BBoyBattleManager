@@ -51,7 +51,7 @@ public:
 	virtual ~MatchMaker() = default;
 
 	virtual TournamentRound createRound(const Tournament&) = 0;
-	virtual SortedContestantsRanking getCurrentRanking(const Tournament&) const = 0; //TODO let Matchmaker or an independent RankingJudge decide how contestants get ranked!
+	virtual SortedContestantsRanking getCurrentRanking(const Tournament&) const; //TODO let Matchmaker or an independent RankingJudge decide how contestants get ranked!
 };
 
 
@@ -60,7 +60,6 @@ class SwissMatchMaker : public MatchMaker
 {
 public:
 	TournamentRound createRound(const Tournament&) override;
-	SortedContestantsRanking getCurrentRanking(const Tournament&) const override;
 
 private:
 	unsigned int m_roundCount{ 0 };
@@ -68,7 +67,7 @@ private:
 
 
 //KOMatchMaker (classic K.O. Tournament) -----------------------------------------------------------
-class KOMatchMaker : public SwissMatchMaker //TODO inherit from MatchMaker
+class KOMatchMaker : public MatchMaker //TODO inherit from MatchMaker
 {
 public:
 	explicit KOMatchMaker(unsigned int = 4);

@@ -144,7 +144,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	return o_round;
 }
 
-auto b3m::logic::SwissMatchMaker::getCurrentRanking(const Tournament& i_tournament) const -> SortedContestantsRanking
+auto b3m::logic::MatchMaker::getCurrentRanking(const Tournament& i_tournament) const -> SortedContestantsRanking
 {
 	auto contestants = i_tournament.getContestants();
 	const auto& history = i_tournament.getHistory();

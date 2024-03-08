@@ -61,7 +61,7 @@ public:
 	[[nodiscard]] Name_t getName() const{ return m_name; }
 	[[nodiscard]] Rating getRating() const;
 
-	bool addMember(Participant&);
+	bool addMember(Participant&); //TODO removeMember?
 
 	bool operator==(const Team& i_other) const;
 private:
@@ -75,27 +75,27 @@ class Participant
 {
 public:
 	using Name_t = std::string;
-	using Team_t = Team*; //TODO team as pointer to the Team object?
+	using Team_t = Team; //TODO team as pointer to the Team object?
 
-	Participant(const Name_t&, const Team_t&, const Rating&);
-	explicit Participant(const Name_t&, const Team_t& = {});
+	Participant(const Name_t&, Team_t*, const Rating&);
+	explicit Participant(const Name_t&, Team_t* = nullptr);
 	Participant(const Name_t&, const Rating& = {});
 
 	[[nodiscard]] Name_t getName() const{ return m_name; }
-	[[nodiscard]] std::optional< Team::Name_t > getTeam() const;
+	[[nodiscard]] std::optional< Team::Name_t > getTeamName() const;
 	[[nodiscard]] Rating getRating() const{ return m_rating; }
 
-	bool setTeam(const Team_t&);
+	bool setTeam(Team_t&);
 //	bool setTeam(const Team::Name_t&);
 private:
 	Name_t m_name{"unknown Breaker"};
-	Team_t m_team{};
-	Rating m_rating{};
+	Team_t* m_team{};
+	Rating m_rating{}; //TODO to something that holds ratings?
 };
 
 
 //Match
-using Contestant = b3m::common::Team; //TODO contestant as template or polymorphic type?
+using Contestant = b3m::common::Team; //TODO contestant as template or polymorphic type - to allow Team and Participant Tournaments?
 using Judgement = float;
 
 

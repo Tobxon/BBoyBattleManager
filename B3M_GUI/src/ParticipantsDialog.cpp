@@ -41,21 +41,26 @@ b3m::gui::ParticipantsDialogModel::ParticipantsDialogModel(
 		{1, b3m::common::teamAttribute},{2,"city"},{3,b3m::common::ratingAttribute}})
 	, m_participantsStorage(&i_participantsStorage)
 {
+	const auto participantNames = m_participantsStorage->getParticipantNames();
 	std::size_t partIndex{0};
-	for(const auto& [participant, partAttributes] : i_participantsStorage)
+	for(const auto& participantNamesElement : participantNames)
 	{
-		const auto partQt = QString::fromStdString(participant);
+		const auto& participantsInformationOpt = m_participantsStorage->getParticipantInformation(participantNamesElement);
+		if(!participantsInformationOpt)
+		{
+			continue;
+		}
+		const auto& [participantName, participantAttributes] = participantsInformationOpt.value();
 
-		//TODO check if participant is created already and get index from this
+		const auto participantNameQt = QString::fromStdString(participantName);
 
-		const auto nameAttrIndex =
-				std::ranges::find_if(m_participantAttributeTitles,
-									 [attrQt = b3m::common::nameAttribute](const auto& mapEle)
-									 { return mapEle.second == attrQt; })->first; //TODO to b3m::util
+		const auto nameAttributeIndex = std::ranges::find_if(m_participantAttributeTitles,
+			[attrQt = b3m::common::nameAttribute](const auto& mapEle)
+			{ return mapEle.second == attrQt; })->first; //TODO to b3m::util
 
-		m_participantsData[partIndex].insert_or_assign(nameAttrIndex, partQt);
+		m_participantsData[partIndex].insert_or_assign(nameAttributeIndex, participantNameQt);
 
-		for(const auto& [attribute, attrData] : partAttributes)
+		for(const auto& [attribute, attrData] : participantAttributes)
 		{
 			const auto attrQt = QString::fromStdString(attribute);
 			const auto attrDataQt = QString::fromStdString(attrData);

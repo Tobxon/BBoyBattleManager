@@ -2,12 +2,10 @@ add_library(B3M_Database)
 target_sources(B3M_Database
 	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
 		"src/ParticipantsDepot.cpp"
-		"src/TeamsCollector.cpp"
 		"src/TournamentProxy.cpp"
 	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
 		"interface/B3M_Database.ixx"
 		"interface/ParticipantsDepot.ixx"
-		"interface/TeamsCollector.ixx"
 		"interface/TournamentProxy.ixx"
 )
 

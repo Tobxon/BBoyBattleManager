@@ -16,11 +16,17 @@ import :ParticipantsDepot;
 
 //std
 import <string>;
+import <ranges>;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
+
+b3m::database::ParticipantsDepot::ParticipantsDepot(const std::map< ParticipantName, ParticipantAttributes>& i_participants)
+	: m_participants(i_participants)
+{
+}
 
 bool b3m::database::ParticipantsDepot::newParticipant(const ParticipantName& i_participant,
 													  const ParticipantAttributes& i_attributes)
@@ -80,7 +86,51 @@ std::size_t b3m::database::ParticipantsDepot::numOfParticipants() const
 	return m_participants.size();
 }
 
-auto b3m::database::ParticipantsDepot::getParticipant(const ParticipantName& i_participant) const
+auto b3m::database::ParticipantsDepot::getTeams() const -> std::vector< Team >
+{
+	std::vector< Team > o_teams;
+
+	for(const auto& [participantName, participantsAttributes] : m_participants)
+	{
+		if(participantsAttributes.contains(b3m::common::teamAttribute))
+		{
+			const auto& teamName = participantsAttributes.at(b3m::common::teamAttribute);
+
+			const auto rating = [](const auto& i_participantsAttributes) -> b3m::common::Rating {
+				if(i_participantsAttributes.contains(b3m::common::ratingAttribute))
+				{
+					return std::stoi(i_participantsAttributes.at(b3m::common::ratingAttribute));
+				}
+
+				return {};
+			}(participantsAttributes);
+
+			b3m::common::Participant curParticipant(participantName, rating);
+
+			auto teamIt = std::ranges::find_if(o_teams,
+											   [teamName](const Team& i_team){ return i_team.getName() == teamName; });
+			if(teamIt == o_teams.cend())
+			{
+				o_teams.push_back(Team(teamName,{curParticipant}));
+//				o_teams.emplace_back(teamName,{curParticipant}); //TODO use emplace_back
+			}
+			else
+			{
+				teamIt->addMember(curParticipant);
+			}
+		}
+	}
+
+	return o_teams;
+}
+
+auto b3m::database::ParticipantsDepot::getParticipantNames() const -> std::vector< ParticipantName >
+{
+	auto participantNames = std::views::keys(m_participants);
+	return std::vector< ParticipantName >{ participantNames.begin(), participantNames.end() };
+}
+
+auto b3m::database::ParticipantsDepot::getParticipantInformation(const ParticipantName& i_participant) const
 -> std::optional<std::pair<ParticipantName, ParticipantAttributes>>
 {
 	if(m_participants.contains(i_participant))
@@ -101,26 +151,6 @@ auto b3m::database::ParticipantsDepot::getParticipantsAttributes(const Participa
 	}
 
 	return std::nullopt;
-}
-
-auto b3m::database::ParticipantsDepot::begin() const noexcept -> decltype(m_participants)::const_iterator
-{
-	return m_participants.cbegin();
-}
-
-auto b3m::database::ParticipantsDepot::cbegin() const noexcept -> decltype(m_participants)::const_iterator
-{
-	return m_participants.cbegin();
-}
-
-auto b3m::database::ParticipantsDepot::end() const noexcept -> decltype(m_participants)::const_iterator
-{
-	return m_participants.cend();
-}
-
-auto b3m::database::ParticipantsDepot::cend() const noexcept -> decltype(m_participants)::const_iterator
-{
-	return m_participants.cend();
 }
 
 //TODO to use of boost

@@ -43,11 +43,14 @@ export namespace b3m::database
 using ParticipantName = b3m::common::Participant::Name_t;
 using b3m::common::Attribute;
 using b3m::common::ParticipantAttributes;
+using b3m::common::Team;
 
 
 class ParticipantsDepot
 {
 public:
+	ParticipantsDepot(const std::map< ParticipantName, ParticipantAttributes>& = {});
+
 	bool newParticipant(const ParticipantName&, const ParticipantAttributes& = {});
 	bool updateParticipantsAttributes(const ParticipantName&, const Attribute&, const std::string&);
 
@@ -55,8 +58,9 @@ public:
 	bool removeParticipantsAttribute(const ParticipantName&, const Attribute&);
 
 	[[nodiscard]] std::size_t numOfParticipants() const;
-
-	[[nodiscard]] std::optional< std::pair< ParticipantName, ParticipantAttributes >> getParticipant(const ParticipantName&) const;
+	[[nodiscard]] std::vector< Team > getTeams() const;
+	[[nodiscard]] std::vector< ParticipantName > getParticipantNames() const;
+	[[nodiscard]] std::optional< std::pair< ParticipantName, ParticipantAttributes >> getParticipantInformation(const ParticipantName&) const;
 	[[nodiscard]] std::optional< ParticipantAttributes > getParticipantsAttributes(const ParticipantName&) const;
 
 	void registerCallback(const std::function<void (const ParticipantsDepot&)>&); //TODO to use of boost.signals2
@@ -65,12 +69,6 @@ private:
 
 	std::function<void (const ParticipantsDepot&)> m_reportChangesSignal{}; //TODO to use of boost.signals2
 	void updateObservers() const;
-
-public:
-	decltype(m_participants)::const_iterator begin() const noexcept; //TODO remove
-	decltype(m_participants)::const_iterator cbegin() const noexcept; //TODO remove
-	decltype(m_participants)::const_iterator end() const noexcept; //TODO remove
-	decltype(m_participants)::const_iterator cend() const noexcept; //TODO remove
 };
 
 

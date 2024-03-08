@@ -82,7 +82,7 @@ auto b3m::gui::getTeamNamesSortedByRating(const ParticipantsDepot& i_participant
 {
 	TeamsByRanking o_sortedTeamNames;
 
-	const auto teams = b3m::database::readTeams(i_participantsSource);
+	const auto teams = i_participantsSource.getTeams();
 
 	{
 		std::vector< std::reference_wrapper< const decltype(teams)::value_type >> teamsProj( teams.begin(), teams.end() );

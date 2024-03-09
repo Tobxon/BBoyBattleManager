@@ -43,7 +43,8 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 {
 	m_ui->setupUi(this);
 
-	if(!m_round->empty())
+	const auto& matches = m_round->getMatches();
+	if(!matches.empty())
 	{
 		QFont freshmarker = i_style.getBackgroundFont();
 		QFont berlinSans = i_style.getForegroundFont();
@@ -55,7 +56,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 		const int outerFrameHeight = heightScreen/16;
 		const int titleHeight = heightScreen/8;
 
-		const int numOfRowsWithHeaders = m_round->size();
+		const int numOfRowsWithHeaders = matches.size();
 		const int heightOfRow = (heightScreen - 2*outerFrameHeight - titleHeight)/(numOfRowsWithHeaders);
 
 		const int widthOfDrawArea = widthScreen - 2*outerFrameWidth - 2*logoWidth - titleHeight;
@@ -79,7 +80,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 
 		QPalette palette;
 		int curTop = titleSpace.bottom();
-		for (const auto& match : *m_round)
+		for (const auto& match : matches)
 		{
 			const auto &[teamAName, teamBName] = match.getContestantNames();
 

@@ -69,7 +69,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 		for(auto firstHalfIt = contestants.cbegin(), secondHalfIt = contestants.cbegin() + utility::integer::ceil_pos_uint_division<decltype(contestants.size())>(contestants.size(), 2);
 			firstHalfIt < contestants.cbegin() + contestants.size()/2 && secondHalfIt < contestants.cend(); firstHalfIt++, secondHalfIt++)
 		{
-			o_round.emplace_back(*firstHalfIt, *secondHalfIt);
+			o_round.addMatch(Match(*firstHalfIt, *secondHalfIt));
 		}
 
 		return o_round;
@@ -83,13 +83,10 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	for(const auto& currentContestantRef : contestantsInIterateOrder)
 	{
 		const auto& checkIfContestantIsAvailable = [&curRound = std::as_const(o_round)](const Contestant& i_contestant){
-			return std::ranges::find_if(curRound, [&i_contestant](const Match& i_match){
-				const auto& opponents = i_match.getContestantNames();
-				return opponents.first == i_contestant.getName() || opponents.second == i_contestant.getName();
-			}) == curRound.cend();
+			return !doesContestantParticipateInRound(curRound, i_contestant);
 		};
 
-		if(checkIfContestantIsAvailable(currentContestantRef))
+		if(!checkIfContestantIsAvailable(currentContestantRef))
 		{
 			//remove itself and previous opponents from possible opponents list
 			auto possibleOpponents = contestants
@@ -126,7 +123,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 					return contestantsWeighting.at(i_contestantA) > contestantsWeighting.at(i_contestantB);
 				});
 
-				o_round.emplace_back(currentContestantRef.get(), possibleOpponents.front().get());
+				o_round.addMatch(Match(currentContestantRef.get(), possibleOpponents.front().get()));
 
 				if(contestants.size() % 2 != 0)
 				{
@@ -189,7 +186,7 @@ auto b3m::logic::KOMatchMaker::createRound(const Tournament& i_tournament) -> To
 
 		for(auto itFirst = curRoundContestants.begin(), itLast = curRoundContestants.end()-1; itFirst < itLast; ++itFirst, --itLast)
 		{
-			o_round.emplace_back(*itFirst, *itLast);
+			o_round.addMatch(Match(*itFirst, *itLast));
 		}
 		m_currentNumOfContestants /= 2;
 	}
@@ -198,13 +195,13 @@ auto b3m::logic::KOMatchMaker::createRound(const Tournament& i_tournament) -> To
 		if(!m_thirdPlaceMatched)
 		{
 			o_round.setTitle("Battle um den 3. Platz");
-			o_round.emplace_back(*(curRoundContestants.begin()+2), *(curRoundContestants.begin()+3));
+			o_round.addMatch(Match(*(curRoundContestants.begin()+2), *(curRoundContestants.begin()+3)));
 			m_thirdPlaceMatched = true;
 		}
 		else
 		{
 			o_round.setTitle("Finale");
-			o_round.emplace_back(*curRoundContestants.begin(), *++curRoundContestants.begin());
+			o_round.addMatch(Match(*curRoundContestants.begin(), *++curRoundContestants.begin()));
 		}
 	}
 
@@ -247,7 +244,7 @@ std::vector< ContestantRef_t> getPreviousOpponents(const Contestant& i_contestan
 	std::vector< ContestantRef_t> o_prevOpponents; //TODO to set (faster search)?
 	for(const auto& round : i_history)
 	{
-		for(const auto& match : *round)
+		for(const auto& match : round->getMatches())
 		{
 			const auto& matchOpponents = match.getContestantNames();
 			if(matchOpponents.first == i_contestantToFindOpponents.getName())

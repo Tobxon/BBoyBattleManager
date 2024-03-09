@@ -19,7 +19,7 @@ b3m::gui::TournamentRoundWidget::TournamentRoundWidget(TournamentRound& i_round,
 {
 	m_ui->setupUi(this);
 
-	for(auto& match : *m_round)
+	for(auto& match : m_round->getMatches())
 	{
 		auto matchDialog = new MatchResultDialog(match, i_round.getTournament().getContestants());
 		m_ui->matchesLayout->addWidget(matchDialog);
@@ -39,15 +39,7 @@ bool b3m::gui::TournamentRoundWidget::isFinished()
 		return false;
 	}
 
-	for(const auto& match : *m_round)
-	{
-		if(!match.isFinished())
-		{
-			return false;
-		}
-	}
-
-	return true;
+	return m_round->isFinished();
 }
 
 

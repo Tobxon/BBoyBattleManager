@@ -54,7 +54,7 @@ auto b3m::common::Tournament::getHistory() const -> History
 	History o_rounds;
 	for(auto& round : m_rounds)
 	{
-		if(std::ranges::find_if(*round, [](const Match& i_match){ return !i_match.isFinished(); }) == round->cend())
+		if(round->isFinished())
 		{
 			o_rounds.emplace_back(round.get());
 		}
@@ -72,9 +72,24 @@ auto b3m::common::TournamentRound::getContestants() const -> std::vector< Contes
 	return m_tournament->getContestants();
 }
 
+bool b3m::common::TournamentRound::isFinished() const
+{
+	return std::ranges::find_if(m_matches, [](const Match& i_match){ return !i_match.isFinished(); }) == m_matches.cend();
+}
+
 void b3m::common::TournamentRound::setTitle(const std::string& i_newTitle)
 {
 	m_title = i_newTitle;
+}
+
+void b3m::common::TournamentRound::addMatch(const Match& i_match)
+{
+	m_matches.push_back(i_match);
+}
+
+void b3m::common::TournamentRound::addMatch(Match&& i_match)
+{
+	m_matches.push_back(std::move(i_match));
 }
 
 

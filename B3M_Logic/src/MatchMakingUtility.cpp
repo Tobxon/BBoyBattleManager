@@ -67,7 +67,7 @@ auto b3m::logic::calculateRating(const History& i_history, const std::optional<s
 
 	for(const auto& round : i_history)
 	{
-		for(const auto& match : *round)
+		for(const auto& match : round->getMatches())
 		{
 			const auto matchResult = match.getResults();
 			if(matchResult)
@@ -132,7 +132,7 @@ void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSo
 	//TODO to std algorithm use? - //TODO replace with calculateRating result
 	for(const auto& round : i_history)
 	{
-		for(const auto& match : *round)
+		for(const auto& match : round->getMatches())
 		{
 			const auto matchResult = match.getResults();
 			if(matchResult)
@@ -166,14 +166,18 @@ void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSo
 auto b3m::logic::getFreeTicketContestantIterator(const TournamentRound& i_round, const std::vector< Contestant >& i_contestants) -> std::vector< Contestant >::const_iterator
 {
 	//TODO assumes that only one contestant didn't match last round - with the current from contestant perspective it can happen that multiple don't find a match
-	return std::ranges::find_if_not(i_contestants,
-		[&i_round](const Contestant& i_contestant){
-			return std::ranges::find_if(i_round, [&i_contestant](const Match& i_match){
-				const auto& opponents = i_match.getContestantNames();
-				return opponents.first == i_contestant.getName() ||
-					opponents.second == i_contestant.getName();
-			}) != i_round.cend();
-		});
+	return std::ranges::find_if_not(i_contestants, [&round = std::as_const(i_round)](const Contestant& i_contestant){
+		return doesContestantParticipateInRound(round, i_contestant);
+	});
+}
+
+bool b3m::logic::doesContestantParticipateInRound(const TournamentRound& i_round, const Contestant& i_contestant)
+{
+	const auto& matches = i_round.getMatches();
+	return std::ranges::find_if(matches, [&contestant = std::as_const(i_contestant)](const Match& i_match){
+		const auto& opponents = i_match.getContestantNames();
+		return opponents.first == contestant.getName() || opponents.second == contestant.getName();
+	}) != matches.cend();
 }
 
 

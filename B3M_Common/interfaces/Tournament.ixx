@@ -72,7 +72,7 @@ private:
 };
 
 
-class TournamentRound : public std::vector<Match> //TODO to composition
+class TournamentRound
 {
 public:
 	explicit TournamentRound(const Tournament&, const std::string& = {});
@@ -80,11 +80,17 @@ public:
 	[[nodiscard]] std::vector< Contestant > getContestants() const;
 	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?
 	[[nodiscard]] std::string getTitle() const{ return m_title; } //TODO bad practice?
+	[[nodiscard]] bool isFinished() const;
+	[[nodiscard]] std::vector< Match > getMatches() const{ return m_matches; }
 
 	void setTitle(const std::string&);
+	void addMatch(const Match&);
+	void addMatch(Match&&);//TODO addMatch with Match-ctor-input arguments to construct it in place addMatch(const std::vector< Contestant >&)
 
 private:
 	const Tournament* m_tournament{  }; //must never be nullptr //TODO to gsl
+
+	std::vector<Match> m_matches;
 
 	std::string m_title;
 };

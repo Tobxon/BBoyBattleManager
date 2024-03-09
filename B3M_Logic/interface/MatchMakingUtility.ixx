@@ -56,6 +56,8 @@ void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const Hi
 
 std::vector< Contestant >::const_iterator getFreeTicketContestantIterator(const TournamentRound&, const std::vector< Contestant >&);
 
+bool doesContestantParticipateInRound(const TournamentRound&, const Contestant&);
+
 
 
 } //namespace b3m::logic

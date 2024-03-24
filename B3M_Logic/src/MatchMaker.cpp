@@ -82,7 +82,7 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	const auto contestantsInIterateOrder = reorderContestantsByPriority(contestants, history);
 	for(const auto& currentContestantRef : contestantsInIterateOrder)
 	{
-		const auto& checkIfContestantIsAvailable = [&curRound = std::as_const(o_round)](const Contestant& i_contestant){
+		const auto& checkIfContestantIsAvailable = [&curRound = /*std::as_const(*/o_round/*)*/](const Contestant& i_contestant){
 			return !doesContestantParticipateInRound(curRound, i_contestant);
 		};
 

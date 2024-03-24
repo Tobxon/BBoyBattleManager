@@ -74,7 +74,8 @@ auto b3m::common::TournamentRound::getContestants() const -> std::vector< Contes
 
 bool b3m::common::TournamentRound::isFinished() const
 {
-	return std::ranges::find_if(m_matches, [](const Match& i_match){ return !i_match.isFinished(); }) == m_matches.cend();
+	const bool isFinished = std::ranges::find_if(m_matches, [](const Match& i_match){ return !i_match.isFinished(); }) == m_matches.cend();
+	return isFinished;
 }
 
 void b3m::common::TournamentRound::setTitle(const std::string& i_newTitle)

@@ -81,7 +81,7 @@ public:
 	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?
 	[[nodiscard]] std::string getTitle() const{ return m_title; } //TODO bad practice?
 	[[nodiscard]] bool isFinished() const;
-	[[nodiscard]] std::vector< Match > getMatches() const{ return m_matches; }
+	[[nodiscard]] std::vector< Match >& getMatches(){ return m_matches; }
 
 	void setTitle(const std::string&);
 	void addMatch(const Match&);

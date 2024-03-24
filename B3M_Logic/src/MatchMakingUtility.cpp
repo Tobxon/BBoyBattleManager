@@ -17,7 +17,6 @@ import :MatchMakingUtility;
 //std
 import <algorithm>;
 import <iterator>;
-import <cassert>; //TODO DEBUG
 
 //b3m
 import b3m.common;

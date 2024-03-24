@@ -19,7 +19,7 @@
 b3m::gui::ey2023::StartupSlideSelector::StartupSlideSelector(QWidget* i_parent)
 	: SlideSelector("Startup Slide", i_parent)
 {
-	m_startupImage->setPixmap(QPixmap("D:/Dev/Repos/B3M_dev/EY2023/resources/B3M_EY2023-start_page.png"));
+	m_startupImage->setPixmap(QPixmap("D:/Dev/Repos/B3M_dev/EY2023/resources/B3M_EY2023-start_page.png")); //TODO to relative path
 }
 
 QWidget* b3m::gui::ey2023::StartupSlideSelector::getSlide()

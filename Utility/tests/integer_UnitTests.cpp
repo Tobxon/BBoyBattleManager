@@ -77,6 +77,11 @@ TEST_CASE("Ceil Pos Uint Division - Edge Cases") {
 		REQUIRE(ceil_pos_uint_division(std::numeric_limits<unsigned>::max(), 1u) == std::numeric_limits<unsigned>::max());
 		REQUIRE(ceil_pos_uint_division(baseNum, 1u) == baseNum);
 	}
+
+	SECTION("Dividend is Zero"){
+		REQUIRE(ceil_pos_uint_division(0u, 1u) == 0u);
+		REQUIRE(ceil_pos_uint_division(0u, getRandomNumber<unsigned>(std::numeric_limits<unsigned>::max())) == 0u);
+	}
 }
 
 TEST_CASE("Ceil Pos Uint Division - Different Unsigned Types") {

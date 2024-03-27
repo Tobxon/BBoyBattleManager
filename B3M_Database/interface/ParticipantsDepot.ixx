@@ -60,14 +60,15 @@ public:
 	[[nodiscard]] std::size_t numOfParticipants() const;
 	[[nodiscard]] std::vector< Team > getTeams() const;
 	[[nodiscard]] std::vector< ParticipantName > getParticipantNames() const;
+	[[nodiscard]] bool isParticipant(const ParticipantName&) const;
 	[[nodiscard]] std::optional< std::pair< ParticipantName, ParticipantAttributes >> getParticipantInformation(const ParticipantName&) const;
 	[[nodiscard]] std::optional< ParticipantAttributes > getParticipantsAttributes(const ParticipantName&) const;
 
 	void registerCallback(const std::function<void (const ParticipantsDepot&)>&); //TODO to use of boost.signals2
 private:
-	std::map< ParticipantName, ParticipantAttributes> m_participants{};
+	std::map< ParticipantName, ParticipantAttributes> m_participants;
 
-	std::function<void (const ParticipantsDepot&)> m_reportChangesSignal{}; //TODO to use of boost.signals2
+	std::function<void (const ParticipantsDepot&)> m_reportChangesSignal; //TODO to use of boost.signals2
 	void updateObservers() const;
 };
 

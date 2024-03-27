@@ -130,6 +130,11 @@ auto b3m::database::ParticipantsDepot::getParticipantNames() const -> std::vecto
 	return std::vector< ParticipantName >{ participantNames.begin(), participantNames.end() };
 }
 
+bool b3m::database::ParticipantsDepot::isParticipant(const ParticipantName& i_participantName) const
+{
+	return m_participants.contains(i_participantName);
+}
+
 auto b3m::database::ParticipantsDepot::getParticipantInformation(const ParticipantName& i_participant) const
 -> std::optional<std::pair<ParticipantName, ParticipantAttributes>>
 {

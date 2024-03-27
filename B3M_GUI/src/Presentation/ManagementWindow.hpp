@@ -1,6 +1,7 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief TODO
+ * \brief The PresentationManagementWindow is the Widget which is used as a controller to the
+ *        presentation that most likely will be on another screen (e.g. projected by a beamer)
  *
  */
 

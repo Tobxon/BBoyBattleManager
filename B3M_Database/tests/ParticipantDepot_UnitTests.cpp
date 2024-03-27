@@ -28,8 +28,8 @@ import b3m.common;
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-using participant_name_t = b3m::common::Participant::Name;
-using b3m::database::attribute_t;
+using b3m::database::ParticipantName;
+using b3m::common::Attribute;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ TEST_CASE("create Participants")
 
 	SECTION("simply try adding a same named participant twice")
 	{
-		static const participant_name_t player1{ "Storm" };
+		static const ParticipantName player1{ "Storm" };
 		REQUIRE(dut->newParticipant(player1));
 		CHECK(dut->numOfParticipants() == 1);
 		CHECK(!dut->newParticipant(player1));
@@ -56,7 +56,7 @@ TEST_CASE("create Participants")
 
 	SECTION("adding multiple participants")
 	{
-		static const std::array< participant_name_t, 4 > players{
+		static const std::array< ParticipantName, 4 > players{
 			"Storm", "Hong10", "Lil Kev", "Tynee" };
 
 		std::size_t curSize = 0;
@@ -73,21 +73,21 @@ TEST_CASE("remove Participants")
 {
 	auto dut = std::make_unique< b3m::database::ParticipantsDepot >();
 
-	static const std::array< participant_name_t, 5 > players{
+	static const std::array< ParticipantName, 5 > players{
 			"Limit", "Mav", "Luisa", "Elina", "another contestant" };
 
 	for (const auto& player : players)
 	{
-		static const participant_name_t nonContestant{ "Larry" };
+		static const ParticipantName nonContestant{ "Larry" };
 
-		CHECK(!dut->getParticipant(nonContestant));
+		CHECK(!dut->isParticipant(nonContestant));
 
-		REQUIRE(!dut->getParticipant(participant_name_t{ player }));
-		REQUIRE(!dut->removeParticipant(participant_name_t{ player }));
-		REQUIRE(!dut->getParticipant(participant_name_t{ player }));
+		REQUIRE(!dut->isParticipant(ParticipantName{ player }));
+		REQUIRE(!dut->removeParticipant(ParticipantName{ player }));
+		REQUIRE(!dut->isParticipant(ParticipantName{ player }));
 
 		REQUIRE(dut->numOfParticipants() == 0);
-		CHECK(!dut->getParticipant(nonContestant));
+		CHECK(!dut->isParticipant(nonContestant));
 	}
 
 	//populate dut with participants from "players"
@@ -95,11 +95,11 @@ TEST_CASE("remove Participants")
 	for (const auto& player : players)
 	{
 		REQUIRE(dut->numOfParticipants() == curSize);
-		CHECK(!dut->getParticipant(player));
+		CHECK(!dut->isParticipant(player));
 
 		REQUIRE(dut->newParticipant(player));
 
-		CHECK(dut->getParticipant(player));
+		CHECK(dut->isParticipant(player));
 		REQUIRE(dut->numOfParticipants() == ++curSize);
 	}
 
@@ -108,19 +108,19 @@ TEST_CASE("remove Participants")
 		for (const auto& player : players)
 		{
 			REQUIRE(dut->numOfParticipants() == curSize);
-			CHECK(dut->getParticipant(player));
+			CHECK(dut->isParticipant(player));
 
 			REQUIRE(dut->removeParticipant(player));
 
-			CHECK(!dut->getParticipant(player));
+			CHECK(!dut->isParticipant(player));
 			REQUIRE(dut->numOfParticipants() == --curSize);
 		}
 		for (const auto& player : players)
 		{
 			CHECK(dut->numOfParticipants() == 0);
-			CHECK(!dut->getParticipant(player));
+			CHECK(!dut->isParticipant(player));
 			REQUIRE(!dut->removeParticipant(player));
-			CHECK(!dut->getParticipant(player));
+			CHECK(!dut->isParticipant(player));
 		}
 	}
 }
@@ -136,8 +136,8 @@ TEST_CASE("modifying attributes of participants")
 
 	SECTION("add participant without attribute and add attribute later")
 	{
-		static const participant_name_t contestantName{ "Tyra" };
-		static const attribute_t attribute{ "color" };
+		static const ParticipantName contestantName{ "Tyra" };
+		static const Attribute attribute{ "color" };
 		static const std::string attributeData{ "orange" };
 
 		//create participant
@@ -160,8 +160,8 @@ TEST_CASE("modifying attributes of participants")
 
 	SECTION("rename a participant")
 	{
-		static const participant_name_t wrongName{"sopiha"};
-		static const participant_name_t correctedName{"Sophia"};
+		static const ParticipantName wrongName{"sopiha"};
+		static const ParticipantName correctedName{"Sophia"};
 
 		//create participant
 		REQUIRE(dut->newParticipant(wrongName));
@@ -184,15 +184,15 @@ TEST_CASE("modifying attributes of participants")
 
 	SECTION("set multi attributes on a single participant and rename afterwards")
 	{
-		const participant_name_t contestantName{"Christian"};
-		const std::vector< std::pair< attribute_t, std::string >> attributesToSet{
+		const ParticipantName contestantName{"Christian"};
+		const std::vector< std::pair< Attribute, std::string >> attributesToSet{
 			{"gender",         "any"},
 			{"village",        "Springfield"},
 			{"favorite Color", "Eburnean"},
 			{"language",       "Ostdeutsch"}};
-		const participant_name_t newContestantName{"Jesus"};
+		const ParticipantName newContestantName{"Jesus"};
 
-		const std::map< attribute_t, std::string > firstAttribute{ attributesToSet.back() };
+		const std::map< Attribute, std::string > firstAttribute{ attributesToSet.back() };
 		REQUIRE(dut->newParticipant(contestantName, firstAttribute));
 
 		const auto firstReadAttribute = dut->getParticipantsAttributes(contestantName);

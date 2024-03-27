@@ -35,8 +35,7 @@ using b3m::common::Contestant;
 using b3m::common::History;
 using b3m::common::TournamentRating;
 using b3m::common::Match;
-
-using ContestantRef_t = std::reference_wrapper< const Contestant >;
+using b3m::logic::ContestantRef_t;
 
 
 std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< Contestant >&, const History&);
@@ -209,9 +208,9 @@ std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< C
 	{
 		if(round)
 		{
-			if(const auto freeTicketContestantIt = b3m::logic::getFreeTicketContestantIterator(*round, i_contestantsToReorder); freeTicketContestantIt != i_contestantsToReorder.cend())
+			for(const Contestant& contestant : b3m::logic::getFreeTicketContestants(*round, i_contestantsToReorder))
 			{
-				o_reorderedContestants.emplace_back(*freeTicketContestantIt);
+				o_reorderedContestants.emplace_back(contestant);
 			}
 		}
 	}

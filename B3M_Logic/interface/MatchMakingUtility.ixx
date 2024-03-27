@@ -47,6 +47,7 @@ using b3m::common::TournamentRound;
 
 
 //using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
+using ContestantRef_t = std::reference_wrapper< const Contestant >;
 
 
 ContestantsRanking calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
@@ -54,7 +55,7 @@ SortedContestantsRanking getSortedRanking(const History&, const std::vector< Con
 SortedContestantsRanking getSortedRanking(const std::vector< Contestant >&, const ContestantsRanking&);
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history);
 
-std::vector< Contestant >::const_iterator getFreeTicketContestantIterator(/*const*/ TournamentRound&, const std::vector< Contestant >&);
+std::vector< ContestantRef_t > getFreeTicketContestants(/*const*/ TournamentRound&, const std::vector< Contestant >&);
 
 bool doesContestantParticipateInRound(/*const*/ TournamentRound&, const Contestant&);
 

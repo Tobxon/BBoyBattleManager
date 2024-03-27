@@ -17,6 +17,7 @@ import :MatchMakingUtility;
 //std
 import <algorithm>;
 import <iterator>;
+import <ranges>;
 
 //b3m
 import b3m.common;
@@ -79,9 +80,9 @@ auto b3m::logic::calculateRating(const History& i_history, const std::optional<s
 		}
 		if(i_contestants)
 		{
-			if(const auto freeTicketContestantIt = getFreeTicketContestantIterator(*round, i_contestants.value()); freeTicketContestantIt != i_contestants.value().cend())
+			for(const Contestant& freeTicketContestant : getFreeTicketContestants(*round, i_contestants.value()))
 			{
-				contestantsRating[freeTicketContestantIt->getName()] += b3m::common::freeTicket;
+				contestantsRating[freeTicketContestant.getName()] += b3m::common::freeTicket;
 			}
 		}
 	}
@@ -162,12 +163,13 @@ void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSo
 	});
 }
 
-auto b3m::logic::getFreeTicketContestantIterator(/*const*/ TournamentRound& i_round, const std::vector< Contestant >& i_contestants) -> std::vector< Contestant >::const_iterator
+auto b3m::logic::getFreeTicketContestants(/*const*/ TournamentRound& i_round, const std::vector< Contestant >& i_contestants) -> std::vector< ContestantRef_t >
 {
-	//TODO assumes that only one contestant didn't match last round - with the current from contestant perspective it can happen that multiple don't find a match
-	return std::ranges::find_if_not(i_contestants, [&round = /*std::as_const(*/i_round/*)*/](const Contestant& i_contestant){
-		return doesContestantParticipateInRound(round, i_contestant);
-	});
+	return i_contestants
+		| std::views::filter([&round = /*std::as_const(*/i_round/*)*/](const Contestant& i_contestant){
+			return doesContestantParticipateInRound(round, i_contestant); })
+		| std::views::transform([](const Contestant& i_contestant){ return ContestantRef_t(i_contestant); })
+		| std::ranges::to<std::vector>();
 }
 
 bool b3m::logic::doesContestantParticipateInRound(/*const*/ TournamentRound& i_round, const Contestant& i_contestant)

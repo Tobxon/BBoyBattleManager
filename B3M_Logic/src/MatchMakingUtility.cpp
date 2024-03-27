@@ -163,6 +163,14 @@ void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSo
 	});
 }
 
+auto b3m::logic::getCurrentRanking(const Tournament& i_tournament) -> SortedContestantsRanking
+{
+	auto contestants = i_tournament.getContestants();
+	const auto& history = i_tournament.getHistory();
+
+	return getSortedRanking(history, contestants);
+}
+
 auto b3m::logic::getFreeTicketContestants(/*const*/ TournamentRound& i_round, const std::vector< Contestant >& i_contestants) -> std::vector< ContestantRef_t >
 {
 	return i_contestants

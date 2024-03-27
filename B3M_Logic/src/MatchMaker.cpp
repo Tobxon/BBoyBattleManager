@@ -46,14 +46,6 @@ std::vector< ContestantRef_t > getPreviousOpponents(const Contestant&, const std
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-auto b3m::logic::MatchMaker::getCurrentRanking(const Tournament& i_tournament) const -> SortedContestantsRanking
-{
-	auto contestants = i_tournament.getContestants();
-	const auto& history = i_tournament.getHistory();
-
-	return getSortedRanking(history, contestants);
-}
-
 //SwissMatchMaker ----------------------------------------------------------------------------------
 auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) -> TournamentRound
 {

@@ -51,7 +51,6 @@ public:
 	virtual ~MatchMaker() = default;
 
 	virtual TournamentRound createRound(const Tournament&) = 0;
-	virtual SortedContestantsRanking getCurrentRanking(const Tournament&) const; //TODO let Matchmaker or an independent RankingJudge decide how contestants get ranked!
 };
 
 

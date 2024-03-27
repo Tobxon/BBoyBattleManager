@@ -17,6 +17,13 @@ import :TournamentProxy;
 
 
 //--------------------------------------------------------------------------------------------------
+//------ Declarations                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+using b3m::logic::getCurrentRanking;
+
+
+//--------------------------------------------------------------------------------------------------
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
@@ -50,7 +57,7 @@ auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
 
 auto b3m::database::TournamentProxy::getCurrentContestantsRanking() const -> SortedContestantsRanking
 {
-	return m_matchMaker->getCurrentRanking(*m_curTournament);
+	return getCurrentRanking(*m_curTournament);
 }
 
 void b3m::database::TournamentProxy::setMatchMaker(std::unique_ptr< MatchMaker > i_newMatchMaker)

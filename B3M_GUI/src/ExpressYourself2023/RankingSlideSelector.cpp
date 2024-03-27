@@ -27,7 +27,7 @@ import b3m.logic;
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
 using b3m::common::History;
-using b3m::common::SortedContestantsRanking;
+using b3m::common::ContestantsRanking;
 
 
 static constexpr /*unsigned*/ int widthScreen = 1920;
@@ -39,7 +39,7 @@ static constexpr /*unsigned*/ int heightScreen = 1080;
 //--------------------------------------------------------------------------------------------------
 
 //RankingSlide -------------------------------------------------------------------------------------
-b3m::gui::ey2023::RankingSlide::RankingSlide(const SortedContestantsRanking& i_contestantsWithRating, QWidget* i_parent)
+b3m::gui::ey2023::RankingSlide::RankingSlide(const ContestantsRanking& i_contestantsWithRating, QWidget* i_parent)
 	: QWidget(i_parent), m_ui(new Ui::SlideTemplate)
 {
 	m_ui->setupUi(this);
@@ -203,7 +203,7 @@ void b3m::gui::ey2023::RankingSlide::paintEvent(QPaintEvent* event)
 
 
 //RankingSlideSelector -----------------------------------------------------------------------------
-b3m::gui::ey2023::RankingSlideSelector::RankingSlideSelector(const SortedContestantsRanking& i_contestantsWithRating, QWidget* i_parent)
+b3m::gui::ey2023::RankingSlideSelector::RankingSlideSelector(const ContestantsRanking& i_contestantsWithRating, QWidget* i_parent)
 	: SlideSelector("Ranking Slide", i_parent), m_slide(new RankingSlide(i_contestantsWithRating))
 {
 }

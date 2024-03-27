@@ -41,7 +41,6 @@ using b3m::common::Tournament;
 using b3m::common::Contestant;
 using b3m::common::History;
 using b3m::common::ContestantsRanking;
-using b3m::common::SortedContestantsRanking;
 
 
 

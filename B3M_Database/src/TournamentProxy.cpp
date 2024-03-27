@@ -55,7 +55,7 @@ auto b3m::database::TournamentProxy::startRound() -> TournamentRound*
 	return m_curTournament->addNewRound(std::move(curRound));
 }
 
-auto b3m::database::TournamentProxy::getCurrentContestantsRanking() const -> SortedContestantsRanking
+auto b3m::database::TournamentProxy::getCurrentContestantsRanking() const -> ContestantsRanking
 {
 	return getCurrentRanking(*m_curTournament);
 }

@@ -45,10 +45,8 @@ class TournamentRound;
 
 using b3m::common::Match;
 using b3m::common::Contestant;
-using History = std::vector< /*const*/ TournamentRound* >; //TODO propably working on copys makes the system more robust
-using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating >;
-//using SortedContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
-using SortedContestantsRanking = std::vector<std::pair< Contestant::Name_t, TournamentRating >>;
+using History = std::vector< /*const*/ TournamentRound* >; //TODO probably working on copies makes the system more robust
+using ContestantsRanking = std::vector<std::pair< Contestant::Name_t, TournamentRating >>;
 
 
 class Tournament

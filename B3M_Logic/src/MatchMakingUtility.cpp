@@ -31,7 +31,6 @@ using b3m::common::Contestant;
 using b3m::common::History;
 using b3m::common::TournamentRating;
 using b3m::common::ContestantsRanking;
-using b3m::common::SortedContestantsRanking;
 using b3m::common::Match;
 using b3m::common::Judgement;
 using b3m::common::TournamentRound;
@@ -61,9 +60,9 @@ bool compareRatingsOrder(const TournamentRating& i_lhs, const TournamentRating& 
 	return false;
 }
 
-auto b3m::logic::calculateRating(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> ContestantsRanking
+auto b3m::logic::calculateRating(const History& i_history, const std::optional<std::vector< Contestant >>& i_contestants) -> ContestantsWithRating
 {
-	ContestantsRanking contestantsRating;
+	ContestantsWithRating contestantsRating;
 
 	for(const auto& round : i_history)
 	{
@@ -101,23 +100,23 @@ auto b3m::logic::calculateRating(const History& i_history, const std::optional<s
 	return contestantsRating;
 }
 
-auto b3m::logic::getSortedRanking(const History& i_history, const std::vector< Contestant >& i_contestants) -> SortedContestantsRanking
+auto b3m::logic::getSortedRanking(const History& i_history, const std::vector< Contestant >& i_contestants) -> ContestantsRanking
 {
 	const auto& unsortedContestantRanking = calculateRating(i_history, i_contestants);
 
 	return getSortedRanking(i_contestants, unsortedContestantRanking);
 }
 
-auto b3m::logic::getSortedRanking(const std::vector< Contestant >& i_contestants, const ContestantsRanking& i_contestantsWithRating) -> SortedContestantsRanking
+auto b3m::logic::getSortedRanking(const std::vector< Contestant >& i_contestants, const ContestantsWithRating& i_contestantsWithRating) -> ContestantsRanking
 {
-	SortedContestantsRanking sortedContestantsWithRating;
+	ContestantsRanking sortedContestantsWithRating;
 	std::ranges::transform(i_contestants, std::back_inserter(sortedContestantsWithRating), [i_contestantsWithRating](const Contestant& i_contestant){
 		const auto& contestantName = i_contestant.getName();
 		return std::make_pair<>(contestantName, i_contestantsWithRating.contains(contestantName) ? i_contestantsWithRating.at(contestantName) : TournamentRating{});
 	});
 
 	std::ranges::sort(sortedContestantsWithRating,[] //TODO merge with lamdba on line 137
-		(const SortedContestantsRanking::value_type& i_lhs, const SortedContestantsRanking::value_type& i_rhs){
+		(const ContestantsRanking::value_type& i_lhs, const ContestantsRanking::value_type& i_rhs){
 			return compareRatingsOrder(i_lhs.second, i_rhs.second);
 	});
 
@@ -163,7 +162,7 @@ void b3m::logic::sortTeamsByResults(std::vector< Contestant >& i_contestantsToSo
 	});
 }
 
-auto b3m::logic::getCurrentRanking(const Tournament& i_tournament) -> SortedContestantsRanking
+auto b3m::logic::getCurrentRanking(const Tournament& i_tournament) -> ContestantsRanking
 {
 	auto contestants = i_tournament.getContestants();
 	const auto& history = i_tournament.getHistory();

@@ -43,7 +43,7 @@ export namespace b3m::database
 using b3m::common::Tournament;
 using b3m::common::Contestant;
 using b3m::common::TournamentRound;
-using b3m::common::SortedContestantsRanking;
+using b3m::common::ContestantsRanking;
 using b3m::logic::MatchMaker;
 using b3m::logic::SwissMatchMaker;
 
@@ -55,7 +55,7 @@ public:
 	TournamentRound* startRound();
 
 	[[nodiscard]] Tournament* getTournament() const{ return m_curTournament.get(); }
-	[[nodiscard]] SortedContestantsRanking getCurrentContestantsRanking() const;
+	[[nodiscard]] ContestantsRanking getCurrentContestantsRanking() const;
 
 	void setMatchMaker(std::unique_ptr< MatchMaker >);
 

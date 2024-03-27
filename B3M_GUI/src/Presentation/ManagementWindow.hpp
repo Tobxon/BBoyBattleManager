@@ -41,7 +41,7 @@ namespace b3m::gui
 using b3m::gui::presentation::SlideSelector;
 using b3m::common::TournamentRound;
 using b3m::common::Contestant;
-using b3m::common::SortedContestantsRanking;
+using b3m::common::ContestantsRanking;
 
 
 class PresentationManagementWindow : public QWidget
@@ -54,7 +54,7 @@ public:
 
 public slots:
 	void addSlideFor(TournamentRound&, const TournamentRoundWidget&); //TODO to boost::signals - signal results changed from Match itself
-	void newRanking(const SortedContestantsRanking&);
+	void newRanking(const ContestantsRanking&);
 
 signals:
 	void slidesVisible(bool);

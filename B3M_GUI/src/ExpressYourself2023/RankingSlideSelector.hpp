@@ -35,13 +35,13 @@ namespace b3m::gui::ey2023
 
 
 using b3m::gui::presentation::SlideSelector;
-using b3m::common::SortedContestantsRanking;
+using b3m::common::ContestantsRanking;
 
 
 class RankingSlide : public QWidget
 {
 public:
-	explicit RankingSlide(const SortedContestantsRanking&, QWidget* = nullptr);
+	explicit RankingSlide(const ContestantsRanking&, QWidget* = nullptr);
 	~RankingSlide();
 
 protected:
@@ -59,7 +59,7 @@ class RankingSlideSelector : public SlideSelector
 	Q_OBJECT;
 
 public:
-	explicit RankingSlideSelector(const SortedContestantsRanking&, QWidget* = nullptr);
+	explicit RankingSlideSelector(const ContestantsRanking&, QWidget* = nullptr);
 
 private:
 	RankingSlide* m_slide{ nullptr };

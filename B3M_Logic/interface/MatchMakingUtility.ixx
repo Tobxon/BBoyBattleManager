@@ -42,21 +42,20 @@ using b3m::common::History;
 using b3m::common::Contestant;
 using b3m::common::TournamentRating;
 using b3m::common::ContestantsRanking;
-using b3m::common::SortedContestantsRanking;
 using b3m::common::TournamentRound;
 using b3m::common::Tournament;
 
 
-//using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
 using ContestantRef_t = std::reference_wrapper< const Contestant >;
+using ContestantsWithRating = std::map< Contestant::Name_t, TournamentRating >;
 
 
-ContestantsRanking calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
-SortedContestantsRanking getSortedRanking(const History&, const std::vector< Contestant >&);
-SortedContestantsRanking getSortedRanking(const std::vector< Contestant >&, const ContestantsRanking&);
+ContestantsWithRating calculateRating(const History&, const std::optional<std::vector< Contestant >>& = std::nullopt);
+ContestantsRanking getSortedRanking(const History&, const std::vector< Contestant >&);
+ContestantsRanking getSortedRanking(const std::vector< Contestant >&, const ContestantsWithRating&);
 void sortTeamsByResults(std::vector< Contestant >& i_contestantsToSort, const History& i_history);
 
-SortedContestantsRanking getCurrentRanking(const Tournament&);
+ContestantsRanking getCurrentRanking(const Tournament&);
 
 std::vector< ContestantRef_t > getFreeTicketContestants(/*const*/ TournamentRound&, const std::vector< Contestant >&);
 

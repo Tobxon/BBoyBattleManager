@@ -84,7 +84,7 @@ void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_roun
 	addNewSlide(*slide);
 }
 
-void b3m::gui::PresentationManagementWindow::newRanking(const SortedContestantsRanking& i_contestantsRanking)
+void b3m::gui::PresentationManagementWindow::newRanking(const ContestantsRanking& i_contestantsRanking)
 {
 	auto* const slide = new RankingSlideSelector(i_contestantsRanking, this);
 	addNewSlide(*slide);

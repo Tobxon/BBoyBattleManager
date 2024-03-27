@@ -70,27 +70,32 @@ private:
 };
 
 
+constexpr Rating emptyRating = 0;
+
 //Participant
 class Participant
 {
 public:
 	using Name_t = std::string;
-	using Team_t = Team; //TODO team as pointer to the Team object?
 
-	Participant(const Name_t&, Team_t*, const Rating&);
-	explicit Participant(const Name_t&, Team_t* = nullptr);
-	Participant(const Name_t&, const Rating& = {});
+	Participant(const Name_t&, const Team*, const Rating&);
+	explicit Participant(const Name_t&, const Team* = nullptr);
+	Participant(const Name_t&, const Rating&);
+	Participant(const Name_t&, const Team&);
 
 	[[nodiscard]] Name_t getName() const{ return m_name; }
 	[[nodiscard]] std::optional< Team::Name_t > getTeamName() const;
 	[[nodiscard]] Rating getRating() const{ return m_rating; }
 
-	bool setTeam(Team_t&);
-//	bool setTeam(const Team::Name_t&);
+	bool changeTeam(const Team&);
+	bool removeTeam();
+
+	void setRating(const Rating&);
+
 private:
 	Name_t m_name{"unknown Breaker"};
-	Team_t* m_team{};
-	Rating m_rating{}; //TODO to something that holds ratings?
+	const Team* m_team{};
+	Rating m_rating{ emptyRating }; //TODO to something that holds ratings?
 };
 
 

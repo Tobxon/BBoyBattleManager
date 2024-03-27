@@ -23,16 +23,20 @@ import <numeric>;
 //--------------------------------------------------------------------------------------------------
 
 //Participant --------------------------------------------------------------------------------------
-b3m::common::Participant::Participant(const Name_t& i_name, Team_t* i_team, const Rating& i_rating)
+b3m::common::Participant::Participant(const Name_t& i_name, const Team* i_team, const Rating& i_rating)
 	: m_name(i_name), m_team(i_team), m_rating(i_rating)
 {}
 
-b3m::common::Participant::Participant(const Name_t& i_name, Team_t* i_team)
+b3m::common::Participant::Participant(const Name_t& i_name, const Team* i_team)
 	: Participant(i_name, i_team, {})
 {}
 
 b3m::common::Participant::Participant(const Name_t& i_name, const Rating& i_rating)
-		: Participant(i_name, nullptr, i_rating)
+	: Participant(i_name, nullptr, i_rating)
+{}
+
+b3m::common::Participant::Participant(const Name_t& i_name, const Team& i_team)
+	: Participant(i_name, &i_team)
 {}
 
 auto b3m::common::Participant::getTeamName() const -> std::optional< Team::Name_t >
@@ -45,10 +49,21 @@ auto b3m::common::Participant::getTeamName() const -> std::optional< Team::Name_
 	return std::nullopt;
 }
 
-bool b3m::common::Participant::setTeam(Team_t& i_team)
+bool b3m::common::Participant::changeTeam(const Team& i_team)
 {
 	m_team = &i_team;
 	return true;
+}
+
+bool b3m::common::Participant::removeTeam()
+{
+	m_team = nullptr;
+	return true;
+}
+
+void b3m::common::Participant::setRating(const Rating& i_rating)
+{
+	m_rating = i_rating;
 }
 
 
@@ -68,7 +83,7 @@ auto b3m::common::Team::getRating() const -> Rating
 
 bool b3m::common::Team::addMember(Participant& i_newMember)
 {
-	if(i_newMember.setTeam(*this))
+	if(i_newMember.changeTeam(*this))
 	{
 		m_members.push_back(i_newMember);
 		return true;

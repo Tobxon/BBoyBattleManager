@@ -66,7 +66,7 @@ public:
 	bool operator==(const Team& i_other) const;
 private:
 	Name_t m_name{"unknown Crew"};
-	std::vector< Participant > m_members;
+	std::vector< Participant > m_members; //TODO should Team own its participants?
 };
 
 

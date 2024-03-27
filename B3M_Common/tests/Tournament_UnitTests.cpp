@@ -9,11 +9,40 @@
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
+//b3m
+import b3m.common;
+
+//Catch2 - Test Framework
+import <catch2/catch_test_macros.hpp>;
+
+
+//--------------------------------------------------------------------------------------------------
+//------ Declarations                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+using b3m::common::Tournament;
+
 
 //--------------------------------------------------------------------------------------------------
 //------ Tests                                                                                ------
 //--------------------------------------------------------------------------------------------------
 
+//Tournament ---------------------------------------------------------------------------------------
+TEST_CASE("Tournaments can be empty, and therefore emptily created", "[B3M, Tournament, Constructor, empty]")
+{
+	SECTION("simple constructor test")
+	{
+		REQUIRE_NOTHROW(Tournament{});
+	}
+
+	SECTION("default constructed Tournament is empty")
+	{
+		Tournament dut;
+		CHECK(!dut.isRunning());
+		CHECK(dut.getContestants().empty());
+		CHECK(dut.getHistory().empty());
+	}
+}
 
 
 //END OF FILE --------------------------------------------------------------------------------------

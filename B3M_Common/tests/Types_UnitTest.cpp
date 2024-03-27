@@ -119,7 +119,25 @@ TEST_CASE("Participants can have a Rating used for Ranking these later")
 	}
 }
 
+//Team ---------------------------------------------------------------------------------------------
+TEST_CASE("Teams are identified by their name, but can be emptily constructed besides this")
+{
+	SECTION("simple constructor test")
+	{
+		REQUIRE_NOTHROW(Team{ "Phenominal Temporary Squad" });
+	}
+
+	SECTION("set Team Name while constructing")
+	{
+		static const std::string teamName{ "Sons of se circle" };
+		Team dut{ teamName };
+
+		CHECK(dut.getName() == teamName);
+	}
+}
 //TODO add unit tests for Team
+
+//TODO add unit tests for Match
 
 
 //END OF FILE --------------------------------------------------------------------------------------

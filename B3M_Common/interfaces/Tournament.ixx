@@ -45,7 +45,7 @@ class TournamentRound;
 
 using b3m::common::Match;
 using b3m::common::Contestant;
-using History = std::vector< TournamentRound* >;
+using History = std::vector< /*const*/ TournamentRound* >; //TODO propably working on copys makes the system more robust
 using ContestantsRanking = std::map< Contestant::Name_t, TournamentRating >;
 //using SortedContestantsRanking = std::map< Contestant::Name_t, TournamentRating, std::function<bool(const Contestant::Name_t&, const Contestant::Name_t&)>>;
 using SortedContestantsRanking = std::vector<std::pair< Contestant::Name_t, TournamentRating >>;
@@ -54,7 +54,7 @@ using SortedContestantsRanking = std::vector<std::pair< Contestant::Name_t, Tour
 class Tournament
 {
 public:
-	explicit Tournament(const std::vector <Contestant>&); //TODO to ranges?
+	explicit Tournament(const std::vector <Contestant> & = {}); //TODO to ranges?
 
 	bool updateContestants(const std::vector <Contestant>&); //TODO to ranges?
 	//TODO update contestants when registered Teams change?

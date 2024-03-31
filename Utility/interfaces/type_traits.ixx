@@ -1,6 +1,7 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief General Module Interface Unit for Utility which combines als module partitions.
+ * \brief Module Interface Unit for utility type traits analog to <type_trait> from stl, but more
+ *        custom to recuring uses.
  *
  */
 
@@ -14,14 +15,32 @@ module;
 //--------------------------------------------------------------------------------------------------
 //------ MODULE CONTENT                                                                       ------
 //--------------------------------------------------------------------------------------------------
-export module utility;
+export module utility:type_traits;
+
+
+//--------------------------------------------------------------------------------------------------
+//------ Dependencies                                                                         ------
+//--------------------------------------------------------------------------------------------------
+
+//std
+import <type_traits>;
+import <ranges>;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export import :integer;
-export import :type_traits;
+export namespace utility::type_traits
+{
 
 
-//END OF FILE --------------------------------------------------------------------------------------
+
+template< typename T >
+concept IsUnsignedint = std::is_integral_v<T> && std::is_unsigned_v<T>;
+
+template< typename T >
+concept isInputRangeOf = std::ranges::input_range< T > && std::convertible_to< std::ranges::range_value_t<T>, T >;
+
+
+
+}

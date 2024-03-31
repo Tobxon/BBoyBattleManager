@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief TODO
+ * \brief SlideSelector for the startup slide which is basically just showing an image.
  *
  */
 

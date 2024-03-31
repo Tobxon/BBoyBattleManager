@@ -82,7 +82,6 @@ bool b3m::database::ParticipantsDepot::removeParticipantsAttribute(const Partici
 
 std::size_t b3m::database::ParticipantsDepot::numOfParticipants() const
 {
-	//TODO
 	return m_participants.size();
 }
 

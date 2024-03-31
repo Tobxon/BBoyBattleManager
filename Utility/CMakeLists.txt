@@ -3,6 +3,7 @@ target_sources(Utility
 	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
 		"interfaces/Utility.ixx"
 		"interfaces/integer.ixx"
+		"interfaces/type_traits.ixx"
 )
 
 

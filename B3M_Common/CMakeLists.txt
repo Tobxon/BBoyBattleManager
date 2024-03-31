@@ -8,6 +8,10 @@ target_sources(B3M_Common
 		"interfaces/Types.ixx"
 		"interfaces/Tournament.ixx"
 )
+target_link_libraries(B3M_Common
+	PRIVATE
+		Utility
+)
 
 
 # Unit Tests ---------------------------------------------------------------------------------------

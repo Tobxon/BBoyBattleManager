@@ -1,6 +1,9 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief TODO
+ * \brief Base Class for the objects that manage a slide used in the presentation (e.g. on a beamer
+ *        somewhere in the event location).
+ *        Inherit from this class and hand out your custom type of slide on getSlide to add your own
+ *        slide to the tournament presentation.
  *
  */
 

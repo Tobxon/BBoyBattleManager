@@ -46,8 +46,8 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 	const auto& matches = m_round->getMatches();
 	if(!matches.empty())
 	{
-		QFont freshmarker = i_style.getBackgroundFont();
-		QFont berlinSans = i_style.getForegroundFont();
+		QFont backgroundFont = i_style.getBackgroundFont();
+		QFont foregroundFont = i_style.getForegroundFont();
 
 		const int logoWidth = 150;
 		const int outerFrameWidth = widthScreen/8-logoWidth;
@@ -65,18 +65,18 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 		const int widthOfNumbers = fontSize*2;
 		const int widthContestantNameWidth = widthOfDrawArea/2 - widthOfNumbers - widthOfNumbers/2;
 
-		berlinSans.setPointSize(titleFontSize);
+		foregroundFont.setPointSize(titleFontSize);
 		auto *const title = new QLabel(this);
 		title->setObjectName("title");
 		const QRect titleSpace{ outerFrameWidth+logoWidth+innerFrameWidth, outerFrameHeight, widthOfDrawArea, titleHeight };
 		title->setGeometry(titleSpace);
 		title->setText(i_title);
 		title->setAlignment(Qt::AlignCenter);
-		title->setFont(berlinSans); //TODO
+		title->setFont(foregroundFont);
 		title->setAttribute(Qt::WA_TranslucentBackground, true);
 
-		freshmarker.setPointSize(fontSize);
-		berlinSans.setPointSize(fontSize);
+		backgroundFont.setPointSize(fontSize);
+		foregroundFont.setPointSize(fontSize);
 
 		QPalette palette;
 		int curTop = titleSpace.bottom();
@@ -90,7 +90,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 			teamAResult->setGeometry(teamAResultSpace);
 			teamAResult->setText("");
 			teamAResult->setAlignment(Qt::AlignCenter);
-			teamAResult->setFont(freshmarker); //TODO
+			teamAResult->setFont(backgroundFont);
 			teamAResult->setAttribute(Qt::WA_TranslucentBackground, true);
 
 			auto *const teamANameLabel = new QLabel(this);
@@ -99,7 +99,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 			teamANameLabel->setGeometry(teamALabelSpace);
 			teamANameLabel->setText(QString::fromStdString(teamAName));
 			teamANameLabel->setAlignment(Qt::AlignVCenter | Qt::AlignRight);
-			teamANameLabel->setFont(freshmarker);
+			teamANameLabel->setFont(backgroundFont);
 			teamANameLabel->setAttribute(Qt::WA_TranslucentBackground, true);
 			palette.setColor(teamANameLabel->foregroundRole(), Qt::white);
 			teamANameLabel->setPalette(palette);
@@ -111,7 +111,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 			vsLabel->setGeometry(vsLabelSpace);
 			vsLabel->setText(vsSymbol);
 			vsLabel->setAlignment(Qt::AlignCenter);
-			vsLabel->setFont(berlinSans); //TODO
+			vsLabel->setFont(foregroundFont);
 			vsLabel->setAttribute(Qt::WA_TranslucentBackground, true);
 
 			auto *const teamBNameLabel = new QLabel(this);
@@ -120,7 +120,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 			teamBNameLabel->setGeometry(teamBLabelSpace);
 			teamBNameLabel->setText(QString::fromStdString(teamBName));
 			teamBNameLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-			teamBNameLabel->setFont(freshmarker);
+			teamBNameLabel->setFont(backgroundFont);
 			teamBNameLabel->setAttribute(Qt::WA_TranslucentBackground, true);
 			palette.setColor(teamBNameLabel->foregroundRole(), Qt::white);
 			teamBNameLabel->setPalette(palette);
@@ -131,7 +131,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 			teamBResult->setGeometry(teamBResultSpace);
 			teamBResult->setText("");
 			teamBResult->setAlignment(Qt::AlignCenter);
-			teamBResult->setFont(freshmarker); //TODO
+			teamBResult->setFont(backgroundFont);
 			teamBResult->setAttribute(Qt::WA_TranslucentBackground, true);
 
 			//I#5 to proper observer registrations

@@ -104,7 +104,7 @@ using Contestant = b3m::common::Team; //TODO contestant as template or polymorph
 using Judgement = float;
 
 
-//TODO enable Matches with 3 contestants
+//I#8 enable Matches with 3 contestants
 class Match
 {
 public:

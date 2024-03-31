@@ -21,25 +21,16 @@ export module utility:integer;
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
 
-import <type_traits>;
+//std
 import <stdexcept>;
+
+//b3m
+import :type_traits;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-export namespace utility::type_traits
-{
-
-
-
-template <typename T>
-concept IsUnsignedint = std::is_integral_v<T> && std::is_unsigned_v<T>;
-
-
-
-}
-
 export namespace utility::integer
 {
 

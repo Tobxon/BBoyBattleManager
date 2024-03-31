@@ -23,7 +23,7 @@ import <algorithm>;
 //--------------------------------------------------------------------------------------------------
 
 //Tournament ---------------------------------------------------------------------------------------
-b3m::common::Tournament::Tournament(const std::vector <Contestant>& i_contestants)
+b3m::common::Tournament::Tournament(const std::vector< Contestant >& i_contestants)
 	: m_contestants(i_contestants)
 {
 }

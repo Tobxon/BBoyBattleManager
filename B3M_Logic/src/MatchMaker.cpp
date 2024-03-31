@@ -222,7 +222,7 @@ std::vector< ContestantRef_t > reorderContestantsByPriority(const std::vector< C
 
 std::vector< ContestantRef_t> getPreviousOpponents(const Contestant& i_contestantToFindOpponents, const std::vector< Contestant >& i_contestants, const History& i_history)
 {
-	std::vector< ContestantRef_t> o_prevOpponents; //TODO to set (faster search)?
+	std::vector< ContestantRef_t> o_prevOpponents;
 	for(const auto& round : i_history)
 	{
 		for(const auto& match : round->getMatches())
@@ -244,7 +244,7 @@ std::vector< ContestantRef_t> getPreviousOpponents(const Contestant& i_contestan
 					o_prevOpponents.emplace_back(*opponent);
 				}
 			}
-			//TODO expects only matches with 2 opponents
+			//I#8 expects only matches with 2 opponents
 		}
 	}
 

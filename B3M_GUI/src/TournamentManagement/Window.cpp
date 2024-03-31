@@ -42,7 +42,7 @@ b3m::gui::TournamentManagementWindow::TournamentManagementWindow(QWidget* i_pare
 
 		auto roundWidget = new TournamentRoundWidget(*round);
 		m_ui->roundTabs->addTab(roundWidget, QString("Round ") + QString::number(++roundIndex));
-		emit newRoundStarted(*round, *roundWidget); //TODO to boost::signals
+		emit newRoundStarted(*round, *roundWidget); //I#5 to boost::signals
 
 		m_roundFinished = connect(roundWidget, &TournamentRoundWidget::roundFinished, [this](){
 //			const auto& tournament = *m_tournament.getTournament();

@@ -95,7 +95,7 @@ public:
 private:
 	Name_t m_name{"unknown Breaker"};
 	const Team* m_team{};
-	Rating m_rating{ emptyRating }; //TODO to something that holds ratings?
+	Rating m_rating{ emptyRating };
 };
 
 
@@ -123,11 +123,11 @@ public:
 	[[nodiscard]] std::optional< std::map< Contestant::Name_t, FullResult >> getResults() const;
 
 	bool setResult(const Contestant::Name_t&, const Judgement&);
-	mutable std::function< void(const std::pair< std::optional< Judgement >, std::optional< Judgement >>&) > m_resultsChangedCallback; //TODO
+	mutable std::function< void(const std::pair< std::optional< Judgement >, std::optional< Judgement >>&) > m_resultsChangedCallback; //I#5
 	bool clearResult();
 
 	bool changeContestant(const Contestant::Name_t& i_oldContestantName, const Contestant::Name_t& i_newContestant);
-	mutable std::function< void(const std::pair< Contestant::Name_t, Contestant::Name_t >&) > m_contestantsChangedCallback; //TODO
+	mutable std::function< void(const std::pair< Contestant::Name_t, Contestant::Name_t >&) > m_contestantsChangedCallback; //I#5
 private:
 	std::pair< Contestant::Name_t, Contestant::Name_t > m_contestants; //TODO to reference_wrapper< Contestant > oder Contestant::Name_t
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };

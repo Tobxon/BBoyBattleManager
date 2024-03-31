@@ -65,7 +65,7 @@ private:
 
 
 //KOMatchMaker (classic K.O. Tournament) -----------------------------------------------------------
-class KOMatchMaker : public MatchMaker //TODO inherit from MatchMaker
+class KOMatchMaker : public MatchMaker
 {
 public:
 	explicit KOMatchMaker(unsigned int = 4);

@@ -61,7 +61,7 @@ private:
 
 class MatchSlideSelector : public SlideSelector
 {
-	Q_OBJECT; //TODO to boost::signals - signal results changed from Match itself
+	Q_OBJECT; //I#5 to boost::signals - signal results changed from Match itself
 
 public:
 	explicit MatchSlideSelector(TournamentRound&, const QString& = {}, QWidget* = nullptr);

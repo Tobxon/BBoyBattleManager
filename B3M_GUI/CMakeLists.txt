@@ -21,7 +21,7 @@ target_link_libraries(B3M_Presentation
 	PUBLIC
 		Qt::Widgets
 )
-target_compile_options(B3M_Presentation PRIVATE -wd5050) #aktuell ist dies für targets, die von Qt abhängen, nötig. #TODO remove if Qt works properly with modules
+target_compile_options(B3M_Presentation PRIVATE -wd5050) #this is currently necessary for targets that are dependent on Qt #TODO remove if Qt works properly with modules
 
 
 
@@ -43,7 +43,7 @@ target_sources(EY2023_Presentation
 target_include_directories(EY2023_Presentation
 	PUBLIC
 		"src/ExpressYourself2023"
-		"src/TournamentManagement" //TODO to boost::signals - signal results changed from Match itself
+		"src/TournamentManagement" //I#5 to boost::signals - signal results changed from Match itself
 )
 target_link_libraries(EY2023_Presentation
 	PUBLIC
@@ -52,7 +52,7 @@ target_link_libraries(EY2023_Presentation
 		B3M_Common
 		B3M_Logic
 )
-target_compile_options(EY2023_Presentation PRIVATE -wd5050) #aktuell ist dies für targets, die von Qt abhängen, nötig. #TODO remove if Qt works properly with modules
+target_compile_options(EY2023_Presentation PRIVATE -wd5050) #this is currently necessary for targets that are dependent on Qt #TODO remove if Qt works properly with modules
 
 
 
@@ -91,4 +91,4 @@ target_link_libraries(B3M_GUI
 		B3M_Database
 		EY2023_Presentation
 )
-target_compile_options(B3M_GUI PRIVATE -wd5050) #aktuell ist dies für targets, die von Qt abhängen, nötig. #TODO remove if Qt works properly with modules
+target_compile_options(B3M_GUI PRIVATE -wd5050) #this is currently necessary for targets that are dependent on Qt #TODO remove if Qt works properly with modules

@@ -26,7 +26,7 @@ import <optional>;
 import b3m.common;
 import b3m.database;
 
-namespace b3m::gui{ class TournamentRoundWidget; } //TODO to boost::signals - signal results changed from Match itself
+namespace b3m::gui{ class TournamentRoundWidget; } //I#5 to boost::signals - signal results changed from Match itself
 
 
 //--------------------------------------------------------------------------------------------------
@@ -54,8 +54,8 @@ public:
 	bool startTournament(const std::vector< Contestant >&);
 
 signals:
-	void newRoundStarted(TournamentRound&, TournamentRoundWidget&); //TODO to boost::signals - signal results changed from Match itself
-	void roundScoresUpdated(); //TODO to boost::signals - signal results changed from Match itself
+	void newRoundStarted(TournamentRound&, TournamentRoundWidget&); //I#5 to boost::signals - signal results changed from Match itself
+	void roundScoresUpdated(); //I#5 to boost::signals - signal results changed from Match itself
 	void rankingUpdated(const ContestantsRanking&);
 
 private:

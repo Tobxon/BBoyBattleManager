@@ -38,7 +38,7 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, const std::vector
 		}
 	}
 
-	//TODO to boost::signals - signal results changed from Match itself
+	//I#5 to boost::signals - signal results changed from Match itself
 	connect(m_ui->TeamLhsSelector, &QComboBox::currentIndexChanged, [this](int newIndex){
 		const auto& oldContestant = m_match->getContestantNames().first;
 		const QString& newContestantName = m_ui->TeamLhsSelector->currentText(); //TODO save?
@@ -55,10 +55,10 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, const std::vector
 			m_ui->TeamRhsSelector->setCurrentIndex(m_ui->TeamRhsSelector->findText(QString::fromStdString(oldContestant)));
 		}
 	});
-	//TODO to boost::signals - signal results changed from Match itself
+	//I#5 to boost::signals - signal results changed from Match itself
 
 
-	//TODO to boost::signals - signal results changed from Match itself
+	//I#5 to boost::signals - signal results changed from Match itself
 	connect(m_ui->resultsLock, &QCheckBox::stateChanged, [this](int checkState){
 		const auto resultLhsTeam = m_ui->resultTeamLhs->value();
 		const auto resultRhsTeam = m_ui->resultTeamRhs->value();
@@ -78,7 +78,7 @@ b3m::gui::MatchResultDialog::MatchResultDialog(Match& i_match, const std::vector
 		m_ui->TeamLhsSelector->setEnabled(!locked);
 		m_ui->TeamRhsSelector->setEnabled(!locked);
 	});
-	//TODO to boost::signals - signal results changed from Match itself
+	//I#5 to boost::signals - signal results changed from Match itself
 
 	static constexpr auto numOfJudges = 3.0;
 	m_ui->resultTeamLhs->setMaximum(numOfJudges);

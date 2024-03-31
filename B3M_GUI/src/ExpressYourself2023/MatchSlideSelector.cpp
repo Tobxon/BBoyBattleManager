@@ -134,7 +134,7 @@ b3m::gui::ey2023::MatchSlide::MatchSlide(TournamentRound& i_round,
 			teamBResult->setFont(freshmarker); //TODO
 			teamBResult->setAttribute(Qt::WA_TranslucentBackground, true);
 
-			//TODO to proper observer registrations
+			//I#5 to proper observer registrations
 			match.m_resultsChangedCallback = [teamAResult, teamBResult](const std::pair< std::optional< Judgement >, std::optional< Judgement >>& i_newResults){
 				const auto& teamLhsNewResult = i_newResults.first;
 				const auto& teamRhsNewResult = i_newResults.second;

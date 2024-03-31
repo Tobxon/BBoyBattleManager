@@ -18,7 +18,7 @@ import <ranges>;
 #include <QString>
 
 //b3m
-#include <TournamentRoundWidget.hpp> //TODO to boost::signals - signal results changed from Match itself
+#include <TournamentRoundWidget.hpp> //I#5 to boost::signals - signal results changed from TournamentRound that is handling its Matches
 
 
 //--------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ b3m::gui::PresentationManagementWindow::~PresentationManagementWindow()
 	delete m_ui;
 }
 
-void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round, const TournamentRoundWidget& i_roundWidget) //TODO to boost::signals - signal results changed from Match itself
+void b3m::gui::PresentationManagementWindow::addSlideFor(TournamentRound& i_round, const TournamentRoundWidget& i_roundWidget) //I#5 to boost::signals - signal results changed from Match itself
 {
 	auto* const slide = new MatchSlideSelector(i_round, QString::fromStdString(i_round.getTitle()), this);
 	addNewSlide(*slide);

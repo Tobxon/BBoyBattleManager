@@ -64,11 +64,11 @@ public:
 	[[nodiscard]] std::optional< std::pair< ParticipantName, ParticipantAttributes >> getParticipantInformation(const ParticipantName&) const;
 	[[nodiscard]] std::optional< ParticipantAttributes > getParticipantsAttributes(const ParticipantName&) const;
 
-	void registerCallback(const std::function<void (const ParticipantsDepot&)>&); //TODO to use of boost.signals2
+	void registerCallback(const std::function<void (const ParticipantsDepot&)>&); //I#5 to use of boost.signals2
 private:
 	std::map< ParticipantName, ParticipantAttributes> m_participants;
 
-	std::function<void (const ParticipantsDepot&)> m_reportChangesSignal; //TODO to use of boost.signals2
+	std::function<void (const ParticipantsDepot&)> m_reportChangesSignal; //I#5 to use of boost.signals2
 	void updateObservers() const;
 };
 

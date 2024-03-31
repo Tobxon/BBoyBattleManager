@@ -106,12 +106,10 @@ auto b3m::database::ParticipantsDepot::getTeams() const -> std::vector< Team >
 
 			b3m::common::Participant curParticipant(participantName, rating);
 
-			auto teamIt = std::ranges::find_if(o_teams,
-											   [teamName](const Team& i_team){ return i_team.getName() == teamName; });
+			auto teamIt = std::ranges::find_if(o_teams, [teamName](const Team& i_team){ return i_team.getName() == teamName; });
 			if(teamIt == o_teams.cend())
 			{
-				o_teams.push_back(Team(teamName,{curParticipant}));
-//				o_teams.emplace_back(teamName,{curParticipant}); //TODO use emplace_back
+				o_teams.emplace_back(teamName,std::initializer_list<Participant>{curParticipant});
 			}
 			else
 			{

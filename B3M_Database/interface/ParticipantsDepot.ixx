@@ -44,6 +44,7 @@ using ParticipantName = b3m::common::Participant::Name_t;
 using b3m::common::Attribute;
 using b3m::common::ParticipantAttributes;
 using b3m::common::Team;
+using b3m::common::Participant;
 
 
 class ParticipantsDepot

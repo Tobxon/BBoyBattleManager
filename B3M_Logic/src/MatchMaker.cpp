@@ -52,7 +52,8 @@ auto b3m::logic::SwissMatchMaker::createRound(const Tournament& i_tournament) ->
 	auto contestants = i_tournament.getContestants();
 	if(contestants.size() < 2)
 	{
-		return TournamentRound(i_tournament); //TODO properly report error
+		//TODO properly report error
+		return TournamentRound(i_tournament);
 	}
 
 	const auto& history = i_tournament.getHistory();

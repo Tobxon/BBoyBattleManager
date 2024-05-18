@@ -76,7 +76,7 @@ bool b3m::database::ParticipantsDepot::removeParticipant(const ParticipantName& 
 
 bool b3m::database::ParticipantsDepot::removeParticipantsAttribute(const ParticipantName&, const Attribute&)
 {
-	//TODO
+	//TODO GOON
 	return false;
 }
 

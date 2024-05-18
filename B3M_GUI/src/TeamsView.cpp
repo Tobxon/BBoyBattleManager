@@ -67,7 +67,7 @@ QVariant b3m::gui::TeamsModel::data(const QModelIndex& index, int role) const
 
 auto b3m::gui::TeamsModel::getMarkedTeams() const -> std::vector< Contestant >
 {
-	//TODO return only teams that are marked
+	//TODO return only teams that are highlighted in the view
 	std::vector< Contestant > o_teams;
 	for(const auto& team : m_teams)
 	{

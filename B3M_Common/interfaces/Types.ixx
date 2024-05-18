@@ -61,7 +61,8 @@ public:
 	[[nodiscard]] Name_t getName() const{ return m_name; }
 	[[nodiscard]] Rating getRating() const;
 
-	bool addMember(Participant&); //TODO removeMember?
+	bool addMember(Participant&);
+	//TODO removeMember?
 
 	bool operator==(const Team& i_other) const;
 private:

@@ -141,7 +141,8 @@ auto b3m::logic::KOMatchMaker::createRound(const Tournament& i_tournament) -> To
 	auto contestants = i_tournament.getContestants();
 	if(contestants.size() < 2)
 	{
-		return TournamentRound(i_tournament); //TODO properly report error
+		//TODO properly report error
+		return TournamentRound(i_tournament);
 	}
 
 	const auto& history = i_tournament.getHistory();

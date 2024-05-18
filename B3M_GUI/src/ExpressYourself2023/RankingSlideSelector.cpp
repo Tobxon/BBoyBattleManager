@@ -45,10 +45,10 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const ContestantsRanking& i_contest
 	m_ui->setupUi(this);
 
 	//TODO import font at a central place
-	int id = QFontDatabase::addApplicationFont("D:/Dev/Repos/B3M_dev/EY2023/resources/freshmarker.ttf"); //TODO to relative path
+	int id = QFontDatabase::addApplicationFont("C:/Dev/Repos/B3M_dev/EY2023/resources/freshmarker.ttf"); //I#10 portable resource file management
 	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 	QFont freshmarker(family);
-	int idBerlinSans = QFontDatabase::addApplicationFont("D:/Dev/Repos/B3M_dev/EY2023/resources/BRLNSB.ttf"); //TODO to relative path
+	int idBerlinSans = QFontDatabase::addApplicationFont("C:/Dev/Repos/B3M_dev/EY2023/resources/BRLNSB.ttf"); //I#10 portable resource file management
 	QString familyBerlinSans = QFontDatabase::applicationFontFamilies(idBerlinSans).at(0);
 	QFont berlinSans(familyBerlinSans);
 
@@ -169,7 +169,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const ContestantsRanking& i_contest
 			freeTicketWinsIcon->setObjectName(teamName + "_wins_bye");
 			const QRect freeTicketIconWinsSpace{ winsLabelSpace.left() + winsLabelSpace.width()*2/3, iconUp, iconLength, iconLength };
 			freeTicketWinsIcon->setGeometry(freeTicketIconWinsSpace);
-			freeTicketWinsIcon->setPixmap(QPixmap{"D:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"}); //TODO to relative path
+			freeTicketWinsIcon->setPixmap(QPixmap{"C:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"}); //I#10 portable resource file management
 			freeTicketWinsIcon->setAttribute( Qt::WA_TranslucentBackground, true );
 			freeTicketWinsIcon->setScaledContents(true);
 
@@ -177,7 +177,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const ContestantsRanking& i_contest
 			freeTicketPointsIcon->setObjectName(teamName + "_points_bye");
 			const QRect freeTicketIconPointsSpace{ pointsLabelSpace.left() + pointsLabelSpace.width()*2/3, iconUp, iconLength, iconLength };
 			freeTicketPointsIcon->setGeometry(freeTicketIconPointsSpace);
-			freeTicketPointsIcon->setPixmap(QPixmap{"D:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"}); //TODO to relative path
+			freeTicketPointsIcon->setPixmap(QPixmap{"C:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"}); //I#10 portable resource file management
 			freeTicketPointsIcon->setAttribute( Qt::WA_TranslucentBackground, true );
 			freeTicketPointsIcon->setScaledContents(true);
 		}

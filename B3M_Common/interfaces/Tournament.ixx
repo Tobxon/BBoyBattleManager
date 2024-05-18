@@ -77,7 +77,7 @@ public:
 
 	[[nodiscard]] std::vector< Contestant > getContestants() const;
 	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?
-	[[nodiscard]] std::string getTitle() const{ return m_title; } //TODO bad practice?
+	[[nodiscard]] std::string getTitle() const{ return m_title; }
 	[[nodiscard]] bool isFinished() const;
 	[[nodiscard]] std::vector< Match >& getMatches(){ return m_matches; }
 

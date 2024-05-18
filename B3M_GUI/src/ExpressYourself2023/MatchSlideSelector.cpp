@@ -175,7 +175,7 @@ void b3m::gui::ey2023::MatchSlide::paintEvent(QPaintEvent* event)
 
 //MatchSlideSelector -------------------------------------------------------------------------------
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, const QString& i_title, QWidget* i_parent)
-		: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round, b3m::gui::ey2023::SlidesStyle{}, i_title))
+	: SlideSelector("Match Slide", i_parent), m_slide(new MatchSlide(i_round, b3m::gui::ey2023::SlidesStyle{}, i_title))
 {}
 
 b3m::gui::ey2023::MatchSlideSelector::MatchSlideSelector(TournamentRound& i_round, QWidget* i_parent)

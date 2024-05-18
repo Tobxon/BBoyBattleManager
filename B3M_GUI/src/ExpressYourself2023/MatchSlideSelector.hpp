@@ -23,6 +23,8 @@
 import b3m.common;
 import b3m.gui.presentation;
 
+using b3m::gui::presentation::SlidesStyle;
+
 
 namespace Ui{ class SlideTemplate; }
 

@@ -21,6 +21,9 @@
 //b3m
 #include <SlideSelector.hpp>
 import b3m.common;
+import b3m.gui.presentation;
+
+using b3m::gui::presentation::SlidesStyle;
 
 
 //--------------------------------------------------------------------------------------------------
@@ -41,7 +44,7 @@ using b3m::common::ContestantsRanking;
 class RankingSlide : public QWidget
 {
 public:
-	explicit RankingSlide(const ContestantsRanking&, QWidget* = nullptr);
+	explicit RankingSlide(const ContestantsRanking&, const SlidesStyle&, QWidget* = nullptr);
 	~RankingSlide();
 
 protected:

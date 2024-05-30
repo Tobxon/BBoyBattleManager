@@ -25,12 +25,26 @@ import :CommonSlidesStyle;
 //CommonSlidesStyle
 QFont b3m::gui::presentation::SlidesStyle::getBackgroundFont() const
 {
-	return QFontDatabase::systemFont(QFontDatabase::TitleFont);
+	try
+	{
+		return getBackgroundFont_impl();
+	}
+	catch(...)
+	{
+		return QFontDatabase::systemFont(QFontDatabase::TitleFont);
+	}
 }
 
 QFont b3m::gui::presentation::SlidesStyle::getForegroundFont() const
 {
-	return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+	try
+	{
+		return getForegroundFont_impl();
+	}
+	catch (...)
+	{
+		return QFontDatabase::systemFont(QFontDatabase::FixedFont);
+	}
 }
 
 

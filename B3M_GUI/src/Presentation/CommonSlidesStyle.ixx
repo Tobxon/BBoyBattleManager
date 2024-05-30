@@ -33,8 +33,12 @@ class SlidesStyle
 public:
 	virtual ~SlidesStyle() = default;
 
-	[[nodiscard]] virtual QFont getBackgroundFont() const = 0;
-	[[nodiscard]] virtual QFont getForegroundFont() const = 0;
+	[[nodiscard]] QFont getBackgroundFont() const;
+	[[nodiscard]] QFont getForegroundFont() const;
+
+private:
+	[[nodiscard]] virtual QFont getBackgroundFont_impl() const = 0;
+	[[nodiscard]] virtual QFont getForegroundFont_impl() const = 0;
 };
 
 

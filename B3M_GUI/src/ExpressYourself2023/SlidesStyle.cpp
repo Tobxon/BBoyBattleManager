@@ -20,32 +20,18 @@ import :SlidesStyle;
 //------ Implementations                                                                      ------
 //--------------------------------------------------------------------------------------------------
 
-QFont b3m::gui::ey2023::SlidesStyle::getBackgroundFont() const
+QFont b3m::gui::ey2023::SlidesStyle::getBackgroundFont_impl() const
 {
-	try
-	{
-		int idFreshmaker = QFontDatabase::addApplicationFont(":/fonts/freshmarker.ttf");
-		QString familyFreshmaker = QFontDatabase::applicationFontFamilies(idFreshmaker).at(0);
-		return QFont{familyFreshmaker};
-	}
-	catch(...)
-	{
-		return b3m::gui::presentation::SlidesStyle::getBackgroundFont();
-	}
+	int idFreshmaker = QFontDatabase::addApplicationFont(":/fonts/freshmarker.ttf");
+	QString familyFreshmaker = QFontDatabase::applicationFontFamilies(idFreshmaker).at(0);
+	return QFont{familyFreshmaker};
 }
 
-QFont b3m::gui::ey2023::SlidesStyle::getForegroundFont() const
+QFont b3m::gui::ey2023::SlidesStyle::getForegroundFont_impl() const
 {
-	try
-	{
-		int idBerlinSans = QFontDatabase::addApplicationFont(":/fonts/BRLNSB.TTF");
-		QString familyBerlinSans = QFontDatabase::applicationFontFamilies(idBerlinSans).at(0);
-		return QFont{familyBerlinSans};
-	}
-	catch(...)
-	{
-		return b3m::gui::presentation::SlidesStyle::getForegroundFont();
-	}
+	int idBerlinSans = QFontDatabase::addApplicationFont(":/fonts/BRLNSB.TTF");
+	QString familyBerlinSans = QFontDatabase::applicationFontFamilies(idBerlinSans).at(0);
+	return QFont{familyBerlinSans};
 }
 
 

@@ -36,9 +36,9 @@ export namespace b3m::gui::ey2023
 
 class SlidesStyle : public b3m::gui::presentation::SlidesStyle
 {
-public:
-	[[nodiscard]] QFont getBackgroundFont() const override;
-	[[nodiscard]] QFont getForegroundFont() const override;
+private:
+	[[nodiscard]] QFont getBackgroundFont_impl() const override;
+	[[nodiscard]] QFont getForegroundFont_impl() const override;
 };
 
 

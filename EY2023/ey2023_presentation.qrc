@@ -1,0 +1,13 @@
+<RCC>
+	<qresource prefix="/fonts">
+		<file>BRLNSB.TTF</file>
+		<file>freshmarker.ttf</file>
+	</qresource>
+	<qresource prefix="/images">
+		<file>B3M_EY2023-start_page.png</file>
+		<file>byeIcon.png</file>
+		<file>logo_eyxpress-yourself_farbig_v01.png</file>
+		<file>logo_eyxpress-yourself_schwarz_web-72dpi_200x240px_v01.png</file>
+		<file>logo_eyxpress-yourself_weiss_web-72dpi_200x240px_v01.png</file>
+	</qresource>
+</RCC>

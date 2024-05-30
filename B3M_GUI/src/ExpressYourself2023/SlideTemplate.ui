@@ -41,7 +41,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>D:/Dev/Repos/B3M_dev/EY2023/resources/logo_eyxpress-yourself_schwarz_web-72dpi_200x240px_v01.png</pixmap>
+    <pixmap>:/images/logo_eyxpress-yourself_schwarz_web-72dpi_200x240px_v01.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

@@ -166,7 +166,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const ContestantsRanking& i_contest
 			freeTicketWinsIcon->setObjectName(teamName + "_wins_bye");
 			const QRect freeTicketIconWinsSpace{ winsLabelSpace.left() + winsLabelSpace.width()*2/3, iconUp, iconLength, iconLength };
 			freeTicketWinsIcon->setGeometry(freeTicketIconWinsSpace);
-			freeTicketWinsIcon->setPixmap(QPixmap{"C:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"}); //I#10 portable resource file management
+			freeTicketWinsIcon->setPixmap(QPixmap{":/images/byeIcon.png"});
 			freeTicketWinsIcon->setAttribute( Qt::WA_TranslucentBackground, true );
 			freeTicketWinsIcon->setScaledContents(true);
 
@@ -174,7 +174,7 @@ b3m::gui::ey2023::RankingSlide::RankingSlide(const ContestantsRanking& i_contest
 			freeTicketPointsIcon->setObjectName(teamName + "_points_bye");
 			const QRect freeTicketIconPointsSpace{ pointsLabelSpace.left() + pointsLabelSpace.width()*2/3, iconUp, iconLength, iconLength };
 			freeTicketPointsIcon->setGeometry(freeTicketIconPointsSpace);
-			freeTicketPointsIcon->setPixmap(QPixmap{"C:/Dev/Repos/B3M_dev/EY2023/resources/byeIcon.png"}); //I#10 portable resource file management
+			freeTicketPointsIcon->setPixmap(QPixmap{":/images/byeIcon.png"});
 			freeTicketPointsIcon->setAttribute( Qt::WA_TranslucentBackground, true );
 			freeTicketPointsIcon->setScaledContents(true);
 		}

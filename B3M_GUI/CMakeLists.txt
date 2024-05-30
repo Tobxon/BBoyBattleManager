@@ -25,7 +25,9 @@ target_compile_options(B3M_Presentation PRIVATE -wd5050) #this is currently nece
 
 
 
-qt_add_library(EY2023_Presentation STATIC)
+add_library(EY2023_Presentation #TODO proper separation of custom style library and general gui code
+	"../EY2023/ey2023_presentation.qrc"
+)
 target_sources(EY2023_Presentation
 	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
 		"src/ExpressYourself2023/EY2023.ixx"
@@ -43,7 +45,11 @@ target_sources(EY2023_Presentation
 target_include_directories(EY2023_Presentation
 	PUBLIC
 		"src/ExpressYourself2023"
-		"src/TournamentManagement" //I#5 to boost::signals - signal results changed from Match itself
+		"src/TournamentManagement" #I#5 to boost::signals - signal results changed from Match itself
+)
+set_target_properties(EY2023_Presentation
+	PROPERTIES
+		AUTORCC TRUE
 )
 target_link_libraries(EY2023_Presentation
 	PUBLIC
@@ -82,7 +88,7 @@ set_target_properties(B3M_GUI
 	PROPERTIES
 		AUTOMOC TRUE
 		AUTOUIC TRUE
-) 
+)
 
 target_link_libraries(B3M_GUI 
 	PRIVATE

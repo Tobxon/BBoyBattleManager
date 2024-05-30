@@ -1,6 +1,6 @@
 add_library(B3M_Logic)
 target_sources(B3M_Logic
-	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
+	PRIVATE
 		"src/MatchMaker.cpp"
 		"src/MatchMakingUtility.cpp"
 	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
@@ -22,7 +22,7 @@ find_package(Catch2)
 if(Catch2_FOUND)
 	add_executable(B3M_Logic_UnitTests)
 	target_sources(B3M_Logic_UnitTests
-		PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
+		PRIVATE
 			"tests/MatchMaker_UnitTests.cpp"
 			"tests/MatchMakingUtility_UnitTests.cpp"
 	)

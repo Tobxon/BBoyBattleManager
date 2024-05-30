@@ -13,7 +13,7 @@ find_package(Catch2)
 if(Catch2_FOUND)
 	add_executable(Utility_UnitTests)
 	target_sources(Utility_UnitTests
-		PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
+		PRIVATE
 			"tests/integer_UnitTests.cpp"
 	)
 

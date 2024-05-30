@@ -9,7 +9,7 @@ target_sources(B3M_Presentation
 		"src/Presentation/CommonSlidesStyle.ixx"
 	PUBLIC FILE_SET headers TYPE HEADERS FILES
 		"src/Presentation/SlideSelector.hpp"
-	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
+	PRIVATE
 		"src/Presentation/SlideSelector.cpp"
 		"src/Presentation/CommonSlidesStyle.cpp"
 )
@@ -36,7 +36,7 @@ target_sources(EY2023_Presentation
 		"src/ExpressYourself2023/StartupSlideSelector.hpp"
 		"src/ExpressYourself2023/RankingSlideSelector.hpp"
 		"src/ExpressYourself2023/MatchSlideSelector.hpp"
-	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
+	PRIVATE
 		"src/ExpressYourself2023/StartupSlideSelector.cpp"
 		"src/ExpressYourself2023/RankingSlideSelector.cpp"
 		"src/ExpressYourself2023/MatchSlideSelector.cpp"
@@ -74,7 +74,7 @@ target_sources(B3M_GUI
 		"src/TournamentManagement/TournamentRoundWidget.hpp"
 		"src/TournamentManagement/MatchResultDialog.hpp"
 		"src/Presentation/ManagementWindow.hpp"
-	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
+	PRIVATE
 		"src/MainWindow.cpp"
 		"src/ParticipantsDialog.cpp"
 		"src/TeamsView.cpp"

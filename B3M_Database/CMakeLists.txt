@@ -1,6 +1,6 @@
 add_library(B3M_Database)
 target_sources(B3M_Database
-	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
+	PRIVATE
 		"src/ParticipantsDepot.cpp"
 		"src/TournamentProxy.cpp"
 	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
@@ -22,7 +22,7 @@ find_package(Catch2)
 if(Catch2_FOUND)
 	add_executable(B3M_Database_UnitTests)
 	target_sources(B3M_Database_UnitTests
-		PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
+		PRIVATE
 			"tests/ParticipantDepot_UnitTests.cpp"
 			"tests/TeamsCollector_UnitTests.cpp"
 			"tests/TournamentProxy_UnitTests.cpp"

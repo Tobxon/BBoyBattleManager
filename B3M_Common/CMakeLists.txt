@@ -1,6 +1,6 @@
 add_library(B3M_Common)
 target_sources(B3M_Common
-	PRIVATE FILE_SET implementations TYPE CXX_MODULES FILES
+	PRIVATE
 		"src/Types.cpp"
 		"src/Tournament.cpp"
 	PUBLIC FILE_SET interfaces TYPE CXX_MODULES FILES
@@ -20,7 +20,7 @@ find_package(Catch2)
 if(Catch2_FOUND)
 	add_executable(B3M_Common_UnitTests)
 	target_sources(B3M_Common_UnitTests
-		PRIVATE FILE_SET tests TYPE CXX_MODULES FILES
+		PRIVATE
 			"tests/Types_UnitTest.cpp"
 			"tests/Tournament_UnitTests.cpp"
 	)

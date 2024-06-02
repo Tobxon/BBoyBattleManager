@@ -76,7 +76,7 @@ public:
 	explicit TournamentRound(const Tournament&, const std::string& = {});
 
 	[[nodiscard]] std::vector< Contestant > getContestants() const;
-	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //TODO bad practice?
+	[[nodiscard]] const Tournament& getTournament() const{ return *m_tournament; } //I#11 bad practice? - can be removed when central contestant service in database is implemented
 	[[nodiscard]] std::string getTitle() const{ return m_title; }
 	[[nodiscard]] bool isFinished() const;
 	[[nodiscard]] std::vector< Match >& getMatches(){ return m_matches; }

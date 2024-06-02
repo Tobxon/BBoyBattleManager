@@ -37,7 +37,7 @@ export namespace utility::integer
 
 
 template< utility::type_traits::IsUnsignedint posUintType >
-constexpr posUintType ceil_pos_uint_division(posUintType i_dividend, posUintType i_divisor) noexcept(false);
+constexpr posUintType ceil_pos_uint_division(posUintType, posUintType) noexcept(false);
 
 
 

@@ -232,7 +232,7 @@ std::vector< ContestantRef_t> getPreviousOpponents(const Contestant& i_contestan
 			const auto& matchOpponents = match.getContestantNames();
 			if(matchOpponents.first == i_contestantToFindOpponents.getName())
 			{
-				const auto& opponent = std::ranges::find_if(i_contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //TODO use reference or ID of Contestants everywhere
+				const auto& opponent = std::ranges::find_if(i_contestants,[opponentName = matchOpponents.second](const Contestant& i_contestant){ return i_contestant.getName() == opponentName;}); //I#11 use reference or ID of Contestants everywhere
 				if(opponent != i_contestants.cend())
 				{
 					o_prevOpponents.emplace_back(*opponent);

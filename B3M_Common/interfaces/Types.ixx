@@ -56,7 +56,7 @@ public:
 	using Name_t = std::string;
 
 	explicit Team(const Name_t&, const std::vector< Participant >& = {});
-	//TODO range constructor to set members initially
+	//I#9 range constructor to set members initially
 
 	[[nodiscard]] Name_t getName() const{ return m_name; }
 	[[nodiscard]] Rating getRating() const;
@@ -67,7 +67,7 @@ public:
 	bool operator==(const Team& i_other) const;
 private:
 	Name_t m_name{"unknown Crew"};
-	std::vector< Participant > m_members; //TODO should Team own its participants?
+	std::vector< Participant > m_members; //I#11 should Team own its participants?
 };
 
 
@@ -130,7 +130,7 @@ public:
 	bool changeContestant(const Contestant::Name_t& i_oldContestantName, const Contestant::Name_t& i_newContestant);
 	mutable std::function< void(const std::pair< Contestant::Name_t, Contestant::Name_t >&) > m_contestantsChangedCallback; //I#5
 private:
-	std::pair< Contestant::Name_t, Contestant::Name_t > m_contestants; //TODO to reference_wrapper< Contestant > oder Contestant::Name_t
+	std::pair< Contestant::Name_t, Contestant::Name_t > m_contestants; //I#11 to reference_wrapper< Contestant > oder Contestant::Name_t
 	std::pair< std::optional< Judgement >, std::optional< Judgement >> m_result{ std::nullopt, std::nullopt };
 };
 

@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 	std::cout << "Listing all currently registered B-Girls and B-Boys:" << std::endl;
 	for (const auto& participant : participants)
 	{
-		std::cout << participant.getName() << ", ";
+		std::cout << participant << ", ";
 	}
 	std::cout << std::endl;
 

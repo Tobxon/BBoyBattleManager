@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------------------------------
 /**
- * \brief Module Interface Unit for the Participant class.
+ * \brief Module Interface Unit for basic types used across the whole program.
  *
  */
 
@@ -10,7 +10,6 @@
 //--------------------------------------------------------------------------------------------------
 module;
 
-#include <string> //TODO to modules like import
 
 //--------------------------------------------------------------------------------------------------
 //------ MODULE CONTENT                                                                       ------
@@ -21,36 +20,32 @@ export module b3m.common:participant;
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-//import <string>;
+import <string>;
+import <map>;
+import <vector>;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m
-{
-namespace common
+export namespace b3m::common
 {
 
 
 
-export class Participant
-{
-public:
-	using name_t = std::string;
+using Participant = std::string;
 
-	virtual ~Participant() = default;
-	Participant(const name_t&);
+using ParticipantName = std::string;
+using Attribute = std::string;
+using ParticipantAttributes = std::map< Attribute, std::string >;
 
-	name_t getName() const { return m_name; }
-private:
-	name_t m_name;
-};
+constexpr const char* nameAttribute{ "name" };
+constexpr const char* teamAttribute{ "crew" };
+constexpr const char* rankingPointsAttribute{ "ranking points" };
 
 
 
-} //namespace common
-} //namespace b3m
+} //namespace b3m::common
 
 
 //END OF FILE --------------------------------------------------------------------------------------

@@ -10,7 +10,6 @@
 //--------------------------------------------------------------------------------------------------
 module;
 
-#include <string> //TODO to modules like import
 
 //--------------------------------------------------------------------------------------------------
 //------ MODULE CONTENT                                                                       ------
@@ -21,36 +20,29 @@ export module b3m.common:participant;
 //--------------------------------------------------------------------------------------------------
 //------ Dependencies                                                                         ------
 //--------------------------------------------------------------------------------------------------
-//import <string>;
+import <string>;
+import <map>;
 
 
 //--------------------------------------------------------------------------------------------------
 //------ Declarations                                                                         ------
 //--------------------------------------------------------------------------------------------------
-namespace b3m
-{
-namespace common
+namespace b3m::common
 {
 
 
 
-export class Participant
-{
-public:
-	using name_t = std::string;
+export using Participant = std::string;
 
-	virtual ~Participant() = default;
-	Participant(const name_t&);
+export using ParticipantName = std::string;
+export using Attribute = std::string;
+export using ParticipantAttributes = std::map< Attribute, std::string >;
 
-	name_t getName() const { return m_name; }
-private:
-	name_t m_name;
-};
+export constexpr const char* nameAttribute{ "name" };
 
 
 
-} //namespace common
-} //namespace b3m
+} //namespace b3m::common
 
 
 //END OF FILE --------------------------------------------------------------------------------------

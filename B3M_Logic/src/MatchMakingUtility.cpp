@@ -147,7 +147,7 @@ auto b3m::logic::getFreeTicketContestants(/*const*/ TournamentRound& i_round, co
 {
 	return i_contestants
 		| std::views::filter([&round = /*std::as_const(*/i_round/*)*/](const Contestant& i_contestant){
-			return doesContestantParticipateInRound(round, i_contestant); })
+			return !doesContestantParticipateInRound(round, i_contestant); })
 		| std::views::transform([](const Contestant& i_contestant){ return ContestantRef_t(i_contestant); })
 		| std::ranges::to<std::vector>();
 }
